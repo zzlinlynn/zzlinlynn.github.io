@@ -13,6 +13,9 @@ await mkdir(outputDirectory, { recursive: true });
 await writeFile(new URL("index.js", outputDirectory), workerEntry);
 
 await Promise.all([
+  // The root static homepage is the canonical version used for deployment.
+  cp(new URL("../index.html", import.meta.url), new URL("index.html", distDirectory)),
+  cp(new URL("../main.js", import.meta.url), new URL("main.js", distDirectory)),
   cp(new URL("../about/", import.meta.url), new URL("about/", distDirectory), {
     recursive: true
   }),

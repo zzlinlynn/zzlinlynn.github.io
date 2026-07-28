@@ -4,10 +4,8 @@ Formal frontend scaffold for the July 2026 portfolio site.
 
 ## Structure
 
-- `index.html`, `styles.css`, `main.js`: static preview extracted from the preserved prototype checkpoint.
-- `src/pages/index.astro`: Astro homepage using the same markup.
-- `src/styles/global.css`: shared visual system and layout styles.
-- `src/scripts/home.js`: homepage interaction, theme/language toggles, portrait particle rendering, cursor labels, and scroll effects.
+- `index.html`, `styles.css`, `main.js`, `footer-canvas.js`: canonical homepage deployed to production.
+- `src/pages/index.astro`, `src/styles/global.css`, `src/scripts/home.js`: legacy Astro version retained for reference; the build replaces its homepage output with the canonical root files.
 - `public/assets/`: assets served by Astro.
 
 ## Local Commands
