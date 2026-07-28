@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="About Lynn, a product and UX designer working across interaction, systems, and craft.">
   <title>About — Lynn</title>
-  <link rel="stylesheet" href="../styles.css?v=20260728-home-alignment-1">
-  <link rel="stylesheet" href="about.css?v=20260728-scroll-fix-1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css?v=20260728-geist-pixel-1">
+  <link rel="stylesheet" href="about.css?v=20260728-geist-pixel-1">
 </head>
-<body class="about-body">
+<body class="about-body geist-pixel">
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash__inner">
       <div class="splash__mark">L</div>
@@ -18,7 +21,7 @@
 
   <div class="ui" aria-hidden="false">
     <nav class="site-nav" aria-label="Primary">
-      <a class="logo" href="#top">
+      <a class="logo" href="/">
         <span class="logo__mark" aria-hidden="true"></span>
         <span>Lynn</span>
       </a>
@@ -97,15 +100,15 @@
           </div>
 
           <nav class="about-actions" aria-label="About links">
-            <a class="about-action" href="/resume/">
+            <a class="about-action" href="https://drive.google.com/file/d/17tNkmWqKqzTy6F9PuOXCp9ccdh_Jjqea/view?usp=drive_link" target="_blank" rel="noreferrer">
               <img src="../assets/about/resume-icon.png" alt="" width="100" height="100">
               <span data-about-i18n="about.resume"></span>
             </a>
-            <a class="about-action" href="mailto:">
+            <a class="about-action" href="mailto:zhenglin.zhang.lynn@gmail.com">
               <img src="../assets/about/email-icon.png" alt="" width="100" height="100">
               <span data-about-i18n="about.email"></span>
             </a>
-            <a class="about-action" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
+            <a class="about-action" href="https://www.linkedin.com/in/zhenglinzhang" target="_blank" rel="noreferrer">
               <img src="../assets/about/linkedin-icon.png" alt="" width="100" height="100">
               <span data-about-i18n="about.linkedin"></span>
             </a>
@@ -133,5 +136,6 @@
 
   <script type="module" src="about.js?v=20260728-responsive-reveal-1"></script>
   <script type="module" src="../footer-canvas.js?v=20260728-responsive-reveal-1"></script>
+  <script src="../case-nav.js?v=20260728-3" defer></script>
 </body>
 </html>

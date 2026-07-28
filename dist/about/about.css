@@ -150,9 +150,9 @@ html {
   display: grid;
   gap: .925rem;
   color: var(--ink);
-  font-family: Inter, var(--sans);
+  font-family: var(--sans);
   font-size: clamp(1rem, 1.1vw, 1.125rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.67;
 }
 

@@ -8,14 +8,16 @@
     content="一套将 Figma 设计资产转化为可治理知识，并约束 AI 生成 UI 与前端代码的 Design Agent 工作流案例。"
   >
   <title>Designing a Governed AI Design Workflow — Lynn</title>
-  <link rel="stylesheet" href="/case-nav.css?v=20260728-2">
+  <link rel="stylesheet" href="/case-nav.css?v=20260728-3">
   <link rel="stylesheet" href="./case-study.css">
-  <script src="/case-nav.js?v=20260728-2" defer></script>
+  <link rel="stylesheet" href="./creator-trace.css">
+  <script src="/case-nav.js?v=20260728-3" defer></script>
+  <script src="./creator-trace.js" defer></script>
 </head>
 <body>
   <div class="ui case-nav-ui">
     <nav class="site-nav" aria-label="Primary">
-      <a class="logo" href="#top">
+      <a class="logo" href="/">
         <span class="logo__mark" aria-hidden="true"></span>
         <span>Lynn</span>
       </a>
@@ -221,52 +223,110 @@
 
         <div class="split-row creator-workflow-row">
           <div aria-hidden="true"></div>
-          <div class="creator-workflow">
-            <div class="creator-stages">
-              <article class="creator-stage">
-                <p class="stage-index">01</p>
-                <h3>业务理解</h3>
-                <p class="stage-name">Business Understanding</p>
-                <ul class="stage-rules">
-                  <li class="stage-do">拆解业务需求、用户目标、核心数据、决策点</li>
-                  <li class="stage-dont">不做任何设计决策，不输出交互</li>
-                </ul>
-              </article>
+          <div class="creator-workflow" data-creator-trace>
+            <div class="creator-stages stage-list" role="tablist" aria-label="Creator 执行阶段">
+              <button
+                class="creator-stage stage-button is-active"
+                id="creator-trace-step-0"
+                type="button"
+                role="tab"
+                aria-controls="creator-trace-panel"
+                aria-selected="true"
+                data-step="0"
+              >
+                <span class="stage-index">01</span>
+                <span class="stage-title">业务理解</span>
+                <span class="stage-name">Business Understanding</span>
+                <span class="stage-rules" role="list">
+                  <span class="stage-do" role="listitem">拆解业务需求、用户目标、核心数据、决策点</span>
+                  <span class="stage-dont" role="listitem">不做任何设计决策，不输出交互</span>
+                </span>
+                <span class="stage-progress" aria-hidden="true"></span>
+              </button>
 
               <div class="stage-gate" aria-hidden="true">
                 <span>gate</span>
               </div>
 
-              <article class="creator-stage">
-                <p class="stage-index">02</p>
-                <h3>交互决策</h3>
-                <p class="stage-name">Interaction Contract</p>
-                <ul class="stage-rules">
-                  <li class="stage-do">输出页面信息架构、数据 Mock、交互行为和组件映射</li>
-                  <li class="stage-dont">不做颜色、字体等视觉改变</li>
-                </ul>
-              </article>
+              <button
+                class="creator-stage stage-button"
+                id="creator-trace-step-1"
+                type="button"
+                role="tab"
+                aria-controls="creator-trace-panel"
+                aria-selected="false"
+                data-step="1"
+                tabindex="-1"
+              >
+                <span class="stage-index">02</span>
+                <span class="stage-title">交互决策</span>
+                <span class="stage-name">Interaction Contract</span>
+                <span class="stage-rules" role="list">
+                  <span class="stage-do" role="listitem">输出页面信息架构、数据 Mock、交互行为和组件映射</span>
+                  <span class="stage-dont" role="listitem">不做颜色、字体等视觉改变</span>
+                </span>
+                <span class="stage-progress" aria-hidden="true"></span>
+              </button>
 
               <div class="stage-gate" aria-hidden="true">
                 <span>gate</span>
               </div>
 
-              <article class="creator-stage">
-                <p class="stage-index">03</p>
-                <h3>生产交付</h3>
-                <p class="stage-name">Constrained Generation</p>
-                <ul class="stage-rules">
-                  <li class="stage-do">严格按 Token 和组件约束生成 UI 和 React 代码</li>
-                  <li class="stage-dont">不重新做产品或交互判断</li>
-                </ul>
-              </article>
+              <button
+                class="creator-stage stage-button"
+                id="creator-trace-step-2"
+                type="button"
+                role="tab"
+                aria-controls="creator-trace-panel"
+                aria-selected="false"
+                data-step="2"
+                tabindex="-1"
+              >
+                <span class="stage-index">03</span>
+                <span class="stage-title">生产交付</span>
+                <span class="stage-name">Constrained Generation</span>
+                <span class="stage-rules" role="list">
+                  <span class="stage-do" role="listitem">严格按 Token 和组件约束生成 UI 和 React 代码</span>
+                  <span class="stage-dont" role="listitem">不重新做产品或交互判断</span>
+                </span>
+                <span class="stage-progress" aria-hidden="true"></span>
+              </button>
             </div>
 
-            <div
-              class="governed-output-preview"
-              role="img"
-              aria-label="受约束生成结果的黑色预览区域"
-            ></div>
+            <figure
+              class="governed-output-preview trace-canvas"
+              id="creator-trace-panel"
+              role="tabpanel"
+              aria-labelledby="creator-trace-step-0"
+              tabindex="0"
+            >
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="window-dot"></span>
+                <span class="terminal-title">design-agent — tencent-hk-order</span>
+                <span class="terminal-count">01 / 03</span>
+              </div>
+
+              <div class="terminal-viewport">
+                <div
+                  class="terminal-log"
+                  role="log"
+                  aria-label="AI Creator 执行回放"
+                  aria-live="off"
+                ></div>
+                <div class="terminal-prompt" aria-hidden="true">
+                  <span>›</span><span class="terminal-cursor"></span>
+                </div>
+              </div>
+
+              <figcaption class="terminal-footer">
+                <button class="play-toggle" type="button" aria-label="暂停执行回放">
+                  <span class="play-icon" aria-hidden="true">Ⅱ</span>
+                  <span class="play-state">Playing</span>
+                </button>
+                <span class="replay-state"><i aria-hidden="true"></i> replaying trace</span>
+                <span class="replay-clock">00:00.0</span>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </div>
