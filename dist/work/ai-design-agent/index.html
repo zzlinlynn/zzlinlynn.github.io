@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta
+    name="description"
+    content="一套将 Figma 设计资产转化为可治理知识，并约束 AI 生成 UI 与前端代码的 Design Agent 工作流案例。"
+  >
+  <title>Designing a Governed AI Design Workflow — Lynn</title>
+  <link rel="stylesheet" href="/case-nav.css?v=20260728-2">
+  <link rel="stylesheet" href="./case-study.css">
+  <script src="/case-nav.js?v=20260728-2" defer></script>
+</head>
+<body>
+  <div class="ui case-nav-ui">
+    <nav class="site-nav" aria-label="Primary">
+      <a class="logo" href="#top">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>Lynn</span>
+      </a>
+      <div class="nav-links">
+        <a href="/#work">Work</a>
+        <a href="/about/">About</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="case-study" id="top">
+    <section class="case-section case-hero" aria-labelledby="case-title">
+      <div class="section-inner">
+        <header class="hero-copy">
+          <p class="eyebrow">Case Study</p>
+          <h1 id="case-title">Designing a Governed AI Design Workflow</h1>
+          <p class="hero-intro">
+            我 0–1 搭建了一套可治理的 Design Agent 工作流：将 Figma
+            设计资产抽取成可追溯、可复用、可校验的设计知识，再通过阶段化决策、组件合同、token
+            约束和质量检查，约束 Creator 生成符合金融业务、品牌和设计系统规范的 UI 与前端代码。
+          </p>
+        </header>
+
+        <dl class="metadata-grid">
+          <div class="metadata-item">
+            <dt>Role</dt>
+            <dd>AI Workflow / UX System Designer</dd>
+          </div>
+          <div class="metadata-item">
+            <dt>Stage</dt>
+            <dd>0–1 工作流搭建</dd>
+          </div>
+          <div class="metadata-item">
+            <dt>Scope</dt>
+            <dd>Extractor Agent · Governed KB · Creator Agent</dd>
+          </div>
+          <div class="metadata-item">
+            <dt>Status</dt>
+            <dd>Extractor 能力被事业群 AI 设计平台完整采纳</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <section class="case-section context-section" aria-labelledby="context-label">
+      <div class="section-inner split-row">
+        <h2 class="section-label" id="context-label">Context</h2>
+        <div class="reading prose">
+          <p>
+            AI 已经可以生成看起来像样的 UI。但在真实业务设计里，生成一个“像”的页面并不够，需要同时满足业务逻辑、品牌规范、组件体系、页面范式、交互状态和移动端可用性要求。如果让
+            AI
+            从需求直接生成最终页面，输出很容易出现结构不稳定、组件复用不清晰、状态缺失或信息层级不符合业务判断的问题。
+          </p>
+          <aside class="callout" aria-label="核心问题">
+            <p class="callout-kicker">因此，此项目真正要解决的问题是：</p>
+            <h3>
+              如何让 AI
+              生成依赖可追溯的设计知识和明确的决策边界，而不是依赖模型记忆和自由发挥？
+            </h3>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section workflow-before-section" aria-labelledby="workflow-before-label">
+      <div class="section-inner">
+        <div class="split-row section-intro">
+          <h2 class="section-label" id="workflow-before-label">Workflow Before</h2>
+          <div class="reading prose">
+            <p>
+              设计知识存在于历史页面和稿件中，即使有 AI
+              辅助生成，也需要每次从头理解。在需求落地过程中，产品和设计需要反复对齐、澄清需求，前端需要解读设计稿并自行判断复用逻辑。需求、设计规范、页面参考和代码实现分散在人、Figma
+              和沟通记录里。
+            </p>
+          </div>
+        </div>
+
+        <figure class="workflow-visual">
+          <div class="workflow-scroll">
+            <img
+              src="/assets/ai-design-agent/workflow-before.png"
+              alt="原工作流：产品提出需求、UX 理解并补全、找历史页面和组件、重新设计或修改、反复评审与对齐、前端解读设计稿、联调和走查纠偏，并在流程中反复回环。"
+              width="929"
+              height="170"
+            >
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="case-section system-strategy-section" aria-labelledby="system-strategy-label">
+      <div class="section-inner">
+        <div class="split-row section-intro">
+          <h2 class="section-label" id="system-strategy-label">System Strategy</h2>
+          <div class="reading prose">
+            <p>
+              我设计了一个三层的系统：Extractor 从 Figma 资产中提取设计范式；KB
+              沉淀结构化知识并显化不确定性；Creator 在知识和约束下生成 UI 与代码。让 AI
+              生成不再是黑盒——设计知识从哪里来、如何被复用、哪里存在不确定性，都可以被定位和检查。
+            </p>
+          </div>
+        </div>
+
+        <figure class="system-diagram">
+          <picture>
+            <source
+              media="(min-width: 1025px)"
+              srcset="/assets/ai-design-agent/system-desktop.png"
+            >
+            <source
+              media="(min-width: 768px)"
+              srcset="/assets/ai-design-agent/system-tablet.png"
+            >
+            <img
+              src="/assets/ai-design-agent/system-mobile.png"
+              alt="从 Figma Design Assets 输入，经 Extractor Agent 提取，进入 Governed KB，再由 Creator Agent 生成 Prototype 与 Code；不确定内容进入 Review Queue 由人工判断。"
+              width="342"
+              height="965"
+            >
+          </picture>
+          <figcaption class="sr-only">
+            Input / Figma Design Assets。01 From Design Assets：Extractor Agent。02 Structured
+            Knowledge：Governed KB，包含 color、type scale、variant、spacing、rule、component、pattern、state
+            和 token。03 Constrained Generation：Creator Agent，输出 Prototype 与 Code。Output / UI +
+            Frontend Code。Review Queue：Human expert judgment。
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section
+      class="case-section governed-knowledge-section"
+      aria-labelledby="governed-knowledge-label"
+    >
+      <div class="section-inner">
+        <div class="split-row section-intro">
+          <header class="deep-dive-label">
+            <p class="section-label">Deep Dive 01</p>
+            <h2 id="governed-knowledge-label">
+              <span class="deep-dive-label-wide">Turning Design Assets into Governed Knowledge</span>
+              <span class="deep-dive-label-mobile">Governed Knowledge</span>
+            </h2>
+          </header>
+          <div class="reading prose">
+            <p>
+              设计资产里包含大量隐性知识：设计变量、组件结构、布局规则、页面模式。Extractor 的目标是把这些资产转成
+              Agent 可消费的知识层，KB 则通过 schema 约束结构、source mapping 保留来源、confidence
+              显化不确定性，并将需要人工判断的内容进入 review queue——让设计知识具备治理能力。
+            </p>
+          </div>
+        </div>
+
+        <div class="split-row diagram-row">
+          <div aria-hidden="true"></div>
+          <figure class="knowledge-diagram">
+            <picture>
+              <source
+                media="(min-width: 1025px)"
+                srcset="/assets/ai-design-agent/knowledge-desktop.png"
+              >
+              <source
+                media="(min-width: 768px)"
+                srcset="/assets/ai-design-agent/knowledge-tablet.png"
+              >
+              <img
+                src="/assets/ai-design-agent/knowledge-mobile.png"
+                alt="隐性且非结构化的 Figma Assets 经 Extractor 转化为受 Schema 治理的 KB Entry，并记录类型、Figma 来源、置信度与是否需要人工审查。"
+                width="342"
+                height="499"
+              >
+            </picture>
+            <figcaption class="sr-only">
+              Figma Assets，Implicit / unstructured，经 Extractor 进入 KB Entry，Schema-governed。字段包括
+              type → token / component / pattern / ...，source → Figma ref，confidence，以及 review →
+              required / —。
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <section class="case-section creator-section" aria-labelledby="creator-label">
+      <div class="section-inner">
+        <div class="split-row section-intro">
+          <header class="deep-dive-label">
+            <p class="section-label">Deep Dive 02</p>
+            <h2 id="creator-label">
+              <span class="deep-dive-label-wide">Designing the Creator as a Constrained Generator</span>
+              <span class="deep-dive-label-mobile">Constrained Creator</span>
+            </h2>
+          </header>
+          <div class="reading prose">
+            <p>
+              Creator 不是一个自由发挥的 UI 生成器，而是一个受范式约束的金融 UI 生成
+              Agent。它的核心不是“直接画页面”，而是按阶段消费 KB，并把业务理解、交互决策和设计生产分开处理。
+            </p>
+          </div>
+        </div>
+
+        <div class="split-row creator-workflow-row">
+          <div aria-hidden="true"></div>
+          <div class="creator-workflow">
+            <div class="creator-stages">
+              <article class="creator-stage">
+                <p class="stage-index">01</p>
+                <h3>业务理解</h3>
+                <p class="stage-name">Business Understanding</p>
+                <ul class="stage-rules">
+                  <li class="stage-do">拆解业务需求、用户目标、核心数据、决策点</li>
+                  <li class="stage-dont">不做任何设计决策，不输出交互</li>
+                </ul>
+              </article>
+
+              <div class="stage-gate" aria-hidden="true">
+                <span>gate</span>
+              </div>
+
+              <article class="creator-stage">
+                <p class="stage-index">02</p>
+                <h3>交互决策</h3>
+                <p class="stage-name">Interaction Contract</p>
+                <ul class="stage-rules">
+                  <li class="stage-do">输出页面信息架构、数据 Mock、交互行为和组件映射</li>
+                  <li class="stage-dont">不做颜色、字体等视觉改变</li>
+                </ul>
+              </article>
+
+              <div class="stage-gate" aria-hidden="true">
+                <span>gate</span>
+              </div>
+
+              <article class="creator-stage">
+                <p class="stage-index">03</p>
+                <h3>生产交付</h3>
+                <p class="stage-name">Constrained Generation</p>
+                <ul class="stage-rules">
+                  <li class="stage-do">严格按 Token 和组件约束生成 UI 和 React 代码</li>
+                  <li class="stage-dont">不重新做产品或交互判断</li>
+                </ul>
+              </article>
+            </div>
+
+            <div
+              class="governed-output-preview"
+              role="img"
+              aria-label="受约束生成结果的黑色预览区域"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="case-section inverse-section decisions-section"
+      aria-labelledby="decisions-label"
+    >
+      <div class="section-inner decisions-stack">
+        <header class="decisions-header">
+          <div>
+            <p class="section-label">Key Design Decisions</p>
+            <h2 id="decisions-label">系统层关键设计决策</h2>
+          </div>
+          <p class="decision-count">4 Decisions</p>
+        </header>
+
+        <div class="decision-list">
+          <article class="decision-row">
+            <p class="decision-index">01</p>
+            <header class="decision-title">
+              <p>解耦流程</p>
+              <h3>拆分抽取与生成</h3>
+            </header>
+            <div class="decision-copy">
+              <p>
+                将“提取已有设计资产”和“生成新页面”拆成两个
+                Agent。提取需要忠实保留和结构化，生成需要组合和扩展。拆开之后，质量问题可以被定位到提取、知识结构或生成消费环节，而不是全部混在一次生成结果里。
+              </p>
+            </div>
+          </article>
+
+          <article class="decision-row">
+            <p class="decision-index">02</p>
+            <header class="decision-title">
+              <p>沉淀知识库</p>
+              <h3>KB 作为可治理的中间层</h3>
+            </header>
+            <div class="decision-copy">
+              <p>
+                KB 不是临时缓存，而是系统的设计知识中间层。它保存 tokens、components、guidelines、page
+                patterns、source references ，并评估置信度confidence，让设计知识可以被追溯、检查、修正和复用
+              </p>
+            </div>
+          </article>
+
+          <article class="decision-row">
+            <p class="decision-index">03</p>
+            <header class="decision-title">
+              <p>降低模型静默</p>
+              <h3>让不确定性可检查</h3>
+            </header>
+            <div class="decision-copy">
+              <p>
+                AI 在提取和归纳设计范式时不可避免会遇到不确定判断。系统通过 confidence 和 review queue
+                显化这些不确定性，让需要人工判断的内容进入审查队列，而不是由模型静默决定。
+              </p>
+            </div>
+          </article>
+
+          <article class="decision-row decision-row-with-continuum">
+            <p class="decision-index">04</p>
+            <header class="decision-title">
+              <p>映射组件并自检</p>
+              <h3>用 workflow 约束生成</h3>
+            </header>
+            <div class="decision-copy">
+              <p>
+                Creator 是这套系统的下游执行层。通过阶段化 workflow、组件来源映射、token 约束和自检机制消费
+                KB，让生成结果依赖明确的设计知识和决策边界。
+              </p>
+
+              <div class="constraint-continuum" aria-label="生成约束连续谱">
+                <div class="constraint-axis">
+                  <span>← 高约束 / High constraint</span>
+                  <span>低约束 / Low constraint →</span>
+                </div>
+                <ol class="constraint-levels">
+                  <li>
+                    <span class="constraint-dot constraint-dot-100" aria-hidden="true"></span>
+                    <span>原样使用</span>
+                  </li>
+                  <li>
+                    <span class="constraint-dot constraint-dot-80" aria-hidden="true"></span>
+                    <span>轻微调整</span>
+                  </li>
+                  <li>
+                    <span class="constraint-dot constraint-dot-60" aria-hidden="true"></span>
+                    <span>组件组合</span>
+                  </li>
+                  <li>
+                    <span class="constraint-dot constraint-dot-40" aria-hidden="true"></span>
+                    <span>Token 扩展</span>
+                  </li>
+                  <li>
+                    <span class="constraint-dot constraint-dot-20" aria-hidden="true"></span>
+                    <span>风格锚点</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section result-section" aria-labelledby="result-label">
+      <div class="section-inner split-row">
+        <h2 class="section-label" id="result-label">Result</h2>
+        <div class="reading prose">
+          <p>
+            我完成了 Extractor Agent → Governed KB → Creator Agent 的 0–1 工作流搭建。Extractor 能力与
+            KB schema 被事业群 AI 设计提效平台完整采纳，用于提升 AI
+            设计生成的稳定性、复用性和质量可控性。Creator
+            作为生成约束层，验证了设计知识如何被下游消费，以及如何通过阶段化决策和质量检查减少输出漂移。
+          </p>
+          <figure class="result-visual">
+            <picture>
+              <source
+                media="(min-width: 1025px)"
+                srcset="/assets/ai-design-agent/result-desktop.png"
+                width="625"
+                height="245"
+              >
+              <source
+                media="(min-width: 768px)"
+                srcset="/assets/ai-design-agent/result-tablet.png"
+                width="512"
+                height="245"
+              >
+              <img
+                src="/assets/ai-design-agent/result-mobile.png"
+                alt="AI 生成效果采纳前后对比：采纳前为基础黄金开户卡片，采纳后升级为支付宝与银行联合风格，并补充投资门槛、银行保障和账户管理信息。"
+                width="342"
+                height="203"
+                loading="lazy"
+                decoding="async"
+              >
+            </picture>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <section class="case-section impact-section" aria-labelledby="impact-label">
+      <div class="section-inner split-row">
+        <h2 class="section-label" id="impact-label">Impact</h2>
+        <div class="impact-stats">
+          <article class="stat-card">
+            <p class="stat-value">2 <span>条</span></p>
+            <h3>完成业务线知识库提取</h3>
+          </article>
+          <article class="stat-card">
+            <p class="stat-value">7 <span>个</span></p>
+            <h3>辅助端到端需求落地</h3>
+          </article>
+          <article class="stat-card">
+            <p class="stat-value">80% <span>以上</span></p>
+            <h3>编码采纳率</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section reflection-section" aria-labelledby="reflection-label">
+      <div class="section-inner split-row">
+        <h2 class="section-label" id="reflection-label">Reflection</h2>
+        <div class="reading prose">
+          <p>
+            在 AI
+            参与设计生产后，信息损失是设计师的责任，不是算法的副产品。设计师需要定义哪些信息必须被保留、哪些规则应该进入知识层、哪些判断必须被人审查。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

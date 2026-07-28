@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="About Lynn, a product and UX designer working across interaction, systems, and craft.">
+  <title>About — Lynn</title>
+  <link rel="stylesheet" href="../styles.css?v=20260728-home-alignment-1">
+  <link rel="stylesheet" href="about.css?v=20260728-scroll-fix-1">
+</head>
+<body class="about-body">
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash__inner">
+      <div class="splash__mark">L</div>
+      <div class="splash__text">Loading artifact</div>
+    </div>
+  </div>
+
+  <div class="ui" aria-hidden="false">
+    <nav class="site-nav" aria-label="Primary">
+      <a class="logo" href="#top">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>Lynn</span>
+      </a>
+      <div class="tools">
+        <span class="tool lang-tool" aria-label="Language">
+          <button class="lang-toggle" type="button" data-lang-toggle aria-label="Switch language">
+            <span data-lang-label>EN</span>
+          </button>
+        </span>
+        <span class="tool theme-tool" aria-label="Theme">
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
+            <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"></path>
+            </svg>
+            <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20 14.4A7.6 7.6 0 0 1 9.6 4 8 8 0 1 0 20 14.4Z"></path>
+            </svg>
+          </button>
+        </span>
+      </div>
+      <div class="nav-links">
+        <a href="/#work" data-about-i18n="nav.work"></a>
+        <a href="/about/" aria-current="page" data-about-i18n="nav.about"></a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="about-page" id="top">
+    <section class="about-hero" aria-labelledby="about-title">
+      <div class="about-layout">
+        <figure class="about-portrait" data-about-slideshow data-initial-slide="1">
+          <div class="about-pixel-stage" aria-live="polite" aria-atomic="true">
+            <canvas
+              class="about-pixel-device"
+              width="400"
+              height="399"
+              role="img"
+              aria-label="A side-profile portrait of Lynn by the water in a pixel-art projector"
+              data-pixel-device
+            >
+              A four-frame pixel-art portrait slideshow of Lynn.
+            </canvas>
+          </div>
+          <div class="about-slideshow-controls" aria-label="Portrait slideshow controls">
+            <button
+              class="about-device-control about-device-control--previous"
+              type="button"
+              aria-label="Previous portrait"
+              data-slide-previous
+            ></button>
+            <button
+              class="about-device-control about-device-control--toggle"
+              type="button"
+              aria-label="Pause portrait slideshow"
+              aria-pressed="false"
+              data-slide-toggle
+            ></button>
+            <button
+              class="about-device-control about-device-control--next"
+              type="button"
+              aria-label="Next portrait"
+              data-slide-next
+            ></button>
+          </div>
+          <figcaption class="visually-hidden" data-slide-status>Portrait 2 of 4</figcaption>
+        </figure>
+
+        <div class="about-content">
+          <h1 id="about-title" data-about-i18n="about.title"></h1>
+          <div class="about-prose">
+            <p data-about-i18n="about.intro"></p>
+            <p data-about-i18n="about.curiosity"></p>
+            <p data-about-i18n="about.education"></p>
+            <p data-about-i18n="about.story"></p>
+          </div>
+
+          <nav class="about-actions" aria-label="About links">
+            <a class="about-action" href="/resume/">
+              <img src="../assets/about/resume-icon.png" alt="" width="100" height="100">
+              <span data-about-i18n="about.resume"></span>
+            </a>
+            <a class="about-action" href="mailto:">
+              <img src="../assets/about/email-icon.png" alt="" width="100" height="100">
+              <span data-about-i18n="about.email"></span>
+            </a>
+            <a class="about-action" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
+              <img src="../assets/about/linkedin-icon.png" alt="" width="100" height="100">
+              <span data-about-i18n="about.linkedin"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="pixel-footer-scene" aria-label="Monochrome pixel-art panorama">
+        <canvas
+          id="scene"
+          width="2048"
+          height="447"
+          role="img"
+          aria-label="Start Game, 1999, Shanghai, SJTU, the Statue of Liberty, Pratt and Level Up in monochrome pixel art"
+        ></canvas>
+        <div class="footer-meta">
+          <span class="footer-year">© 2026</span>
+          <p class="footer-copy" data-about-i18n-html="footer.copy"></p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script type="module" src="about.js?v=20260728-responsive-reveal-1"></script>
+  <script type="module" src="../footer-canvas.js?v=20260728-responsive-reveal-1"></script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="从 0 到 1 搭建境外券商 App 核心体验的产品设计案例。">
+  <title>Building a 0–1 Brokerage Experience — Lynn</title>
+  <link rel="stylesheet" href="/case-nav.css?v=20260728-2">
+  <link rel="stylesheet" href="./case-study.css?v=20260728-5">
+  <script src="/case-nav.js?v=20260728-2" defer></script>
+</head>
+<body>
+  <div class="ui case-nav-ui">
+    <nav class="site-nav" aria-label="Primary">
+      <a class="logo" href="#top">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>Lynn</span>
+      </a>
+      <div class="nav-links">
+        <a href="/#work">Work</a>
+        <a href="/about/">About</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="case-study" id="top">
+    <section class="case-section case-hero" aria-labelledby="case-title">
+      <div class="section-inner">
+        <header class="hero-copy">
+          <p class="eyebrow">Case Study</p>
+          <h1 id="case-title">Building a 0–1<br class="desktop-title-break"> Brokerage Experience</h1>
+          <p class="hero-intro">在 6 个月借调中，我作为项目前期唯一的交互设计师，从 0 到 1 独立搭建境外券商 App 的核心体验，覆盖开户、入金、港美股交易、基金申赎、IPO、自选和账户等关键链路。</p>
+        </header>
+
+        <div class="hero-evidence">
+          <dl class="metadata-grid">
+            <div class="metadata-item">
+              <dt>Role</dt>
+              <dd>交互设计师<br>项目前期唯一交互设计师</dd>
+            </div>
+            <div class="metadata-item">
+              <dt>Stage</dt>
+              <dd>0–1 重建 · 立项加入</dd>
+            </div>
+            <div class="metadata-item">
+              <dt>Scope</dt>
+              <dd>开户入金，证券行情与交易，基金申赎，IPO，账户与自选</dd>
+            </div>
+            <div class="metadata-item">
+              <dt>Status</dt>
+              <dd>均已完成开发，待产品上线</dd>
+            </div>
+          </dl>
+
+          <picture class="system-overview">
+            <source media="(min-width: 1025px)" srcset="/assets/overseas-brokerage/system-overview-desktop.png">
+            <source media="(min-width: 768px)" srcset="/assets/overseas-brokerage/system-overview-tablet.png">
+            <img
+              src="/assets/overseas-brokerage/system-overview-mobile.png"
+              alt="经过保密模糊处理的券商系统总览"
+              width="342"
+              height="240"
+              fetchpriority="high"
+            >
+          </picture>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <section class="case-section" aria-labelledby="context-label">
+      <div class="section-inner split-row">
+        <h2 class="section-label" id="context-label">Context</h2>
+        <div class="reading prose">
+          <p>YORK（项目化名）是蚂蚁收购耀才证券后启动的境外券商 App 0–1 重建项目。我在项目立项阶段加入，是项目前期唯一的交互设计师。</p>
+          <p>六个月内，我独立负责开户、入金、港美股交易、基金申赎、IPO、自选与账户等核心链路，覆盖用户从进入 App 到持续管理资产的主要路径。</p>
+          <p>除了完成交互方案，我也参与了部分关键功能服务的产品定义，推动高风险金融场景从模糊需求进入可开发、可推进的状态。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
+    <section class="case-section research-section" aria-labelledby="research-label">
+      <div class="section-inner research-stack">
+        <div class="split-row research-inputs">
+          <h2 class="section-label" id="research-label">Research Inputs</h2>
+          <div class="reading prose">
+            <p>项目前期，针对香港用户与内地潜在客户，我主导了一轮品牌和产品战略层的用户研究，重点摸排用户对境外投资、券商品牌、产品能力与体验的认知与期待。</p>
+            <aside class="callout" aria-label="Research insight">
+              <h3>用户为什么会在跨境投资中犹豫，以及一个境外券商产品需要建立怎样的理解和信任。</h3>
+              <p>用户一方面期待专业、高效的投资工具，另一方面也会因为陌生的市场规则、资金影响、交易费用和订单状态而产生不确定性。</p>
+            </aside>
+          </div>
+        </div>
+
+        <div class="needs-block">
+          <h2 class="section-label needs-label">User Needs</h2>
+          <div class="needs-content">
+            <p class="reading needs-synthesis">综合研究洞察、产品定义和战略定位，我将产品级用户需求归纳为——这个产品真正需要解决的，不只是操作效率，而是复杂交易中的理解、确认与掌控。</p>
+            <div class="needs-diagrams" role="group" aria-label="Three core user needs">
+              <figure class="need-item need-item--understand">
+                <div class="need-visual">
+                  <img src="/assets/overseas-brokerage/need-understand.png" alt="" width="160" height="134" loading="lazy">
+                  <span class="need-signal need-signal--left" aria-hidden="true"></span>
+                  <span class="need-signal need-signal--upper" aria-hidden="true"></span>
+                  <span class="need-signal need-signal--right" aria-hidden="true"></span>
+                </div>
+                <figcaption>在决策前理解</figcaption>
+              </figure>
+              <figure class="need-item need-item--execute">
+                <div class="need-visual need-visual--execute">
+                  <img src="/assets/overseas-brokerage/need-execute.png" alt="" width="160" height="134" loading="lazy">
+                  <span class="need-dial-overlay" aria-hidden="true"></span>
+                </div>
+                <figcaption>在执行时高效</figcaption>
+              </figure>
+              <figure class="need-item need-item--control">
+                <div class="need-visual need-visual--control">
+                  <img src="/assets/overseas-brokerage/need-control.png" alt="" width="160" height="134" loading="lazy">
+                  <span class="need-control-fill" aria-hidden="true"></span>
+                  <span class="need-control-ticks-active" aria-hidden="true"></span>
+                  <span class="need-control-cursor" aria-hidden="true"></span>
+                </div>
+                <figcaption>在操作后可控</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section inverse-section concept-section" aria-labelledby="concept-label">
+      <div class="section-inner split-row concept-layout">
+        <h2 class="section-label" id="concept-label">Design Concept</h2>
+        <div class="reading concept-copy">
+          <h3>Trade with clarity. Act with confidence.</h3>
+          <p>跨境投资的复杂性无法被真正消除。</p>
+          <p>设计目标不是隐藏复杂性，而是在复杂性会影响用户决策时，呈现合适的、精准的信息，让用户能够理解自己正在做什么、预判可能发生什么，并在操作后保持掌控。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section scope-section" aria-labelledby="deep-dive-label">
+      <div class="section-inner scope-stack">
+        <div class="split-row scope-intro">
+          <h2 class="section-label" id="deep-dive-label">Deep Dive</h2>
+          <div class="reading narrative">
+            <h3>以“闪电下单”作为代表性切片深入</h3>
+            <p>在YORK的交易与资产体系中，港美股交易的“闪电下单”最集中暴露了券商App最核心的三个矛盾：速度、信息完整度、风险控制。</p>
+          </div>
+        </div>
+
+        <div class="system-map" role="group" aria-label="Integrated brokerage system map">
+          <div class="domain-column">
+            <article class="domain-card">
+              <p class="card-index">01</p>
+              <h3>进入与开户</h3>
+              <p>注册 / 登录<br>身份与适当性校验<br>账户开立</p>
+            </article>
+          </div>
+          <div class="domain-column">
+            <article class="domain-card">
+              <p class="card-index">02</p>
+              <h3>资金与资产</h3>
+              <p>入金 / 转账<br>账户状态<br>资产准备</p>
+            </article>
+          </div>
+          <div class="domain-column domain-column--active">
+            <article class="domain-card">
+              <p class="card-index">03</p>
+              <h3>决策与交易</h3>
+              <p>搜索<br>港美股详情 &amp; 交易<br>基金申赎 / IPO</p>
+            </article>
+            <div class="deep-callout">
+              <span>Deep Dive</span>
+              <strong>闪电下单</strong>
+            </div>
+          </div>
+          <div class="domain-column">
+            <article class="domain-card">
+              <p class="card-index">04</p>
+              <h3>持续管理</h3>
+              <p>自选<br>订单与持仓<br>账户管理</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="split-row competitor-row">
+          <h2 class="section-label">Competitor Analysis</h2>
+          <div class="reading competitor-content">
+            <p>用户在个股详情页里正在看价格走势、盘口和相关信息。点击买入或卖出后，市场上常见的两类交易下单模式是：一类直接跳转导向完整下单页，承载更充分的信息和控制，但会让用户离开当前行情环境；另一类是提供极简下单浮层，减少页面跳转，但又过多依赖默认值，弱化订单信息、风险说明和后续状态反馈。</p>
+            <img
+              class="competitor-logos"
+              src="/assets/overseas-brokerage/competitor-logos.png"
+              alt="五个竞品应用标识"
+              width="228"
+              height="40"
+              loading="lazy"
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section decisions-section" aria-labelledby="problem-label">
+      <div class="section-inner decisions-stack">
+        <div class="split-row problem-row">
+          <h2 class="section-label" id="problem-label">Problem Statement</h2>
+          <div class="reading problem-callout">
+            <p>我们如何能够</p>
+            <h3>让用户在盯盘时更快完成从行情判断到下单执行，同时保证信息完整、状态反馈清楚、后续操作可控？</h3>
+          </div>
+        </div>
+
+        <div class="decision-overview">
+          <h2 class="section-label">3 Design Decisions</h2>
+          <div class="overview-content">
+            <p class="reading">围绕闪电下单的入口意图 - 界面承载 - 状态反馈，我共有三个核心的设计决策。</p>
+            <div class="decision-diagrams" role="group" aria-label="Three design decisions">
+              <figure class="decision-diagram">
+                <img src="/assets/overseas-brokerage/decision-entry.png" alt="" width="213" height="134" loading="lazy">
+                <figcaption>入口意图决定界面承载</figcaption>
+              </figure>
+              <figure class="decision-diagram">
+                <img src="/assets/overseas-brokerage/decision-handoff.png" alt="" width="200" height="134" loading="lazy">
+                <figcaption>把行情判断转为订单输入</figcaption>
+              </figure>
+              <figure class="decision-diagram">
+                <img src="/assets/overseas-brokerage/decision-feedback.png" alt="" width="200" height="134" loading="lazy">
+                <figcaption>确认结果，并保留撤改控制</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="decision-divider" aria-hidden="true"></div>
+
+        <article class="decision-row split-row">
+          <header class="decision-label">
+            <span>Decision 01</span>
+            <span>Scenario Entry</span>
+          </header>
+          <div class="reading decision-content">
+            <div class="narrative">
+              <h3>按交易意图分配不同的信息承载方式</h3>
+              <p>不同入口代表不同的交易意图，不同交易意图需要进入不同的信息层级。</p>
+              <p>从个股详情进入时，用户处在盯盘情境，优先保留速度和行情上下文；从持仓进入时，用户则需要更完整的信息和交易控制。</p>
+            </div>
+            <img
+              class="decision-preview decision-preview--one"
+              src="/assets/overseas-brokerage/decision-preview-01.png"
+              alt="经过保密模糊处理的场景入口方案预览"
+              width="625"
+              height="336"
+              loading="lazy"
+            >
+          </div>
+        </article>
+
+        <div class="decision-divider" aria-hidden="true"></div>
+
+        <article class="decision-row split-row">
+          <header class="decision-label">
+            <span>Decision 02</span>
+            <span>Surface Scope &amp; Price Handoff</span>
+          </header>
+          <div class="reading decision-content">
+            <div class="narrative">
+              <h3>在有限空间里保留即时交易所需的最小完整信息</h3>
+              <p>半屏不是完整全屏下单页的缩小版。它只保留能支撑“看着行情立即交易”的必要变量，把订单管理与更完整控制留给全屏链路，明确半浮层和全屏下单页的职责边界。</p>
+              <p>半浮层不覆盖图表，让用户留在行情判断的上下文中，点击图表价格后，可直接将其带入面板并转化为限价单，减少操作和短时记忆负担。</p>
+            </div>
+            <img
+              class="decision-preview decision-preview--two"
+              src="/assets/overseas-brokerage/decision-preview-02.png"
+              alt="经过保密模糊处理的半屏交易方案预览"
+              width="625"
+              height="256"
+              loading="lazy"
+            >
+          </div>
+        </article>
+
+        <div class="decision-divider" aria-hidden="true"></div>
+
+        <article class="decision-row split-row">
+          <header class="decision-label">
+            <span>Decision 03</span>
+            <span>State + Recovery</span>
+          </header>
+          <div class="reading decision-content">
+            <div class="narrative">
+              <h3>用更可见的状态反馈和操作闭环建立确定性</h3>
+              <p>速度不能以状态模糊为代价：用户需要确认结果，也需要继续控制订单。</p>
+              <p>提交后半浮层立即切换为订单状态，并提供快速撤单。确认使用 filled 按钮，撤单使用 outline 按钮，帮助用户明确感知当前状态和下一步操作。</p>
+            </div>
+            <img
+              class="decision-preview decision-preview--three"
+              src="/assets/overseas-brokerage/decision-preview-03.png"
+              alt="经过保密模糊处理的订单状态方案预览"
+              width="625"
+              height="285"
+              loading="lazy"
+            >
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="case-section inverse-section tradeoffs-section" aria-labelledby="tradeoffs-label">
+      <div class="section-inner tradeoffs-stack">
+        <div class="split-row">
+          <h2 class="section-label" id="tradeoffs-label">Key Trade-offs</h2>
+          <div class="reading tradeoffs-copy">
+            <h3>交易体验的核心不是更快，而是更确定——用更多系统复杂度，换取用户更多的确定性</h3>
+            <p>最终方案增加了入口路由、状态同步和一致性规则。虽然提高了产品与研发的实现复杂度，但让不同交易场景能够使用不同的信息深度，并减少用户在真实资金操作中的上下文切换和不确定性。</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="tradeoffs-table">
+            <thead>
+              <tr>
+                <th scope="col">方向</th>
+                <th scope="col">优势</th>
+                <th scope="col">代价</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">仅完整下单页</th>
+                <td>信息完整、实现集中</td>
+                <td>打断行情上下文</td>
+              </tr>
+              <tr>
+                <th scope="row">极简快速交易面板</th>
+                <td>路径最短</td>
+                <td>订单信息与状态不足</td>
+              </tr>
+              <tr>
+                <th scope="row">双模式交易并存</th>
+                <td>情境化且信息完整</td>
+                <td>增加路由与状态复杂度</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section success-section" aria-labelledby="success-label">
+      <div class="section-inner split-row success-layout">
+        <h2 class="section-label" id="success-label">Post-launch Success Metrics</h2>
+        <div class="reading success-content">
+          <p>后续方案上线后可以通过以下三类指标判断方案是否有效</p>
+          <div class="success-cards">
+            <article class="success-card">
+              <h3>从判断到执行的效率</h3>
+              <ul>
+                <li>用户从行情页进入有效订单提交所需的时间</li>
+                <li>行情页与下单页之间的往返次数</li>
+                <li>闪电下单与完整下单页的使用比例</li>
+              </ul>
+            </article>
+            <article class="success-card">
+              <h3>订单完成质量</h3>
+              <ul>
+                <li>闪电下单的完成率与中途退出率</li>
+                <li>重复提交率</li>
+                <li>提交前修改订单次级信息的比例</li>
+              </ul>
+            </article>
+            <article class="success-card">
+              <h3>状态理解与后续控制</h3>
+              <ul>
+                <li>用户对各类状态的理解程度</li>
+                <li>提交后查看/撤销订单的成功率</li>
+                <li>与订单状态相关的客服咨询和问题反馈</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section delivery-section" aria-labelledby="delivery-label">
+      <div class="section-inner delivery-stack">
+        <div class="split-row delivery-metrics">
+          <h2 class="section-label" id="delivery-label">Delivery Impact</h2>
+          <div class="reading impact-stats">
+            <article class="impact-stat">
+              <div><strong>14</strong><span>个</span></div>
+              <p>推动模块进入开发</p>
+            </article>
+            <article class="impact-stat">
+              <div><strong>43</strong><span>条</span></div>
+              <p>完成核心链路</p>
+            </article>
+            <article class="impact-stat">
+              <div><strong>9</strong><span>组</span></div>
+              <p>输出可复用设计资产</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="process-scroll" role="region" aria-label="Delivered product domains" tabindex="0">
+          <div class="process-strip">
+            <article class="process-card">
+              <h3>账户</h3>
+              <ul><li>注册与登录</li><li class="key">KYC</li><li>风险测试</li><li>账户权限</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>资金</h3>
+              <ul><li class="key">出入金</li><li class="key">换汇</li><li class="key">转仓</li><li>资金记录</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>市场发现</h3>
+              <ul><li>市场总览</li><li>榜单</li><li>筛选器</li><li class="key">IPO</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>行情研究</h3>
+              <ul><li>个股详情</li><li>图表与盘口</li><li>基本面</li><li class="key">资讯</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>自选提醒</h3>
+              <ul><li class="key">自选股</li><li>行情预警</li><li>消息通知</li><li aria-hidden="true">&nbsp;</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>证券交易</h3>
+              <ul><li class="key">股票</li><li>ETF</li><li>期权</li><li>牛熊证与涡轮</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>资产</h3>
+              <ul><li class="key">持仓</li><li>购买力</li><li>收益分析</li><li>资产分析</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>财富管理</h3>
+              <ul><li class="key">现金管理</li><li class="key">基金</li><li>债券</li><li aria-hidden="true">&nbsp;</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>内容&amp;投教</h3>
+              <ul><li>社区</li><li>直播</li><li>课程</li><li>模拟交易</li></ul>
+            </article>
+            <article class="process-card">
+              <h3>服务&amp;安全</h3>
+              <ul><li>客服</li><li>账户设置</li><li>报表</li><li aria-hidden="true">&nbsp;</li></ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
