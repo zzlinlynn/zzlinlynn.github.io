@@ -168,9 +168,9 @@ p {
 }
 
 .splash__mark {
-  font-family: var(--serif);
-  font-size: 5rem;
-  line-height: .9;
+  width: 5rem;
+  aspect-ratio: 1;
+  background: url("/assets/brand/loading-logo.png?v=20260729-splash-logo-1") center / contain no-repeat;
 }
 
 .splash__text {
@@ -242,7 +242,7 @@ body:not(.is-scrolled) .site-nav {
   flex: 0 0 auto;
   width: 1.15rem;
   height: 1.15rem;
-  background: url("/assets/brand/union-mark.png?v=20260729-brand-mark-1") center / contain no-repeat;
+  background: url("/assets/brand/logo-mark.png?v=20260729-logo-mark-1") center / contain no-repeat;
 }
 
 .logo__mark::after {

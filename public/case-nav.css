@@ -131,7 +131,7 @@ body:not(.is-scrolled) .case-nav-ui .site-nav {
   flex: 0 0 auto;
   width: 1.15rem;
   height: 1.15rem;
-  background: url("/assets/brand/union-mark.png?v=20260729-brand-mark-1") center / contain no-repeat;
+  background: url("/assets/brand/logo-mark.png?v=20260729-logo-mark-1") center / contain no-repeat;
 }
 
 .case-nav-ui .logo__mark::after {
