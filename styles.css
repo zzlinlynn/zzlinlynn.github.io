@@ -39,7 +39,7 @@
   --ambient-grid-faint: rgb(var(--ink-rgb) / .01);
   --ambient-grid-strong: rgb(var(--ink-rgb) / .045);
   letter-spacing: 0;
-}
+} 
 
 .geist-pixel {
   --serif: "Geist Pixel", sans-serif;
