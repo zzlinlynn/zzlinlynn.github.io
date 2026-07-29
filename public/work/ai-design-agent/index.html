@@ -7,13 +7,13 @@
     name="description"
     content="一套将 Figma 设计资产转化为可治理知识，并约束 AI 生成 UI 与前端代码的 Design Agent 工作流案例。"
   >
-  <title>Designing a Governed AI Design Workflow — Lynn</title>
+  <title>AI Design Agent</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/fonts.css?v=20260729-1">
   <link rel="stylesheet" href="/case-nav.css?v=20260728-3">
-  <link rel="stylesheet" href="./case-study.css">
+  <link rel="stylesheet" href="./case-study.css?v=20260729-constraint-axis-1">
   <link rel="stylesheet" href="./creator-trace.css">
   <link rel="stylesheet" href="/footer-strip.css?v=20260729-shared-footer-3">
   <script src="/case-nav.js?v=20260728-3" defer></script>
@@ -38,9 +38,9 @@
       <div class="section-inner">
         <header class="hero-copy">
           <p class="eyebrow">Case Study</p>
-          <h1 id="case-title">当AI开始设计<br>判断必须可以追溯</h1>
+          <h1 id="case-title">当<span class="tablet-title-space" aria-hidden="true">&nbsp;</span>AI<span class="tablet-title-space" aria-hidden="true">&nbsp;</span>开始设计<br>判断必须可以追溯</h1>
           <p class="hero-intro">
-            我 0–1 搭建了一套可治理的 Design Agent 工作流：将散落在 Figma 中的设计经验提取成可追溯、可复用、可校验的设计知识，再通过阶段化决策、组件合同、token
+            我 0–1 搭建了一套可治理的 Design Agent 工作流：将 Figma 设计资产抽取成可追溯、可复用、可校验的设计知识，再通过阶段化决策、组件合同、token
             约束和质量检查，约束 Creator 生成符合金融业务、品牌和设计系统规范的 UI 与前端代码。
           </p>
         </header>
@@ -346,7 +346,7 @@
             <p class="section-label">Key Design Decisions</p>
             <h2 id="decisions-label">系统层关键设计决策</h2>
           </div>
-          <p class="decision-count">4 Decisions</p>
+          <!-- <p class="decision-count">4 Decisions</p> -->
         </header>
 
         <div class="decision-list">
@@ -406,8 +406,14 @@
 
               <div class="constraint-continuum" aria-label="生成约束连续谱">
                 <div class="constraint-axis">
-                  <span>← 高约束 / High constraint</span>
-                  <span>低约束 / Low constraint →</span>
+                  <span class="constraint-axis-label">
+                    <span class="constraint-axis-arrow" aria-hidden="true">←</span>
+                    <span>高约束 / High constraint</span>
+                  </span>
+                  <span class="constraint-axis-label">
+                    <span>低约束 / Low constraint</span>
+                    <span class="constraint-axis-arrow" aria-hidden="true">→</span>
+                  </span>
                 </div>
                 <ol class="constraint-levels">
                   <li>

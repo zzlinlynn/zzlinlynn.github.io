@@ -163,21 +163,23 @@ img {
 .hero-copy h1 {
   margin-top: 20px;
   color: var(--ink);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 36px;
-  font-weight: 600;
-  line-height: 40px;
-  letter-spacing: -.72px;
+  font-weight: 700;
+  line-height: 46px;
+  letter-spacing: .072px;
+}
+
+.tablet-title-space {
+  display: none;
 }
 
 .hero-intro {
-  width: 104.17%;
+  width: 100%;
   margin-top: 32px;
   color: var(--text-secondary);
   font-size: 18px;
   line-height: 32px;
-  transform: scaleX(.96);
-  transform-origin: left top;
 }
 
 .metadata-grid {
@@ -522,6 +524,19 @@ img {
   white-space: nowrap;
 }
 
+.constraint-axis-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+}
+
+.constraint-axis-arrow {
+  display: inline-block;
+  line-height: 1;
+  letter-spacing: 0;
+  transform: translateY(-.1em);
+}
+
 .constraint-levels {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -654,14 +669,16 @@ img {
   .hero-copy h1 {
     margin-top: 32px;
     font-size: 44px;
-    line-height: 48px;
-    letter-spacing: -1px;
+    line-height: 58px;
+    letter-spacing: .5px;
+  }
+
+  .tablet-title-space {
+    display: inline;
   }
 
   .hero-intro {
-    width: 100%;
     margin-top: 48px;
-    transform: none;
   }
 
   .metadata-grid {
@@ -917,8 +934,12 @@ img {
   .hero-copy h1 {
     margin-top: 40px;
     font-size: 56px;
-    line-height: 60px;
-    letter-spacing: -1.2px;
+    line-height: 72px;
+    letter-spacing: .5px;
+  }
+
+  .tablet-title-space {
+    display: none;
   }
 
   .hero-intro {

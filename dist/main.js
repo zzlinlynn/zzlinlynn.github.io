@@ -134,7 +134,7 @@ const i18n = {
     'alipay.hover': '研究把模糊业务目标转译成用户真正能感知到的决策机制。',
     'brokerage.kicker': '复杂金融系统',
     'brokerage.title': '境外券商交易平台',
-    'brokerage.summary': '一个 0-1 境外券商产品问题域，需要让高风险链路保持高效、可恢复、且规则一致。',
+    'brokerage.summary': '一个 0→1 境外券商产品问题域，需要让高风险链路保持高效、可恢复、且规则一致。',
     'brokerage.tag1': '高风险体验',
     'brokerage.tag2': '可复用规则',
     'brokerage.tag3': 'AI 入口',

@@ -135,15 +135,11 @@ img {
 .hero-copy h1 {
   margin-top: 20px;
   color: var(--ink);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 36px;
-  font-weight: 600;
-  line-height: 40px;
-  letter-spacing: -.72px;
-}
-
-.desktop-title-break {
-  display: none;
+  font-weight: 700;
+  line-height: 46px;
+  letter-spacing: .002em;
 }
 
 .hero-intro {
@@ -944,8 +940,8 @@ img {
   .hero-copy h1 {
     margin-top: 32px;
     font-size: 44px;
-    line-height: 48px;
-    letter-spacing: -1px;
+    line-height: 58px;
+    letter-spacing: .5px;
   }
 
   .hero-intro {
@@ -1111,12 +1107,8 @@ img {
   .hero-copy h1 {
     margin-top: 40px;
     font-size: 56px;
-    line-height: 60px;
-    letter-spacing: -1.2px;
-  }
-
-  .desktop-title-break {
-    display: initial;
+    line-height: 72px;
+    letter-spacing: .5px;
   }
 
   .hero-intro {
