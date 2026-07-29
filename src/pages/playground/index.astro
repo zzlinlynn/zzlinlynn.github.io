@@ -230,6 +230,7 @@ const projects = [
     />
     <link rel="stylesheet" href="/fonts.css?v=20260729-1" />
     <link rel="stylesheet" href="/case-nav.css?v=20260728-3" />
+    <link rel="stylesheet" href="/footer-strip.css?v=20260729-shared-footer-3" />
   </head>
   <body>
     <div class="ui case-nav-ui playground-nav-ui">
@@ -321,8 +322,29 @@ const projects = [
       </section>
     </main>
 
+    <footer class="site-footer site-footer--shared">
+      <div class="pixel-footer-scene">
+        <canvas
+          id="scene"
+          width="2048"
+          height="447"
+          aria-hidden="true"
+        ></canvas>
+        <div class="footer-meta">
+          <span class="footer-year">© 2026</span>
+          <p class="footer-copy">
+            crafted with
+            <span class="footer-love-mark" role="img" aria-label="love"></span>
+            &amp; made with AI by Lynn
+          </p>
+        </div>
+      </div>
+    </footer>
+
     <script>
       import "../../scripts/playground.js";
     </script>
+    <script src="/footer-canvas.js?v=20260729-shared-footer-1" defer></script>
+    <script src="/footer-strip-crop.js?v=20260729-ground-only-1" defer></script>
   </body>
 </html>

@@ -43,5 +43,9 @@ await Promise.all([
   cp(
     new URL("../footer-canvas.js", import.meta.url),
     new URL("footer-canvas.js", distDirectory)
+  ),
+  cp(
+    new URL("../footer-strip-crop.js", import.meta.url),
+    new URL("footer-strip-crop.js", distDirectory)
   )
 ]);

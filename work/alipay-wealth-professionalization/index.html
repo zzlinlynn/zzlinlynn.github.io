@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/fonts.css?v=20260729-1">
   <link rel="stylesheet" href="/case-nav.css?v=20260728-3">
-  <link rel="stylesheet" href="./case-study.css?v=20260728-arrows-1">
+  <link rel="stylesheet" href="./case-study.css?v=20260729-impact-1">
+  <link rel="stylesheet" href="/footer-strip.css?v=20260729-shared-footer-3">
   <script src="/case-nav.js?v=20260728-3" defer></script>
 </head>
 <body>
@@ -63,7 +64,7 @@
         <h2 class="section-label" id="context-label">Context</h2>
         <div class="reading reading-stack">
           <h3>交易发生在支付宝理财，决策却在端外</h3>
-          <p>在支付宝理财高频4.10亿用户中，仅9.39%的用户在支付宝理财上有过选品行为，更多用户把支付宝理财视为交易平台，交易前的研究、比较和决策发生在端外。财富业务希望能够迁移用户做投资决策的习惯。</p>
+          <p>在支付宝理财4.10亿高频用户中，仅9.39%的用户在支付宝理财上有过选品行为，更多用户把支付宝理财视为交易平台，交易前的研究、比较和决策发生在端外。财富业务希望能够迁移用户做投资决策的习惯。</p>
           <div class="metric-block">
             <div class="metric-copy">
               <strong>3849 万</strong>
@@ -197,7 +198,7 @@
 
     <section class="case-section product-section insight-section" aria-labelledby="insight-label">
       <div class="section-layout">
-        <h2 class="section-label" id="insight-label">Product Translation 01</h2>
+        <h2 class="section-label" id="insight-label">Product Translation 02</h2>
         <div class="reading product-stack">
           <header class="product-header">
             <h3>基金 AI 透视</h3>
@@ -228,7 +229,7 @@
         <h2 class="section-label" id="content-label">AI Content Experience</h2>
         <div class="reading reading-stack">
           <h3>和产品经理共建语言风格的体验约束</h3>
-          <p>定义语气风格、数据缺失兜底与表达规则，并与pd共建正反例语料库和人工校准流畅，提升文案内容在专业性、品牌一致性和用户信任上的输出稳定性。</p>
+          <p>定义语气风格、数据缺失兜底与表达规则，并与pd共建正反例语料库和人工校准流程，提升文案内容在专业性、品牌一致性和用户信任上的输出稳定性。</p>
           <picture class="responsive-visual guidelines-media">
             <source media="(min-width: 1025px)" srcset="/assets/alipay-wealth-professionalization/guidelines-desktop.png">
             <source media="(min-width: 768px)" srcset="/assets/alipay-wealth-professionalization/guidelines-tablet.png">
@@ -240,9 +241,18 @@
 
     <section class="case-section impact-section" aria-labelledby="impact-label">
       <div class="section-layout">
-        <h2 class="section-label" id="impact-label">Current Impact &amp;<br>Project Progress</h2>
+        <h2 class="section-label" id="impact-label">Delivery Outcome &amp;<br>Project Status</h2>
         <div class="reading">
-          <p>用户研究得到的策略持续影响后续的决策；2个需求都已经进入开发，其中ai透视将于8月中旬上线</p>
+          <div class="evidence-flow impact-flow">
+            <article class="evidence-card">
+              <h3>策略层面</h3>
+              <p>用户研究得到财富事业群高层认可，策略持续影响后续的决策</p>
+            </article>
+            <article class="evidence-card">
+              <h3>需求层面</h3>
+              <p>2个需求都已经进入开发，其中AI透视将于8月中旬上线</p>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -251,10 +261,32 @@
       <div class="section-layout">
         <h2 class="section-label" id="next-label">What's Next</h2>
         <div class="reading">
-          <p>后续会进行进一步的提示词工程优化，并且会和产品进一步优化场景harness，进行产出的偏离校验</p>
+          <p>后续会进一步提示词工程优化，并会和pd共同优化场景化评测集Evaluation Harness，进行产出的偏差校验</p>
         </div>
       </div>
     </section>
   </main>
+
+  <footer class="site-footer site-footer--shared">
+    <div class="pixel-footer-scene">
+      <canvas
+        id="scene"
+        width="2048"
+        height="447"
+        aria-hidden="true"
+      ></canvas>
+      <div class="footer-meta">
+        <span class="footer-year">© 2026</span>
+        <p class="footer-copy">
+          crafted with
+          <span class="footer-love-mark" role="img" aria-label="love"></span>
+          &amp; made with AI by Lynn
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/footer-canvas.js?v=20260729-shared-footer-1" defer></script>
+  <script src="/footer-strip-crop.js?v=20260729-ground-only-1" defer></script>
 </body>
 </html>

@@ -1,0 +1,118 @@
+.site-footer--shared {
+  --footer-ground: #444442;
+  --footer-ink: #f5f5f4;
+  --footer-info-height: 1.65rem;
+  --shared-footer-frame-x: clamp(3.25rem, 5.8vw, 6.5rem);
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  height: var(--footer-info-height);
+  min-height: var(--footer-info-height);
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: var(--footer-ground);
+  color: var(--footer-ink);
+  filter: blur(0);
+  transform: none;
+  -webkit-font-smoothing: auto;
+}
+
+.site-footer--shared .pixel-footer-scene {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+
+.site-footer--shared .pixel-footer-scene canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent;
+  image-rendering: auto;
+  mix-blend-mode: darken;
+}
+
+.site-footer--shared .footer-meta {
+  position: absolute;
+  inset: var(--footer-ground-top, auto) 0 0;
+  z-index: 2;
+  box-sizing: border-box;
+  min-height: var(--footer-info-height);
+  padding:
+    .25rem
+    var(--hero-frame-x, var(--shared-footer-frame-x))
+    max(.25rem, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: color-mix(in srgb, var(--footer-ink) 84%, var(--footer-ground));
+  font-family: "Geist Pixel", sans-serif;
+  font-size: .75rem;
+  font-style: normal;
+  font-weight: 400;
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  font-variation-settings: "ELSH" 0;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-align: right;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .72);
+  text-transform: none;
+  pointer-events: none;
+}
+
+.site-footer--shared .footer-meta p {
+  max-width: min(48rem, calc(100% - var(--hero-frame-x, var(--shared-footer-frame-x))));
+  margin: 0 0 0 auto;
+  overflow-wrap: anywhere;
+}
+
+.site-footer--shared .footer-year {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.footer-love-mark {
+  display: inline-block;
+  width: 1.18em;
+  aspect-ratio: 20 / 17;
+  margin-inline: .16em;
+  background-color: currentColor;
+  -webkit-mask: none;
+  mask: none;
+  clip-path: polygon(
+    0 24%,
+    15% 24%,
+    15% 8%,
+    38% 8%,
+    50% 22%,
+    62% 8%,
+    85% 8%,
+    85% 24%,
+    100% 24%,
+    100% 56%,
+    50% 100%,
+    0 56%
+  );
+  vertical-align: -.16em;
+}
+
+@media (max-width: 1180px) {
+  .site-footer--shared {
+    --shared-footer-frame-x: clamp(2rem, 4.6vw, 3.8rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .site-footer--shared {
+    --shared-footer-frame-x: 1.35rem;
+  }
+}

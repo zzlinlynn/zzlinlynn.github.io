@@ -1094,6 +1094,11 @@ img {
     max-width: var(--desktop-content-width);
   }
 
+  .scope-intro,
+  .decision-row {
+    gap: 96px;
+  }
+
   /*
    * A few sections use .section-inner and .split-row on the same element.
    * Keep those elements at the 1025px canvas width so their 48px padding
@@ -1152,7 +1157,7 @@ img {
   .decision-overview {
     display: grid;
     grid-template-columns: 240px 625px;
-    gap: 64px;
+    gap: 96px;
   }
 
   .decision-diagrams {

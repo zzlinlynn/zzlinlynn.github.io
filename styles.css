@@ -398,8 +398,7 @@ body:not(.is-scrolled) .site-nav {
 
 .cursor.is-label .cursor__shape {
   width: min(var(--label-width, 250px), calc(100vw - 24px));
-  height: auto;
-  min-height: 32px;
+  height: 32px;
   padding: 7px 13px;
   background: var(--ink);
   color: var(--bg);
@@ -412,8 +411,8 @@ body:not(.is-scrolled) .site-nav {
 
 .cursor__label {
   opacity: 0;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow-wrap: normal;
   font-family: var(--mono);
   font-size: .72rem;
   line-height: 1.35;
@@ -1159,6 +1158,8 @@ body:not(.is-scrolled) .site-nav {
   justify-self: start;
   overflow: clip;
   word-break: break-word;
+  transform: translate3d(0, calc(var(--scene-parallax, 0) * 24px), 0);
+  will-change: transform;
 }
 
 body.motion-ready .work-copy > * {
@@ -1302,10 +1303,11 @@ body.motion-ready .work-panel.is-visible {
   align-items: center;
   opacity: 1;
   filter: blur(0);
+  transform: translate3d(0, calc(var(--scene-parallax, 0) * -42px), 0);
   transition:
     opacity 760ms ease,
     filter 820ms ease;
-  will-change: opacity;
+  will-change: transform, opacity;
 }
 
 .work-composite {
@@ -2231,6 +2233,44 @@ body.motion-ready .site-footer.is-visible {
 
 }
 
+@media (min-width: 1025px) {
+  .work-showcase {
+    max-width: 1025px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 405px 460px;
+    gap: 64px;
+    align-items: stretch;
+  }
+
+  .work-showcase .work-panel {
+    min-height: 652px;
+    width: 405px;
+    max-width: 405px;
+    margin: 0;
+    padding: 96px 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    overflow: visible;
+  }
+
+  .work-showcase .work-panel--alipay {
+    padding-top: 96px;
+  }
+
+  .work-showcase .work-panel > .work-stage {
+    display: none;
+  }
+
+  .work-visual-rail {
+    position: relative;
+    display: block;
+    min-width: 0;
+    padding-top: 96px;
+  }
+}
+
 @media (min-width: 761px) and (max-width: 1024px) {
   .work-panel,
   .work-showcase .work-panel {
@@ -2461,6 +2501,7 @@ body.motion-ready .site-footer.is-visible {
   .work-copy {
     width: 100%;
     max-width: 342px;
+    transform: translate3d(0, calc(var(--scene-parallax, 0) * 18px), 0);
   }
 
   .work-copy h3 {
@@ -2476,6 +2517,7 @@ body.motion-ready .site-footer.is-visible {
     width: 100%;
     max-width: 342px;
     justify-items: end;
+    transform: translate3d(0, calc(var(--scene-parallax, 0) * -24px), 0);
   }
 
   .lab-strip {

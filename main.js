@@ -717,7 +717,7 @@ function setupWorkShowcase() {
   const images = Array.from(stage?.querySelectorAll('[data-work-image]') || []);
   if (!showcase || !stage || !panels.length || images.length !== panels.length) return;
 
-  const desktopLayout = window.matchMedia('(min-width: 761px)');
+  const desktopLayout = window.matchMedia('(min-width: 1025px)');
   let activeIndex = -1;
   let updateFrame = 0;
   let measuredHalf = 0;
@@ -749,8 +749,8 @@ function setupWorkShowcase() {
     ...morphCells('bottomBottom', [0, 1, 4, 5, 7, 8, 9, 12, 13, 14, 17, 18])
   ];
   const morphStates = [
-    alipayCells,
     brokerageCells,
+    alipayCells,
     agentCells
   ];
   const morphStateKeys = morphStates.map((state) => new Set(state.map((cell) => cell.key)));
@@ -831,6 +831,18 @@ function setupWorkShowcase() {
     });
   };
 
+  const transitionLineForIndex = (index) => {
+    const previousCopy = panels[index - 1]?.querySelector('.work-copy');
+    const currentCopy = panels[index]?.querySelector('.work-copy');
+    if (!previousCopy || !currentCopy) return null;
+
+    const previousRect = previousCopy.getBoundingClientRect();
+    const currentRect = currentCopy.getBoundingClientRect();
+    const previousCenter = previousRect.top + previousRect.height / 2;
+    const currentCenter = currentRect.top + currentRect.height / 2;
+    return (previousCenter + currentCenter) / 2;
+  };
+
   const morphPositionAtScroll = (activationLine) => {
     const viewport = window.innerHeight || 1;
     const currentScroll = window.scrollY;
@@ -838,9 +850,9 @@ function setupWorkShowcase() {
     let position = 0;
 
     for (let index = 1; index < panels.length; index += 1) {
-      const copy = panels[index].querySelector('.work-copy');
-      if (!copy) continue;
-      const threshold = currentScroll + copy.getBoundingClientRect().top - activationLine;
+      const transitionLine = transitionLineForIndex(index);
+      if (transitionLine === null) continue;
+      const threshold = currentScroll + transitionLine - activationLine;
       const start = threshold - transitionSpan / 2;
       const end = threshold + transitionSpan / 2;
 
@@ -864,10 +876,10 @@ function setupWorkShowcase() {
 
     const activationLine = (window.innerHeight || 1) / 2;
     let nextIndex = 0;
-    panels.forEach((panel, index) => {
-      const copy = panel.querySelector('.work-copy');
-      if (copy && copy.getBoundingClientRect().top <= activationLine) nextIndex = index;
-    });
+    for (let index = 1; index < panels.length; index += 1) {
+      const transitionLine = transitionLineForIndex(index);
+      if (transitionLine !== null && transitionLine <= activationLine) nextIndex = index;
+    }
     setActiveProject(nextIndex);
     renderMorph(reduceMotion ? nextIndex : morphPositionAtScroll(activationLine));
   };
