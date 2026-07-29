@@ -28,7 +28,6 @@ html {
 body {
   min-width: 320px;
   margin: 0;
-  overflow-x: clip;
   background: #fff;
   color: var(--ink);
   font-family: var(--font-body);
@@ -53,7 +52,6 @@ img {
   width: 100%;
   max-width: 1025px;
   margin-inline: auto;
-  overflow: clip;
   background: #fff;
   color: var(--ink);
   font-size: 16px;
@@ -63,7 +61,7 @@ img {
 
 .case-section {
   width: 100%;
-  height: var(--mobile-height);
+  min-height: var(--mobile-height);
   padding: 48px 24px;
   overflow: visible;
   background: #fff;
@@ -304,7 +302,7 @@ img {
   font-size: 16px;
   font-weight: 400;
   line-height: 32px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .segmented-meter {
@@ -440,7 +438,7 @@ img {
 
 @media (min-width: 768px) {
   .case-section {
-    height: var(--tablet-height);
+    min-height: var(--tablet-height);
     padding: 64px 32px;
   }
 
@@ -618,7 +616,7 @@ img {
 
 @media (min-width: 1025px) {
   .case-section {
-    height: var(--desktop-height);
+    min-height: var(--desktop-height);
     padding: 96px 48px;
   }
 
@@ -717,9 +715,8 @@ img {
 }
 
 @media (max-width: 389px) {
-  .case-section {
-    height: auto;
-    min-height: var(--mobile-height);
+  .hero-copy h1 {
+    font-size: clamp(32px, 10.3vw, 36px);
   }
 }
 

@@ -83,7 +83,6 @@
 
 html {
   min-height: 100%;
-  overflow-x: clip;
   background: var(--bg);
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
@@ -95,7 +94,6 @@ html {
 body {
   margin: 0;
   min-width: 0;
-  overflow-x: clip;
   background-color: var(--bg);
   background-image: none;
   color: var(--ink);

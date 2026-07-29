@@ -211,6 +211,8 @@ html {
 .about-page .site-footer {
   flex: 0 0 auto;
   margin-top: auto;
+  margin-right: calc(0px - var(--hero-frame-x));
+  margin-left: calc(0px - var(--hero-frame-x));
 }
 
 [data-theme="dark"] .about-pixel-device {

@@ -9,7 +9,7 @@ const aboutI18n = {
     'nav.work': 'Work',
     'nav.about': 'About',
     'about.title': 'Hi there, this is Lynn.',
-    'about.intro': 'A designer following her dream of delivering smiles with delightful experiences.',
+    'about.intro': 'A product and UX designer at Ant Group. I turn ambiguous product problems into clear, reliable experiences across financial products, complex systems, and AI-enabled workflows.',
     'about.curiosity': 'I am curious about form and function, interactive software, and prototyping. I value restraint and craft. I don’t just design for how things feel and look, but also how they work.',
     'about.education': 'Before becoming a product designer at Ant Group, I studied Information Experience Design (M.S.) at Pratt Institute.',
     'about.story': 'My adventure in technology and design began all the way back in college—it’s a story I’d love to share with you! Feel free to reach out via the links below.',

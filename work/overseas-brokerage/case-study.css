@@ -30,7 +30,6 @@ html {
 body {
   min-width: 320px;
   margin: 0;
-  overflow-x: clip;
   background: #fff;
   color: var(--ink);
   font-family: var(--font-body);
@@ -62,7 +61,6 @@ img {
   --label-width: 342px;
   --reading-width: 342px;
   width: 100%;
-  overflow: clip;
   background: #fff;
   color: var(--ink);
   font-size: 16px;
