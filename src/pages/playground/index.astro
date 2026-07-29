@@ -1,0 +1,327 @@
+---
+import "../../styles/playground.css";
+
+const projects = [
+  {
+    id: "mobile-app",
+    nodeId: "100:260",
+    title: "Mobile App Design for English Reading & Learning",
+    year: "2021",
+    file: "mobile-app",
+    x: 612,
+    y: 938,
+    width: 311,
+    previewHeight: 247.8,
+    copyWidth: 295,
+    accent: "#c98fff",
+    imageWidth: "100%",
+    imageHeight: "100%",
+    imageLeft: "0%",
+    imageTop: "0%"
+  },
+  {
+    id: "museum-ar",
+    nodeId: "100:265",
+    title: "AR Design for Museum STEAM Education",
+    year: "2021",
+    file: "museum-ar",
+    x: 46,
+    y: 264,
+    width: 364,
+    previewHeight: 455,
+    copyWidth: 232,
+    accent: "#8659ec",
+    imageWidth: "104.3%",
+    imageHeight: "106.46%",
+    imageLeft: "-2.16%",
+    imageTop: "-2.8%"
+  },
+  {
+    id: "service-elderly",
+    nodeId: "100:270",
+    title: "Service Design for Social Interaction Among the Elderly",
+    year: "2021",
+    file: "service-elderly",
+    x: 1122,
+    y: 511,
+    width: 341,
+    previewHeight: 182.8125,
+    copyWidth: 325,
+    accent: "#8e4e2c",
+    imageWidth: "100%",
+    imageHeight: "100%",
+    imageLeft: "0%",
+    imageTop: "0%"
+  },
+  {
+    id: "ticketing-membership",
+    nodeId: "100:275",
+    title: "Responsive Web Design for Ticketing & Membership",
+    year: "2022",
+    file: "ticketing-membership",
+    x: 374,
+    y: 727,
+    width: 314,
+    previewHeight: 269,
+    copyWidth: 298,
+    accent: "#e88d49",
+    imageWidth: "100%",
+    imageHeight: "99.72%",
+    imageLeft: "0%",
+    imageTop: "0.14%"
+  },
+  {
+    id: "game-depressed-female",
+    nodeId: "100:280",
+    title: "Game Design for Depressed Female",
+    year: "2020",
+    file: "game-depressed-female",
+    x: 739,
+    y: 43,
+    width: 252,
+    previewHeight: 248,
+    copyWidth: 203,
+    accent: "#fe9fae",
+    imageWidth: "105.26%",
+    imageHeight: "100.16%",
+    imageLeft: "-2.61%",
+    imageTop: "0.04%"
+  },
+  {
+    id: "immersive-interaction",
+    nodeId: "100:285",
+    title: "Immersive Interaction Design",
+    year: "2021",
+    file: "immersive-interaction",
+    x: 314,
+    y: 32,
+    width: 374,
+    previewHeight: 237,
+    copyWidth: 165,
+    accent: "#cda637",
+    imageWidth: "137.07%",
+    imageHeight: "116.87%",
+    imageLeft: "-36.98%",
+    imageTop: "-5.07%"
+  },
+  {
+    id: "design-critique",
+    nodeId: "100:290",
+    title: "Design Critique",
+    year: "2023",
+    file: "design-critique",
+    x: 1077,
+    y: 223,
+    width: 337,
+    previewHeight: 189,
+    copyWidth: 91,
+    accent: "#89d095",
+    imageWidth: "113.98%",
+    imageHeight: "104.15%",
+    imageLeft: "-0.02%",
+    imageTop: "-4.3%"
+  },
+  {
+    id: "search-system",
+    nodeId: "100:295",
+    title: "Responsive Web Design for Search System",
+    year: "2023",
+    file: "search-system",
+    x: 1000,
+    y: 881,
+    width: 261,
+    previewHeight: 220.5,
+    copyWidth: 245,
+    accent: "#67a8fa",
+    imageWidth: "101.26%",
+    imageHeight: "103.07%",
+    imageLeft: "-0.19%",
+    imageTop: "0.05%"
+  },
+  {
+    id: "mask-recycling",
+    nodeId: "100:300",
+    title: "Sustainable Design for Mask Recycling System",
+    year: "2021",
+    file: "mask-recycling",
+    x: 739,
+    y: 414,
+    width: 287,
+    previewHeight: 375.65445,
+    copyWidth: 271,
+    accent: "#97cfc8",
+    imageWidth: "102.52%",
+    imageHeight: "104.69%",
+    imageLeft: "-1.17%",
+    imageTop: "-2.1%"
+  },
+  {
+    id: "package-light",
+    nodeId: "100:305",
+    title: "Package Design",
+    year: "2020",
+    file: "package-light",
+    x: 433,
+    y: 503,
+    width: 196,
+    previewHeight: 129,
+    copyWidth: 92,
+    accent: "#c9dfc6",
+    imageWidth: "140.4%",
+    imageHeight: "100%",
+    imageLeft: "-0.13%",
+    imageTop: "0%"
+  },
+  {
+    id: "package-dark",
+    nodeId: "100:310",
+    title: "Package Design",
+    year: "2020",
+    file: "package-dark",
+    x: 1292,
+    y: 789,
+    width: 196,
+    previewHeight: 129,
+    copyWidth: 92,
+    accent: "#697481",
+    imageWidth: "140.4%",
+    imageHeight: "100%",
+    imageLeft: "-8.31%",
+    imageTop: "0.71%"
+  },
+  {
+    id: "book-design",
+    nodeId: "100:315",
+    title: "Book Design",
+    year: "2020",
+    file: "book-design",
+    x: 151,
+    y: 824,
+    width: 196,
+    previewHeight: 150,
+    copyWidth: 71,
+    accent: "#fba6b9",
+    imageWidth: "100%",
+    imageHeight: "120%",
+    imageLeft: "0%",
+    imageTop: "-10.32%"
+  }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Lynn's playground: selected experiments and earlier design work."
+    />
+    <title>Playground — Lynn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Inter:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/case-nav.css?v=20260728-3" />
+  </head>
+  <body>
+    <div class="ui case-nav-ui playground-nav-ui">
+      <nav class="site-nav" aria-label="Primary">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"></span>
+          <span>Lynn</span>
+        </a>
+        <div class="nav-links">
+          <a href="/#work">Work</a>
+          <a href="/about/">About</a>
+        </div>
+      </nav>
+    </div>
+
+    <main class="playground-page">
+      <section class="playground-artwork" aria-labelledby="playground-instructions">
+        <p class="visually-hidden" id="playground-instructions">
+          Drag in any direction, use a mouse wheel or trackpad, or focus the
+          canvas and use the arrow keys to explore. Press Home to return to the
+          starting position.
+        </p>
+        <ul class="visually-hidden" aria-label="Projects shown in the playground">
+          {
+            projects.map((project) => (
+              <li>{project.title}, {project.year}</li>
+            ))
+          }
+        </ul>
+
+        <div
+          class="playground-stage"
+          data-pan-surface
+          tabindex="0"
+          role="region"
+          aria-label="Scrollable and draggable playground project canvas"
+          aria-describedby="playground-instructions"
+        >
+          <div class="playground-world" data-pan-world aria-hidden="true">
+            <div class="playground-tile" data-world-tile>
+              {
+                projects.map((project) => (
+                  <article
+                    class="project-card"
+                    data-node-id={project.nodeId}
+                    style={`--card-x:${project.x}px;--card-y:${project.y}px;--card-width:${project.width}px;--preview-height:${project.previewHeight}px;--copy-width:${project.copyWidth}px;--year-color:${project.accent};--image-width:${project.imageWidth};--image-height:${project.imageHeight};--image-left:${project.imageLeft};--image-top:${project.imageTop};`}
+                  >
+                    <div class="project-preview">
+                      <picture>
+                        <source
+                          srcset={`/assets/playground/${project.file}.webp`}
+                          type="image/webp"
+                        />
+                        <img
+                          class="project-image"
+                          src={`/assets/playground/${project.file}.png`}
+                          alt=""
+                          draggable="false"
+                          decoding="async"
+                        />
+                      </picture>
+                    </div>
+                    <div class="project-copy">
+                      <h2>{project.title}</h2>
+                      <p>{project.year}</p>
+                    </div>
+                  </article>
+                ))
+              }
+            </div>
+          </div>
+
+          <div class="stage-overlay" aria-hidden="true">
+            <div class="stage-fade"></div>
+            <div class="movement-hint">
+              <span class="movement-icon">
+                <img
+                  src="/assets/playground/pan-icon.svg"
+                  width="28"
+                  height="28"
+                  alt=""
+                  draggable="false"
+                />
+              </span>
+              <span>scroll / drag to move</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      import "../../scripts/playground.js";
+    </script>
+  </body>
+</html>

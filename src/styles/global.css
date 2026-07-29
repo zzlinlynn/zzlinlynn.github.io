@@ -1972,6 +1972,16 @@ body.motion-ready .lab-strip.is-visible .playground-copy > * {
   padding: 96px var(--work-align-right) 96px var(--work-align-left);
 }
 
+.playground-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.playground-link:focus-visible {
+  outline: 1px solid var(--line-strong);
+  outline-offset: -1px;
+}
+
 .site-footer {
   scroll-snap-align: end;
   width: 100%;

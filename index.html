@@ -6,8 +6,8 @@
   <title>Lynn Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260728-geist-pixel-1">
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Inter:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260729-home-responsive-1">
 </head>
 <body class="geist-pixel">
   <div class="splash" id="splash" aria-hidden="true">
@@ -196,46 +196,17 @@
         </article>
       </div>
 
-      <div class="work-visual-rail">
-        <a
-          class="work-stage work-stage--sticky"
-          href="/work/alipay-wealth-professionalization/"
-          data-work-stage
-          data-active-index="0"
-          data-cursor-label-key="alipay.hover"
-          aria-label="Open Alipay Wealth Professionalization"
-        >
-          <div class="work-composite work-composite--alipay work-composite--swap is-active" data-work-image="0" aria-hidden="false">
-            <div class="work-frame work-frame--alipay" aria-hidden="true"></div>
-            <img class="work-media work-media--backdrop" src="assets/figma-home/alipay-wealth-backdrop.png" width="2083" height="1576" alt="" decoding="async">
-            <img class="work-media work-media--foreground" src="assets/figma-home/alipay-wealth-content.png" width="1872" height="2496" alt="" decoding="async">
-            <img class="work-media work-media--color" src="assets/figma-home/alipay-wealth-color-layer.png" width="2394" height="2472" alt="" decoding="async">
-            <div class="work-mask work-mask--alipay" aria-hidden="true"></div>
-          </div>
-          <div class="work-composite work-composite--brokerage work-composite--swap" data-work-image="1" aria-hidden="true">
-            <div class="work-frame work-frame--brokerage" aria-hidden="true"></div>
-            <img class="work-media work-media--backdrop" src="assets/figma-home/overseas-brokerage-backdrop.png" width="1849" height="2244" alt="" loading="lazy" decoding="async">
-            <img class="work-media work-media--foreground" src="assets/figma-home/overseas-brokerage-content.png" width="2139" height="3421" alt="" loading="lazy" decoding="async">
-            <img class="work-media work-media--color" src="assets/figma-home/overseas-brokerage-color-layer.png" width="2394" height="2472" alt="" loading="lazy" decoding="async">
-            <img class="work-media work-media--logo-color work-media--logo-color--ant" src="assets/figma-home/overseas-brokerage-content.png" width="2139" height="3421" alt="" loading="lazy" decoding="async">
-            <img class="work-media work-media--logo-color work-media--logo-color--bright" src="assets/figma-home/overseas-brokerage-content.png" width="2139" height="3421" alt="" loading="lazy" decoding="async">
-            <div class="work-mask work-mask--brokerage" aria-hidden="true"></div>
-          </div>
-          <div class="work-composite work-composite--agent work-composite--swap" data-work-image="2" aria-hidden="true">
-            <div class="work-frame work-frame--agent" aria-hidden="true"></div>
-            <img class="work-media work-media--foreground" src="assets/figma-home/ai-design-agent-content.png" width="2123" height="1621" alt="" loading="lazy" decoding="async">
-            <img class="work-media work-media--color" src="assets/figma-home/ai-design-agent-color-layer.png" width="2394" height="2472" alt="" loading="lazy" decoding="async">
-            <div class="work-mask work-mask--agent" aria-hidden="true"></div>
-          </div>
-        </a>
-      </div>
     </div>
 
     <section class="lab-strip" id="lab" data-figma-node="1:16045" aria-labelledby="lab-title">
-      <div class="playground-copy">
+      <a
+        class="playground-copy playground-link"
+        href="/playground/"
+        data-cursor-label-key="cursor.lab"
+      >
         <h2 class="section-title" id="lab-title" data-i18n="lab.title"></h2>
         <p class="section-copy" data-i18n="lab.copy"></p>
-      </div>
+      </a>
     </section>
 
     <footer class="site-footer">
@@ -274,7 +245,7 @@
     </section>
   </div>
 
-  <script src="main.js?v=20260728-work-morph-1" defer></script>
+  <script src="main.js?v=20260729-home-responsive-1" defer></script>
   <script src="footer-canvas.js" defer></script>
 </body>
 </html>
