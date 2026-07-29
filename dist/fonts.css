@@ -1,3 +1,11 @@
+.geist-pixel {
+  font-family: "Geist Pixel", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "ELSH" 0;
+}
+
 .noto-sans-sc {
   font-family: "Noto Sans SC", sans-serif;
   font-optical-sizing: auto;

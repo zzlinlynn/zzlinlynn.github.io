@@ -1091,6 +1091,8 @@ img {
   }
 
   .scope-intro,
+  .competitor-row,
+  .problem-row,
   .decision-row {
     gap: 96px;
   }

@@ -238,19 +238,15 @@ body:not(.is-scrolled) .site-nav {
 }
 
 .logo__mark {
-  position: relative;
+  display: block;
+  flex: 0 0 auto;
   width: 1.15rem;
   height: 1.15rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 50%;
+  background: url("/assets/brand/union-mark.png?v=20260729-brand-mark-1") center / contain no-repeat;
 }
 
 .logo__mark::after {
-  content: "";
-  position: absolute;
-  inset: .34rem;
-  border-radius: 50%;
-  background: var(--accent);
+  content: none;
 }
 
 .nav-links,

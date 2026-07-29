@@ -7,7 +7,7 @@
   --case-nav-plate: rgb(251 251 250 / .62);
   --case-nav-surface: rgb(var(--case-nav-ink-rgb) / .055);
   --case-nav-accent: #6f6f68;
-  --case-nav-mono: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --case-nav-mono: "Geist Pixel", sans-serif;
   --case-nav-small: .75rem;
   --case-nav-radius: 8px;
   --case-nav-pill: 999px;
@@ -34,9 +34,17 @@
   box-shadow: 0 14px 44px rgb(0 0 0 / .08);
   color: var(--case-nav-muted);
   font-family: var(--case-nav-mono);
+  font-kerning: normal;
+  font-optical-sizing: auto;
   font-size: var(--case-nav-small);
-  line-height: 1;
+  font-style: normal;
+  font-variation-settings: "ELSH" 0;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
   text-transform: uppercase;
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
   backdrop-filter: blur(24px) saturate(150%);
   -webkit-backdrop-filter: blur(24px) saturate(150%);
 }
@@ -106,20 +114,28 @@ body:not(.is-scrolled) .case-nav-ui .site-nav {
   white-space: nowrap;
 }
 
+.case-nav-ui .logo,
+.case-nav-ui .nav-links a {
+  font-family: var(--case-nav-mono);
+  font-optical-sizing: auto;
+  font-size: var(--case-nav-small);
+  font-style: normal;
+  font-variation-settings: "ELSH" 0;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 .case-nav-ui .logo__mark {
-  position: relative;
+  display: block;
+  flex: 0 0 auto;
   width: 1.15rem;
   height: 1.15rem;
-  border: 1px solid var(--case-nav-line-strong);
-  border-radius: 50%;
+  background: url("/assets/brand/union-mark.png?v=20260729-brand-mark-1") center / contain no-repeat;
 }
 
 .case-nav-ui .logo__mark::after {
-  content: "";
-  position: absolute;
-  inset: .34rem;
-  border-radius: 50%;
-  background: var(--case-nav-accent);
+  content: none;
 }
 
 .case-nav-ui .nav-links {
