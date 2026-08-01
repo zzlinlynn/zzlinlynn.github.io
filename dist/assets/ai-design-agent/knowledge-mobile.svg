@@ -1,0 +1,50 @@
+<svg width="342" height="499" viewBox="0 0 342 499" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_375_3872)">
+<mask id="path-1-inside-1_375_3872" fill="white">
+<path d="M0 6C0 2.68629 2.68629 0 6 0H336C339.314 0 342 2.68629 342 6V220C342 223.314 339.314 226 336 226H6C2.68629 226 0 223.314 0 220V6Z"/>
+</mask>
+<path d="M0 6C0 2.68629 2.68629 0 6 0H336C339.314 0 342 2.68629 342 6V220C342 223.314 339.314 226 336 226H6C2.68629 226 0 223.314 0 220V6Z" fill="white"/>
+<path d="M6 0V1H336V0V-1H6V0ZM342 6H341V220H342H343V6H342ZM336 226V225H6V226V227H336V226ZM0 220H1V6H0H-1V220H0ZM6 226V225C3.23857 225 1 222.761 1 220H0H-1C-1 223.866 2.134 227 6 227V226ZM342 220H341C341 222.761 338.761 225 336 225V226V227C339.866 227 343 223.866 343 220H342ZM336 0V1C338.761 1 341 3.23858 341 6H342H343C343 2.13401 339.866 -1 336 -1V0ZM6 0V-1C2.13401 -1 -1 2.13401 -1 6H0H1C1 3.23858 3.23858 1 6 1V0Z" fill="#E3E3E3" mask="url(#path-1-inside-1_375_3872)"/>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="12" y="23.1">FIGMA ASSETS</tspan></text>
+<text fill="#0A0A0A" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" font-weight="bold" letter-spacing="0px"><tspan x="12" y="61.4">Implicit / unstructured</tspan></text>
+<g clip-path="url(#clip1_375_3872)">
+<path d="M52 105.981C78.329 102.327 105.351 103.058 133.065 108.173C158.009 113.288 183.645 111.462 209.974 102.692C232.146 96.8462 258.821 97.9423 290 105.981" stroke="#B8B8BD" stroke-width="0.735268"/>
+<path d="M52 122.706C82.4862 119.21 110.894 119.909 137.223 124.804C164.937 130.397 191.959 128.649 218.288 119.56C243.231 112.568 267.135 113.617 290 122.706" stroke="#B8B8BD" stroke-width="0.735268"/>
+<path d="M52 139.488C75.5575 135.848 100.501 136.576 126.83 141.672C154.544 147.496 181.566 145.676 207.895 136.212C234.224 129.66 261.592 130.752 290 139.488" stroke="#B8B8BD" stroke-width="0.735268"/>
+<path d="M52 155.981C81.1004 152.327 108.815 153.058 135.144 158.173C161.473 163.288 187.802 161.462 214.131 152.692C239.074 146.846 264.364 147.942 290 155.981" stroke="#B8B8BD" stroke-width="0.735268"/>
+<path d="M52 172.488C75.5575 168.848 100.501 169.576 126.83 174.672C154.544 180.496 181.566 178.676 207.895 169.212C234.224 162.66 261.592 163.752 290 172.488" stroke="#B8B8BD" stroke-width="0.735268"/>
+<path d="M52 188.981C81.1004 185.327 108.815 186.058 135.144 191.173C161.473 196.288 187.802 194.462 214.131 185.692C239.074 179.846 264.364 180.942 290 188.981" stroke="#B8B8BD" stroke-width="0.735268"/>
+</g>
+<path d="M132.5 242L132.5 257" stroke="#E3E3E3" stroke-linecap="round"/>
+<path d="M129.227 252.125C129.227 252.125 131.434 257 132.498 257C133.562 257 135.77 252.125 135.77 252.125" stroke="#E3E3E3" stroke-linecap="round"/>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="148.5" y="253.1">EXTRACTOR</tspan></text>
+<mask id="path-14-inside-2_375_3872" fill="white">
+<path d="M0 279C0 275.686 2.68629 273 6 273H336C339.314 273 342 275.686 342 279V493C342 496.314 339.314 499 336 499H6C2.68629 499 0 496.314 0 493V279Z"/>
+</mask>
+<path d="M0 279C0 275.686 2.68629 273 6 273H336C339.314 273 342 275.686 342 279V493C342 496.314 339.314 499 336 499H6C2.68629 499 0 496.314 0 493V279Z" fill="white"/>
+<path d="M6 273V274H336V273V272H6V273ZM342 279H341V493H342H343V279H342ZM336 499V498H6V499V500H336V499ZM0 493H1V279H0H-1V493H0ZM6 499V498C3.23857 498 1 495.761 1 493H0H-1C-1 496.866 2.134 500 6 500V499ZM342 493H341C341 495.761 338.761 498 336 498V499V500C339.866 500 343 496.866 343 493H342ZM336 273V274C338.761 274 341 276.239 341 279H342H343C343 275.134 339.866 272 336 272V273ZM6 273V272C2.13401 272 -1 275.134 -1 279H0H1C1 276.239 3.23858 274 6 274V273Z" fill="#E3E3E3" mask="url(#path-14-inside-2_375_3872)"/>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="12" y="296.1">KB ENTRY</tspan></text>
+<text fill="#0A0A0A" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" font-weight="bold" letter-spacing="0px"><tspan x="12" y="334.4">Schema-governed</tspan></text>
+<text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="12" y="383.1">TYPE</tspan></text>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="100" y="383.1">&#x2192;</tspan></text>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="114" y="383.1">TOKEN / COMPONENT / PATTERN </tspan><tspan x="114" y="398.1">/ ...</tspan></text>
+<text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="12" y="425.1">SOURCE</tspan></text>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="100" y="425.1">&#x2192;</tspan></text>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="114" y="425.1">FIGMA REF</tspan></text>
+<text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="12" y="452.1">CONFIDENCE</tspan></text>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="100" y="452.1">&#x2192;</tspan></text>
+<path d="M330 441H114V456H330V441Z" fill="#F5F5F5"/>
+<path d="M233 441H114V456H233V441Z" fill="#E3E3E3"/>
+<text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="12" y="479.1">REVIEW</tspan></text>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="100" y="479.1">&#x2192;</tspan></text>
+<text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="JetBrains Mono" font-size="10" letter-spacing="1.8px"><tspan x="114" y="479.1">REQUIRED / &#x2014;</tspan></text>
+</g>
+<defs>
+<clipPath id="clip0_375_3872">
+<rect width="342" height="499" fill="white"/>
+</clipPath>
+<clipPath id="clip1_375_3872">
+<rect width="318" height="111" fill="white" transform="translate(12 99)"/>
+</clipPath>
+</defs>
+</svg>
