@@ -2,7 +2,85 @@ import { ABOUT_DEVICE_PIXEL_DATA } from './about-device-pixel-data.js';
 import { ABOUT_PHOTO_PIXEL_DATA } from './about-photo-pixel-data.js';
 
 const root = document.documentElement;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const splashPlaybackSpeed = 2;
 const splash = document.getElementById('splash');
+const splashMark = document.getElementById('splash-animation');
+let splashAnimation = null;
+let splashCycleFallback = null;
+let isPageReady = false;
+let hasSplashCycleCompleted = reduceMotion;
+
+function tryHideSplash() {
+  if (isPageReady && hasSplashCycleCompleted) hideSplash();
+}
+
+function markSplashCycleComplete() {
+  hasSplashCycleCompleted = true;
+  if (splashCycleFallback !== null) {
+    window.clearTimeout(splashCycleFallback);
+    splashCycleFallback = null;
+  }
+  tryHideSplash();
+}
+
+function markPageReady() {
+  isPageReady = true;
+  tryHideSplash();
+}
+
+function setupSplashAnimation() {
+  if (!splashMark || !window.LOADING_ANIMATION || typeof window.lottie?.loadAnimation !== 'function') {
+    markSplashCycleComplete();
+    return;
+  }
+
+  try {
+    splashAnimation = window.lottie.loadAnimation({
+      container: splashMark,
+      renderer: 'svg',
+      loop: !reduceMotion,
+      autoplay: !reduceMotion,
+      animationData: window.LOADING_ANIMATION,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid meet',
+        progressiveLoad: false
+      }
+    });
+    splashAnimation.setSpeed(splashPlaybackSpeed);
+    splashMark.classList.add('is-animated');
+
+    if (reduceMotion) {
+      const completeMarker = window.LOADING_ANIMATION.markers?.find((marker) => marker.cm === 'complete');
+      const stillFrame = completeMarker?.tm ?? Math.max(0, window.LOADING_ANIMATION.op - 1);
+      splashAnimation.addEventListener('DOMLoaded', () => splashAnimation?.goToAndStop(stillFrame, true));
+    } else {
+      const durationMs = ((window.LOADING_ANIMATION.op - window.LOADING_ANIMATION.ip) / window.LOADING_ANIMATION.fr) * 1000 / splashPlaybackSpeed;
+      splashAnimation.addEventListener('loopComplete', markSplashCycleComplete);
+      splashCycleFallback = window.setTimeout(markSplashCycleComplete, durationMs + 250);
+    }
+  } catch {
+    splashAnimation = null;
+    markSplashCycleComplete();
+  }
+}
+
+function hideSplash() {
+  if (!splash || splash.classList.contains('is-hidden')) return;
+  splash.classList.add('is-hidden');
+
+  if (splashCycleFallback !== null) {
+    window.clearTimeout(splashCycleFallback);
+    splashCycleFallback = null;
+  }
+
+  if (splashAnimation) {
+    window.setTimeout(() => {
+      splashAnimation?.destroy();
+      splashAnimation = null;
+    }, 320);
+  }
+}
 
 const aboutI18n = {
   en: {
@@ -826,11 +904,12 @@ document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
 window.addEventListener('scroll', updateScrolledState, { passive: true });
 
 setTheme(root.dataset.theme || 'light');
+setupSplashAnimation();
 translate();
 updateScrolledState();
 setupAboutSlideshow();
 
 window.addEventListener('load', () => {
-  window.setTimeout(() => splash?.classList.add('is-hidden'), 240);
+  window.setTimeout(markPageReady, 240);
 });
-window.setTimeout(() => splash?.classList.add('is-hidden'), 900);
+window.setTimeout(markPageReady, 900);

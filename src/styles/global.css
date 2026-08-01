@@ -35,9 +35,9 @@
   --pill: 999px;
   --ease: cubic-bezier(.16, 1, .3, 1);
   --spring: cubic-bezier(.2, 1.18, .24, 1);
-  --ambient-grid-size: clamp(20px, 1.55vw, 24px);
-  --ambient-grid-faint: rgb(var(--ink-rgb) / .01);
-  --ambient-grid-strong: rgb(var(--ink-rgb) / .045);
+  --ambient-grid-size: 18px;
+  --ambient-grid-faint: color-mix(in srgb, var(--ink) .7%, var(--bg));
+  --ambient-grid-strong: color-mix(in srgb, var(--ink) 2.3%, var(--bg));
   letter-spacing: 0;
 }
 
@@ -61,8 +61,6 @@
   --green: #a9cb9c;
   --rose: #dca3ad;
   --shadow: 0 34px 120px rgb(0 0 0 / .42);
-  --ambient-grid-faint: rgb(var(--ink-rgb) / .014);
-  --ambient-grid-strong: rgb(var(--ink-rgb) / .055);
 }
 
 * {
@@ -72,6 +70,7 @@
 
 html {
   min-height: 100%;
+  overflow-x: clip;
   background: var(--bg);
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
@@ -83,7 +82,7 @@ html {
 body {
   margin: 0;
   min-width: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
   background-color: var(--bg);
   background-image: none;
   color: var(--ink);
@@ -96,6 +95,39 @@ body {
 body::before,
 body::after {
   content: none;
+}
+
+body.home-body::before,
+body.home-body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-position: 50% 0;
+  background-size: var(--ambient-grid-size) var(--ambient-grid-size);
+}
+
+body.home-body::before {
+  background-image:
+    linear-gradient(to right, var(--ambient-grid-faint) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ambient-grid-faint) 1px, transparent 1px);
+}
+
+body.home-body::after {
+  background-image:
+    linear-gradient(to right, var(--ambient-grid-strong) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ambient-grid-strong) 1px, transparent 1px);
+  -webkit-mask-image:
+    radial-gradient(ellipse 30% 26% at 14% 15%, #000 0%, rgb(0 0 0 / .82) 40%, transparent 100%),
+    radial-gradient(ellipse 26% 34% at 88% 42%, #000 0%, rgb(0 0 0 / .76) 38%, transparent 100%),
+    radial-gradient(ellipse 38% 22% at 52% 91%, #000 0%, rgb(0 0 0 / .72) 42%, transparent 100%);
+  mask-image:
+    radial-gradient(ellipse 30% 26% at 14% 15%, #000 0%, rgb(0 0 0 / .82) 40%, transparent 100%),
+    radial-gradient(ellipse 26% 34% at 88% 42%, #000 0%, rgb(0 0 0 / .76) 38%, transparent 100%),
+    radial-gradient(ellipse 38% 22% at 52% 91%, #000 0%, rgb(0 0 0 / .72) 42%, transparent 100%);
+  -webkit-mask-composite: source-over, source-over;
+  mask-composite: add, add;
 }
 
 a {
@@ -157,10 +189,24 @@ p {
   animation: splashBreath 2.4s ease-in-out infinite;
 }
 
+.splash--lottie .splash__inner {
+  animation: none;
+}
+
 .splash__mark {
   width: 5rem;
   aspect-ratio: 1;
   background: url("/assets/brand/loading-logo.png?v=20260729-splash-logo-1") center / contain no-repeat;
+}
+
+.splash__mark--lottie.is-animated {
+  background: none;
+}
+
+.splash__mark--lottie svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .splash__text {
@@ -679,8 +725,8 @@ body:not(.is-scrolled) .site-nav {
 
 .hero {
   display: block;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
+  margin-left: 0;
   padding: 0;
   --cover-glow: rgb(0 237 255 / .42);
 }
@@ -805,16 +851,6 @@ body:not(.is-scrolled) .site-nav {
 
 .hero-title-block--right {
   text-align: right;
-}
-
-.experience-caption {
-  display: block;
-  margin: 0 0 .58rem;
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: var(--small);
-  line-height: 1;
-  text-transform: uppercase;
 }
 
 .hero-title-block h1,

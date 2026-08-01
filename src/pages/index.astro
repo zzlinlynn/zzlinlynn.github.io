@@ -13,10 +13,10 @@ import "../styles/global.css";
   <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/fonts.css?v=20260729-font-family-set-1">
 </head>
-<body>
-  <div class="splash" id="splash" aria-hidden="true">
+<body class="home-body">
+  <div class="splash splash--lottie" id="splash" aria-hidden="true">
     <div class="splash__inner">
-      <div class="splash__mark"></div>
+      <div class="splash__mark splash__mark--lottie" id="splash-animation"></div>
       <div class="splash__text">Loading</div>
     </div>
   </div>
@@ -75,7 +75,6 @@ import "../styles/global.css";
       <p class="hero-summary" data-i18n="hero.sub" data-parallax data-depth="42"></p>
       <div class="hero-bottom" data-parallax data-depth="84">
         <div class="hero-title-block hero-title-block--left">
-          <span class="experience-caption" data-i18n="hero.experience"></span>
           <h1 id="hero-title" data-i18n-html="hero.title"></h1>
         </div>
         <div class="hero-title-block hero-title-block--right">
@@ -275,6 +274,8 @@ import "../styles/global.css";
       </div>
     </section>
   </div>
+  <script is:inline src="/assets/brand/lottie.min.js?v=20260801-loading-animation-1"></script>
+  <script is:inline src="/assets/brand/loading-data.js?v=20260801-loading-animation-1"></script>
   <script>
     import "../scripts/home.js";
   </script>

@@ -1,7 +1,9 @@
 const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const splashPlaybackSpeed = 2;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const splash = document.getElementById('splash');
+const splashMark = document.getElementById('splash-animation');
 const cursor = document.getElementById('cursor');
 const cursorLabel = document.getElementById('cursor-label');
 const layer = document.querySelector('.layer');
@@ -12,6 +14,81 @@ const panelContext = document.getElementById('panel-context');
 const panelFacts = document.getElementById('panel-facts');
 const panelPaths = document.getElementById('panel-paths');
 const closeButton = document.querySelector('[data-close-layer]');
+let splashAnimation = null;
+let splashCycleFallback = null;
+let isPageReady = false;
+let hasSplashCycleCompleted = reduceMotion;
+
+function tryHideSplash() {
+  if (isPageReady && hasSplashCycleCompleted) hideSplash();
+}
+
+function markSplashCycleComplete() {
+  hasSplashCycleCompleted = true;
+  if (splashCycleFallback !== null) {
+    window.clearTimeout(splashCycleFallback);
+    splashCycleFallback = null;
+  }
+  tryHideSplash();
+}
+
+function markPageReady() {
+  isPageReady = true;
+  tryHideSplash();
+}
+
+function setupSplashAnimation() {
+  if (!splashMark || !window.LOADING_ANIMATION || typeof window.lottie?.loadAnimation !== 'function') {
+    markSplashCycleComplete();
+    return;
+  }
+
+  try {
+    splashAnimation = window.lottie.loadAnimation({
+      container: splashMark,
+      renderer: 'svg',
+      loop: !reduceMotion,
+      autoplay: !reduceMotion,
+      animationData: window.LOADING_ANIMATION,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid meet',
+        progressiveLoad: false
+      }
+    });
+    splashAnimation.setSpeed(splashPlaybackSpeed);
+    splashMark.classList.add('is-animated');
+
+    if (reduceMotion) {
+      const completeMarker = window.LOADING_ANIMATION.markers?.find((marker) => marker.cm === 'complete');
+      const stillFrame = completeMarker?.tm ?? Math.max(0, window.LOADING_ANIMATION.op - 1);
+      splashAnimation.addEventListener('DOMLoaded', () => splashAnimation?.goToAndStop(stillFrame, true));
+    } else {
+      const durationMs = ((window.LOADING_ANIMATION.op - window.LOADING_ANIMATION.ip) / window.LOADING_ANIMATION.fr) * 1000 / splashPlaybackSpeed;
+      splashAnimation.addEventListener('loopComplete', markSplashCycleComplete);
+      splashCycleFallback = window.setTimeout(markSplashCycleComplete, durationMs + 250);
+    }
+  } catch {
+    splashAnimation = null;
+    markSplashCycleComplete();
+  }
+}
+
+function hideSplash() {
+  if (!splash || splash.classList.contains('is-hidden')) return;
+  splash.classList.add('is-hidden');
+
+  if (splashCycleFallback !== null) {
+    window.clearTimeout(splashCycleFallback);
+    splashCycleFallback = null;
+  }
+
+  if (splashAnimation) {
+    window.setTimeout(() => {
+      splashAnimation?.destroy();
+      splashAnimation = null;
+    }, 320);
+  }
+}
 
 const i18n = {
   en: {
@@ -31,7 +108,6 @@ const i18n = {
     'hero.dossierLeftMeta': 'Research to strategy · ambiguous systems',
     'hero.dossierRightTitle': 'Case evidence',
     'hero.dossierRightMeta': 'Financial journeys · AI tooling · judgment under constraints',
-    'hero.experience': '2YOE',
     'hero.title': '<span>UX</span>',
     'hero.secondaryTitle': '<span>Product</span><span>Designer</span>',
     'hero.sub': 'The site should feel like a crafted product-design artifact: visual enough to invite inspection, restrained enough to keep the case reading serious.',
@@ -120,7 +196,6 @@ const i18n = {
     'hero.dossierLeftMeta': '研究到策略 · 模糊问题定义',
     'hero.dossierRightTitle': '案例证据',
     'hero.dossierRightMeta': '金融链路 · AI 工具 · 约束中的判断',
-    'hero.experience': '两年工作经验',
     'hero.title': '<span>UX</span>',
     'hero.secondaryTitle': '<span>产品</span><span>设计师</span>',
     'hero.sub': '这个网站应该像一个被精心制作的产品设计物件：足够有视觉吸引力让人愿意检查，又足够克制让案例阅读保持严肃。',
@@ -1711,6 +1786,7 @@ window.addEventListener('keydown', (event) => {
 });
 
 setTheme(root.dataset.theme || 'light');
+setupSplashAnimation();
 translate();
 setupPointerVars();
 setupCursor();
@@ -1722,6 +1798,6 @@ setupHeroPortrait();
 setupInkField();
 
 window.addEventListener('load', () => {
-  window.setTimeout(() => splash.classList.add('is-hidden'), 360);
+  window.setTimeout(markPageReady, 360);
 });
-window.setTimeout(() => splash.classList.add('is-hidden'), 1100);
+window.setTimeout(markPageReady, 1100);
