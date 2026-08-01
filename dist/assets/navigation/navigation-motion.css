@@ -1,7 +1,8 @@
-/* Lynn Navigation Motion v1.0.0 — production component */
+/* Lynn Navigation Motion v1.1.0 — production component */
 
 .lynn-navigation-motion {
   --lynn-nav-ink: #0a0a0a;
+  --lynn-nav-ink-rgb: 10 10 10;
   --lynn-nav-font: "Geist Pixel", monospace;
   --lynn-nav-font-size: 12px;
   --lynn-nav-character-gap: 2px;
@@ -12,6 +13,11 @@
   height: 57.6px;
   color: var(--lynn-nav-ink);
   pointer-events: none;
+}
+
+.lynn-navigation-motion.is-on-dark {
+  --lynn-nav-ink: #d7d7da;
+  --lynn-nav-ink-rgb: 215 215 218;
 }
 
 .lynn-nav__island {
@@ -47,7 +53,9 @@
   position: absolute;
   z-index: 2;
   inset: 0;
-  background: url("../brand/logo.svg") center / contain no-repeat;
+  background: currentColor;
+  -webkit-mask: url("../brand/logo.svg") center / contain no-repeat;
+  mask: url("../brand/logo.svg") center / contain no-repeat;
   opacity: var(--logo-order-opacity);
   pointer-events: none;
 }
@@ -192,7 +200,7 @@
 }
 
 .lynn-nav__hover-char.is-scrambled {
-  color: rgb(10 10 10 / .4);
+  color: rgb(var(--lynn-nav-ink-rgb) / .4);
   transform: scale(1.06);
 }
 
@@ -251,7 +259,12 @@
 }
 
 @media (forced-colors: active) {
+  .lynn-nav__mark::after {
+    background: CanvasText;
+  }
+
   .lynn-nav__glyph-pixel {
     background: CanvasText;
+    box-shadow: none;
   }
 }

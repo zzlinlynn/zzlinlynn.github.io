@@ -1,5 +1,5 @@
 /*
- * Lynn Navigation Motion v1.0.0
+ * Lynn Navigation Motion v1.1.0
  * Dependency-free scroll and hover animation for the portfolio navigation.
  * Requires LynnLogoMotion from ../brand/logo-motion.js.
  */
@@ -90,6 +90,9 @@
       || document.querySelector("[data-nav-state-one-left]");
     const rightAnchor = resolveElement(config.stateOneRightAnchor || root.dataset.stateOneRightAnchor)
       || document.querySelector("[data-nav-state-one-right]");
+    const darkToneRegions = Array.from(
+      document.querySelectorAll('[data-navigation-tone="dark"]')
+    );
     const reduceMotion = global.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const logoMotion = global.LynnLogoMotion.create(logoMark, {
       intensity: Number(config.logoIntensity) || 1.05
@@ -155,7 +158,10 @@
               pixel.style.setProperty("--pixel-size", `${stage.size}px`);
               pixel.style.setProperty("--pixel-x", `${halfPixel(baseX)}px`);
               pixel.style.setProperty("--pixel-y", `${halfPixel(pixelY)}px`);
-              pixel.style.setProperty("--pixel-color", `rgb(10 10 10 / ${pixelAlpha.toFixed(3)})`);
+              pixel.style.setProperty(
+                "--pixel-color",
+                `rgb(var(--lynn-nav-ink-rgb) / ${pixelAlpha.toFixed(3)})`
+              );
 
               const trailChance = stage.trail * (1 - bottomWeight * .28);
               if (pixelHash(seed + 4) < trailChance) {
@@ -165,7 +171,9 @@
                 const shadows = [];
                 for (let trailIndex = 1; trailIndex <= trailCount; trailIndex += 1) {
                   const trailAlpha = stage.alpha * ((.2 + bottomWeight * .22) / trailIndex);
-                  shadows.push(`0 ${trailStep * trailIndex}px 0 rgb(10 10 10 / ${trailAlpha.toFixed(3)})`);
+                  shadows.push(
+                    `0 ${trailStep * trailIndex}px 0 rgb(var(--lynn-nav-ink-rgb) / ${trailAlpha.toFixed(3)})`
+                  );
                 }
                 pixel.style.setProperty("--pixel-trail", shadows.join(", "));
               }
@@ -214,6 +222,7 @@
     let logoHovering = false;
     let logoPointerInside = false;
     let logoFocused = false;
+    let toneObserver = null;
 
     function setScrambleFrame(record, tick) {
       const letters = Array.from(record.text);
@@ -349,14 +358,26 @@
       const stateOneRight = rightRect ? rightRect.right : fallbackEdges.right;
       const liveEdge = mobile ? 21.6 : clamp(width * .058, 52, 104);
       const linksWidth = linksIsland.offsetWidth;
+      const y = mobile ? 8 : tablet ? 10.5 : 12;
 
       geometry = {
-        y: mobile ? 8 : tablet ? 10.5 : 12,
+        y,
+        toneSampleY: y + Math.max(brand.offsetHeight, linksIsland.offsetHeight) / 2,
         startBrandX: stateOneLeft,
         startLinksX: stateOneRight - linksWidth,
         endBrandX: liveEdge,
         endLinksX: width - liveEdge - linksWidth
       };
+    }
+
+    function updateColorTone() {
+      if (destroyed || !geometry) return;
+      const documentIsDark = document.documentElement.dataset.theme === "dark";
+      const regionIsDark = darkToneRegions.some((region) => {
+        const rect = region.getBoundingClientRect();
+        return rect.top <= geometry.toneSampleY && rect.bottom > geometry.toneSampleY;
+      });
+      root.classList.toggle("is-on-dark", documentIsDark || regionIsDark);
     }
 
     function updateTypeMotion(value) {
@@ -404,6 +425,7 @@
 
       brand.style.transform = `translate3d(${brandX.toFixed(2)}px, ${geometry.y.toFixed(2)}px, 0)`;
       linksIsland.style.transform = `translate3d(${linksX.toFixed(2)}px, ${geometry.y.toFixed(2)}px, 0)`;
+      updateColorTone();
       logoScrollProgress = renderedProgress;
       if (!logoHovering && !logoHoverFrame) applyLogoVisualProgress(renderedProgress);
       updateTypeMotion(renderedProgress);
@@ -442,6 +464,17 @@
 
     listen(global, "scroll", requestUpdate, { passive: true });
     listen(global, "resize", handleResize);
+    listen(global, "portfolio-theme-change", updateColorTone);
+
+    if (darkToneRegions.length && global.MutationObserver) {
+      toneObserver = new global.MutationObserver(updateColorTone);
+      darkToneRegions.forEach((region) => {
+        toneObserver.observe(region, {
+          attributes: true,
+          attributeFilter: ["class", "hidden", "style", "aria-hidden"]
+        });
+      });
+    }
 
     const api = {
       element: root,
@@ -470,6 +503,8 @@
         hoverLabels.forEach((record) => stopScramble(record, true));
         listeners.splice(0).forEach((remove) => remove());
         generatedNodes.forEach((node) => node.remove());
+        toneObserver?.disconnect();
+        toneObserver = null;
         labelElements.forEach((element) => {
           const row = element.querySelector("[data-nav-glyph-row]");
           if (row) row.replaceChildren();
@@ -477,6 +512,7 @@
         brand.style.removeProperty("transform");
         brand.classList.remove("is-name-hidden");
         linksIsland.style.removeProperty("transform");
+        root.classList.remove("is-on-dark");
         root.style.removeProperty("--lynn-nav-progress");
         logoMark.style.removeProperty("--logo-order-opacity");
         logoMotion.destroy();
@@ -496,7 +532,7 @@
   }
 
   global.LynnNavigationMotion = Object.freeze({
-    version: "1.0.0",
+    version: "1.1.0",
     create
   });
 })(window);
