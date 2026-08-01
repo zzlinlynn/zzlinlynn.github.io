@@ -45,6 +45,7 @@ if (surface && world && sourceTile) {
   let modalHideTimer = 0;
   let activeGalleryCarousel = null;
   let activeProjectFlip = null;
+  let activeProjectSource = null;
 
   const wrapCoordinate = (value, size) => {
     if (!Number.isFinite(value)) return 0;
@@ -166,6 +167,79 @@ if (surface && world && sourceTile) {
     return card && surface.contains(card) ? card : null;
   };
 
+  const rememberProjectSource = (projectId, sourceCard, sourceRect) => {
+    if (!(sourceCard instanceof HTMLElement)) {
+      activeProjectSource = null;
+      return;
+    }
+
+    const tile = sourceCard.closest("[data-tile-column][data-tile-row]");
+    activeProjectSource = {
+      projectId,
+      element: sourceCard,
+      tileColumn: tile?.dataset.tileColumn ?? null,
+      tileRow: tile?.dataset.tileRow ?? null,
+      centerX: sourceRect ? sourceRect.left + sourceRect.width / 2 : 0,
+      centerY: sourceRect ? sourceRect.top + sourceRect.height / 2 : 0
+    };
+  };
+
+  const resolveProjectSource = (projectId) => {
+    if (!activeProjectSource || activeProjectSource.projectId !== projectId) {
+      return null;
+    }
+
+    const currentElement = activeProjectSource.element;
+    if (
+      currentElement instanceof HTMLElement &&
+      currentElement.isConnected &&
+      currentElement.dataset.projectId === projectId
+    ) {
+      return currentElement;
+    }
+
+    const matchingCards = Array.from(
+      world.querySelectorAll("[data-project-id]")
+    ).filter((card) => card.dataset.projectId === projectId);
+    if (matchingCards.length === 0) return null;
+
+    const matchingTile = Array.from(
+      world.querySelectorAll("[data-tile-column][data-tile-row]")
+    ).find(
+      (tile) =>
+        tile.dataset.tileColumn === activeProjectSource.tileColumn &&
+        tile.dataset.tileRow === activeProjectSource.tileRow
+    );
+    const matchingTileCard = matchingTile
+      ? Array.from(matchingTile.querySelectorAll("[data-project-id]")).find(
+          (card) => card.dataset.projectId === projectId
+        )
+      : null;
+
+    if (matchingTileCard instanceof HTMLElement) {
+      activeProjectSource.element = matchingTileCard;
+      return matchingTileCard;
+    }
+
+    const closestCard = matchingCards.reduce((closest, card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.hypot(
+        rect.left + rect.width / 2 - activeProjectSource.centerX,
+        rect.top + rect.height / 2 - activeProjectSource.centerY
+      );
+      return !closest || distance < closest.distance
+        ? { card, distance }
+        : closest;
+    }, null)?.card;
+
+    if (closestCard instanceof HTMLElement) {
+      activeProjectSource.element = closestCard;
+      return closestCard;
+    }
+
+    return null;
+  };
+
   const parseTransitionTime = (value) => {
     const time = Number.parseFloat(value);
     if (!Number.isFinite(time)) return 0;
@@ -235,6 +309,60 @@ if (surface && world && sourceTile) {
     projectModal?.classList.remove("is-flipping");
   };
 
+  const finishProjectClose = (projectId, transitionVersion) => {
+    if (
+      !projectModal ||
+      !projectModalBody ||
+      modalTransitionVersion !== transitionVersion ||
+      projectModal.dataset.activeProject !== projectId ||
+      !projectModal.classList.contains("is-closing")
+    ) {
+      return;
+    }
+
+    const hadActiveFlip = Boolean(activeProjectFlip);
+    cancelActiveProjectFlip();
+    projectModal.classList.remove(
+      "is-open",
+      "is-ready",
+      "is-flipping",
+      "is-closing"
+    );
+    projectModal.setAttribute("aria-hidden", "true");
+    surface.classList.remove("has-open-project");
+    restorePreviousFocus();
+
+    const finishHiding = () => {
+      if (
+        modalTransitionVersion !== transitionVersion ||
+        projectModal.classList.contains("is-open") ||
+        projectModal.dataset.activeProject !== projectId
+      ) {
+        return;
+      }
+
+      projectModal.hidden = true;
+      projectModalBody.replaceChildren();
+      projectModal.removeAttribute("aria-labelledby");
+      delete projectModal.dataset.activeProject;
+      projectModal.classList.remove(
+        "is-ready",
+        "is-flipping",
+        "is-closing"
+      );
+      activeProjectSource = null;
+      modalHideTimer = 0;
+    };
+
+    const transitionTime = getModalTransitionTime();
+    if (hadActiveFlip || transitionTime <= 0) {
+      finishHiding();
+      return;
+    }
+
+    modalHideTimer = window.setTimeout(finishHiding, transitionTime + 50);
+  };
+
   const finishProjectOpen = (projectId, transitionVersion) => {
     if (
       !projectModal ||
@@ -249,7 +377,7 @@ if (surface && world && sourceTile) {
 
     activeGalleryCarousel?.destroy();
     activeGalleryCarousel = initGalleryCarousel(projectModalBody);
-    projectModal.classList.remove("is-flipping");
+    projectModal.classList.remove("is-flipping", "is-closing");
     projectModal.classList.add("is-ready");
     projectCloseButton.focus({ preventScroll: true });
   };
@@ -257,8 +385,14 @@ if (surface && world && sourceTile) {
   const revealActiveProjectFlip = () => {
     if (!activeProjectFlip) return;
 
-    const { projectId, transitionVersion } = activeProjectFlip;
+    const { direction, projectId, transitionVersion } = activeProjectFlip;
     const isAlreadyReady = projectModal?.classList.contains("is-ready");
+
+    if (direction === "close") {
+      finishProjectClose(projectId, transitionVersion);
+      return;
+    }
+
     cancelActiveProjectFlip();
 
     if (!isAlreadyReady) {
@@ -269,6 +403,7 @@ if (surface && world && sourceTile) {
   };
 
   const startProjectFlip = ({
+    direction = "open",
     projectId,
     sourceCard,
     sourceRect,
@@ -284,13 +419,21 @@ if (surface && world && sourceTile) {
       typeof sourceCard.animate !== "function" ||
       reducedMotionPreference.matches
     ) {
-      finishProjectOpen(projectId, transitionVersion);
+      if (direction === "close") {
+        finishProjectClose(projectId, transitionVersion);
+      } else {
+        finishProjectOpen(projectId, transitionVersion);
+      }
       return;
     }
 
     const targetCard = projectModalBody.querySelector(".project-detail-card");
     if (!(targetCard instanceof Element)) {
-      finishProjectOpen(projectId, transitionVersion);
+      if (direction === "close") {
+        finishProjectClose(projectId, transitionVersion);
+      } else {
+        finishProjectOpen(projectId, transitionVersion);
+      }
       return;
     }
 
@@ -309,7 +452,11 @@ if (surface && world && sourceTile) {
       targetRect.width <= 0 ||
       targetRect.height <= 0
     ) {
-      finishProjectOpen(projectId, transitionVersion);
+      if (direction === "close") {
+        finishProjectClose(projectId, transitionVersion);
+      } else {
+        finishProjectOpen(projectId, transitionVersion);
+      }
       return;
     }
 
@@ -384,6 +531,12 @@ if (surface && world && sourceTile) {
     projectModal.append(flip);
 
     const duration = 560;
+    const animationTiming = {
+      duration,
+      direction: direction === "close" ? "reverse" : "normal",
+      easing: "linear",
+      fill: "both"
+    };
     const flightAnimation = flip.animate(
       [
         {
@@ -401,7 +554,7 @@ if (surface && world && sourceTile) {
           offset: 1
         }
       ],
-      { duration, easing: "linear", fill: "both" }
+      animationTiming
     );
     const turnAnimation = flipInner.animate(
       [
@@ -424,7 +577,7 @@ if (surface && world && sourceTile) {
           offset: 1
         }
       ],
-      { duration, easing: "linear", fill: "both" }
+      animationTiming
     );
     const frontFaceAnimation = frontFace.animate(
       [
@@ -433,7 +586,7 @@ if (surface && world && sourceTile) {
         { opacity: 0, clipPath: targetClip, offset: 0.52 },
         { opacity: 0, clipPath: targetClip, offset: 1 }
       ],
-      { duration, easing: "linear", fill: "both" }
+      animationTiming
     );
     const backFaceAnimation = backFace.animate(
       [
@@ -442,7 +595,7 @@ if (surface && world && sourceTile) {
         { opacity: 1, offset: 0.52 },
         { opacity: 1, offset: 1 }
       ],
-      { duration, easing: "linear", fill: "both" }
+      animationTiming
     );
 
     activeProjectFlip = {
@@ -453,6 +606,7 @@ if (surface && world && sourceTile) {
         frontFaceAnimation,
         backFaceAnimation
       ],
+      direction,
       projectId,
       transitionVersion
     };
@@ -467,9 +621,16 @@ if (surface && world && sourceTile) {
         !activeProjectFlip ||
         activeProjectFlip.element !== flip ||
         modalTransitionVersion !== transitionVersion ||
-        !projectModal.classList.contains("is-open") ||
+        (direction === "close"
+          ? !projectModal.classList.contains("is-closing")
+          : !projectModal.classList.contains("is-open")) ||
         projectModal.dataset.activeProject !== projectId
       ) {
+        return;
+      }
+
+      if (direction === "close") {
+        finishProjectClose(projectId, transitionVersion);
         return;
       }
 
@@ -497,9 +658,8 @@ if (surface && world && sourceTile) {
     });
   };
 
-  const restorePreviousFocus = () => {
+  const focusPreviousFocus = () => {
     const focusTarget = previousFocus;
-    previousFocus = null;
 
     if (
       focusTarget &&
@@ -511,6 +671,11 @@ if (surface && world && sourceTile) {
     }
 
     surface.focus({ preventScroll: true });
+  };
+
+  const restorePreviousFocus = () => {
+    focusPreviousFocus();
+    previousFocus = null;
   };
 
   const initGalleryCarousel = (root) => {
@@ -748,49 +913,69 @@ if (surface && world && sourceTile) {
     };
   };
 
+  const freezeGalleryTransition = () => {
+    const track = projectModalBody?.querySelector(
+      "[data-carousel-track].is-animating"
+    );
+    if (!(track instanceof HTMLElement)) return;
+
+    const currentTransform = window.getComputedStyle(track).transform;
+    track.style.transform =
+      currentTransform === "none"
+        ? "translate3d(0, 0, 0)"
+        : currentTransform;
+    track.classList.remove("is-animating");
+  };
+
   const closeProject = () => {
     if (
       !projectModal ||
       !projectModalBody ||
       projectModal.hidden ||
-      !projectModal.classList.contains("is-open")
+      !projectModal.classList.contains("is-open") ||
+      projectModal.classList.contains("is-closing")
     ) {
       return;
     }
 
-    cancelPendingModalHide();
-    cancelActiveProjectFlip();
-    activeGalleryCarousel?.destroy();
-    activeGalleryCarousel = null;
-    const transitionVersion = modalTransitionVersion;
-    projectModal.classList.remove("is-open", "is-ready", "is-flipping");
-    projectModal.setAttribute("aria-hidden", "true");
-    surface.classList.remove("has-open-project");
-    restorePreviousFocus();
-
-    const finishClosing = () => {
-      if (
-        modalTransitionVersion !== transitionVersion ||
-        projectModal.classList.contains("is-open")
-      ) {
-        return;
-      }
-
-      projectModal.hidden = true;
-      projectModalBody.replaceChildren();
-      projectModal.removeAttribute("aria-labelledby");
-      delete projectModal.dataset.activeProject;
-      projectModal.classList.remove("is-ready", "is-flipping");
-      modalHideTimer = 0;
-    };
-
-    const transitionTime = getModalTransitionTime();
-    if (transitionTime <= 0) {
-      finishClosing();
+    if (
+      projectModal.classList.contains("is-flipping") &&
+      !projectModal.classList.contains("is-ready")
+    ) {
       return;
     }
 
-    modalHideTimer = window.setTimeout(finishClosing, transitionTime + 50);
+    const projectId = projectModal.dataset.activeProject;
+    if (!projectId) return;
+
+    cancelPendingModalHide();
+    cancelActiveProjectFlip();
+    freezeGalleryTransition();
+    activeGalleryCarousel?.destroy();
+    activeGalleryCarousel = null;
+    const transitionVersion = modalTransitionVersion;
+    const sourceElement = resolveProjectSource(projectId);
+    const sourceRect = sourceElement?.getBoundingClientRect() || null;
+    const sourceWidth = sourceElement?.offsetWidth || 0;
+    const sourceHeight = sourceElement?.offsetHeight || 0;
+
+    projectModal.classList.remove("is-ready");
+    projectModal.classList.add("is-flipping", "is-closing");
+    focusPreviousFocus();
+    projectModal.setAttribute("aria-hidden", "true");
+    startProjectFlip({
+      direction: "close",
+      projectId,
+      sourceCard: sourceElement,
+      sourceRect,
+      sourceWidth,
+      sourceHeight,
+      transitionVersion
+    });
+
+    if (projectModal.classList.contains("is-closing")) {
+      projectModal.classList.remove("is-open");
+    }
   };
 
   const openProject = (projectId, sourceCard = null) => {
@@ -816,6 +1001,7 @@ if (surface && world && sourceTile) {
           ? document.activeElement
           : null;
     }
+    rememberProjectSource(projectId, sourceElement, sourceRect);
 
     const content = template.content.cloneNode(true);
     activeGalleryCarousel?.destroy();
@@ -843,7 +1029,12 @@ if (surface && world && sourceTile) {
     projectModal.scrollTop = 0;
     projectModal.scrollLeft = 0;
     projectModal.hidden = false;
-    projectModal.classList.remove("is-open", "is-ready", "is-flipping");
+    projectModal.classList.remove(
+      "is-open",
+      "is-ready",
+      "is-flipping",
+      "is-closing"
+    );
     surface.classList.add("has-open-project");
     // Flush the hidden state so the entrance transition starts reliably.
     void projectModal.offsetWidth;
