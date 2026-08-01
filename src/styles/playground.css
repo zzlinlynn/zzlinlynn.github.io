@@ -351,19 +351,17 @@ body .case-nav-ui.playground-nav-ui .site-nav {
 
 .project-flip__source-card {
   position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
+  top: 50% !important;
+  left: 50% !important;
   width: var(--flip-source-width) !important;
   height: var(--flip-source-height) !important;
   margin: 0 !important;
   backface-visibility: hidden !important;
   -webkit-backface-visibility: hidden !important;
+  box-shadow: none !important;
   pointer-events: none !important;
-  transform: scale(
-    var(--flip-source-scale-x),
-    var(--flip-source-scale-y)
-  ) !important;
-  transform-origin: 0 0 !important;
+  transform: translate(-50%, -50%) scale(var(--flip-source-scale)) !important;
+  transform-origin: center !important;
   transition: none !important;
 }
 

@@ -330,13 +330,23 @@ if (surface && world && sourceTile) {
     targetClone.classList.add("project-flip__target-card");
     sourceClone.style.setProperty("--flip-source-width", `${sourceWidth}px`);
     sourceClone.style.setProperty("--flip-source-height", `${sourceHeight}px`);
-    sourceClone.style.setProperty(
-      "--flip-source-scale-x",
-      String(targetRect.width / sourceWidth)
+    const sourceFitScale = Math.min(
+      targetRect.width / sourceWidth,
+      targetRect.height / sourceHeight
+    );
+    const fittedSourceWidth = sourceWidth * sourceFitScale;
+    const fittedSourceHeight = sourceHeight * sourceFitScale;
+    const sourceInsetX = Math.max(
+      0,
+      (targetRect.width - fittedSourceWidth) / 2
+    );
+    const sourceInsetY = Math.max(
+      0,
+      (targetRect.height - fittedSourceHeight) / 2
     );
     sourceClone.style.setProperty(
-      "--flip-source-scale-y",
-      String(targetRect.height / sourceHeight)
+      "--flip-source-scale",
+      String(sourceFitScale)
     );
 
     prepareTransitionClone(sourceClone);
@@ -354,10 +364,18 @@ if (surface && world && sourceTile) {
       sourceRect.left - modalRect.left + projectModal.scrollLeft;
     const sourceTop =
       sourceRect.top - modalRect.top + projectModal.scrollTop;
-    const translateX = sourceLeft - targetLeft;
-    const translateY = sourceTop - targetTop;
-    const scaleX = sourceRect.width / targetRect.width;
-    const scaleY = sourceRect.height / targetRect.height;
+    const initialScaleX = sourceRect.width / fittedSourceWidth;
+    const initialScaleY = sourceRect.height / fittedSourceHeight;
+    const initialScale = (initialScaleX + initialScaleY) / 2;
+    const translateX =
+      sourceLeft - targetLeft - sourceInsetX * initialScale;
+    const translateY =
+      sourceTop - targetTop - sourceInsetY * initialScale;
+    const sourceRadius =
+      Number.parseFloat(window.getComputedStyle(sourceCard).borderRadius) || 6;
+    const fittedSourceRadius = sourceRadius * sourceFitScale;
+    const sourceClip = `inset(${sourceInsetY}px ${sourceInsetX}px round ${fittedSourceRadius}px)`;
+    const targetClip = "inset(0px round 20px)";
 
     flip.style.left = `${targetLeft}px`;
     flip.style.top = `${targetTop}px`;
@@ -369,7 +387,7 @@ if (surface && world && sourceTile) {
     const flightAnimation = flip.animate(
       [
         {
-          transform: `translate3d(${translateX}px, ${translateY}px, 0) scale3d(${scaleX}, ${scaleY}, 1)`,
+          transform: `translate3d(${translateX}px, ${translateY}px, 0) scale3d(${initialScale}, ${initialScale}, 1)`,
           easing: "cubic-bezier(0.22, 0.75, 0.2, 1)",
           offset: 0
         },
@@ -410,10 +428,10 @@ if (surface && world && sourceTile) {
     );
     const frontFaceAnimation = frontFace.animate(
       [
-        { opacity: 1, offset: 0 },
-        { opacity: 1, offset: 0.48 },
-        { opacity: 0, offset: 0.52 },
-        { opacity: 0, offset: 1 }
+        { opacity: 1, clipPath: sourceClip, offset: 0 },
+        { opacity: 1, clipPath: targetClip, offset: 0.48 },
+        { opacity: 0, clipPath: targetClip, offset: 0.52 },
+        { opacity: 0, clipPath: targetClip, offset: 1 }
       ],
       { duration, easing: "linear", fill: "both" }
     );
