@@ -1,0 +1,359 @@
+.needs-motion {
+  --dial-cx: 313px;
+  --dial-cy: 79px;
+  --control-ease: linear(
+    0,
+    .0716,
+    .218,
+    .3778,
+    .5231,
+    .6442,
+    .7399,
+    .8128,
+    .867,
+    .9066,
+    .935,
+    .9551,
+    .9692,
+    .979,
+    .9858,
+    .9904,
+    1
+  );
+  position: relative;
+  display: none;
+  width: 100%;
+  order: 3;
+  margin-top: 16px;
+  cursor: default;
+}
+
+.needs-motion--mobile {
+  --dial-cx: 171px;
+  --dial-cy: 257px;
+  display: block;
+  width: min(342px, 100%);
+  margin-inline: auto;
+}
+
+.needs-motion--tablet {
+  --dial-cx: 345px;
+  --dial-cy: 67px;
+}
+
+.needs-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.needs-signal,
+.needs-needle-motion,
+.needs-control-fill,
+.needs-control-ticks-active,
+.needs-control-cursor,
+.needs-animation-sentinel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.needs-signal {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.needs-needle-motion {
+  transform-box: view-box;
+  transform-origin: var(--dial-cx) var(--dial-cy);
+}
+
+.needs-control-fill {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+}
+
+.needs-hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.needs-motion.is-pending .needs-needle-static,
+.needs-motion.is-playing .needs-needle-static,
+.needs-motion.is-complete .needs-needle-static {
+  opacity: 0;
+}
+
+.needs-motion.is-pending .needs-signal,
+.needs-motion.is-pending .needs-needle-motion,
+.needs-motion.is-pending .needs-control-fill,
+.needs-motion.is-pending .needs-control-ticks-active,
+.needs-motion.is-pending .needs-control-cursor,
+.needs-motion.is-playing .needs-signal,
+.needs-motion.is-playing .needs-needle-motion,
+.needs-motion.is-playing .needs-control-fill,
+.needs-motion.is-playing .needs-control-ticks-active,
+.needs-motion.is-playing .needs-control-cursor,
+.needs-motion.is-complete .needs-signal,
+.needs-motion.is-complete .needs-needle-motion,
+.needs-motion.is-complete .needs-control-fill,
+.needs-motion.is-complete .needs-control-ticks-active,
+.needs-motion.is-complete .needs-control-cursor {
+  opacity: 1;
+}
+
+.needs-motion.is-pending .needs-signal {
+  transform: translate3d(0, 0, 0);
+}
+
+.needs-motion.is-pending .needs-needle-motion {
+  transform: rotate(90deg);
+}
+
+.needs-motion.is-pending .needs-control-fill {
+  transform: scaleX(0);
+}
+
+.needs-motion.is-pending .needs-control-ticks-active {
+  clip-path: inset(0 100% 0 0);
+}
+
+.needs-motion.is-pending .needs-control-cursor {
+  transform: translate3d(0, 0, 0);
+}
+
+.needs-motion.is-complete .needs-signal--left {
+  transform: translate3d(-56px, 0, 0);
+}
+
+.needs-motion.is-complete .needs-signal--upper {
+  transform: translate3d(-29px, -42px, 0);
+}
+
+.needs-motion.is-complete .needs-signal--right {
+  transform: translate3d(56px, 16px, 0);
+}
+
+.needs-motion.is-complete .needs-needle-motion {
+  transform: rotate(0);
+}
+
+.needs-motion.is-complete .needs-control-fill {
+  transform: scaleX(1);
+}
+
+.needs-motion.is-complete .needs-control-ticks-active {
+  clip-path: inset(0);
+}
+
+.needs-motion.is-complete .needs-control-cursor {
+  transform: translate3d(17px, 0, 0);
+}
+
+.needs-motion.is-playing .needs-signal--left,
+.needs-motion.is-replaying-understand .needs-signal--left {
+  animation: needs-signal-left 420ms cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.needs-motion.is-playing .needs-signal--right,
+.needs-motion.is-replaying-understand .needs-signal--right {
+  animation: needs-signal-right 420ms 120ms cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.needs-motion.is-playing .needs-signal--upper,
+.needs-motion.is-replaying-understand .needs-signal--upper {
+  animation: needs-signal-upper 420ms 240ms cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.needs-motion.is-playing .needs-needle-motion,
+.needs-motion.is-replaying-execute .needs-needle-motion {
+  opacity: 1;
+  animation: needs-dial-turn 700ms linear(
+    0,
+    .27 11.86%,
+    .7 26.14%,
+    .95 42.86%,
+    1 54.71%,
+    1.014 69%,
+    1.005 85.71%,
+    1
+  ) both;
+}
+
+.needs-motion.is-playing .needs-control-fill,
+.needs-motion.is-replaying-control .needs-control-fill {
+  opacity: 1;
+  animation: needs-control-fill 600ms var(--control-ease) both;
+}
+
+.needs-motion.is-playing .needs-control-ticks-active,
+.needs-motion.is-replaying-control .needs-control-ticks-active {
+  opacity: 1;
+  animation: needs-control-ticks 600ms var(--control-ease) both;
+}
+
+.needs-motion.is-playing .needs-control-cursor,
+.needs-motion.is-replaying-control .needs-control-cursor {
+  opacity: 1;
+  animation: needs-control-cursor 600ms var(--control-ease) both;
+}
+
+.needs-motion.is-playing .needs-animation-sentinel {
+  animation: needs-motion-timeline 800ms linear both;
+}
+
+@keyframes needs-signal-left {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-56px, 0, 0);
+  }
+}
+
+@keyframes needs-signal-upper {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-29px, -42px, 0);
+  }
+}
+
+@keyframes needs-signal-right {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(56px, 16px, 0);
+  }
+}
+
+@keyframes needs-dial-turn {
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes needs-control-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes needs-control-ticks {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes needs-control-cursor {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(17px, 0, 0);
+  }
+}
+
+@keyframes needs-motion-timeline {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: .001;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .needs-motion .needs-needle-static {
+    opacity: 0;
+  }
+
+  .needs-motion .needs-signal,
+  .needs-motion .needs-needle-motion,
+  .needs-motion .needs-control-fill,
+  .needs-motion .needs-control-ticks-active,
+  .needs-motion .needs-control-cursor {
+    opacity: 1;
+  }
+
+  .needs-motion .needs-signal--left {
+    transform: translate3d(-56px, 0, 0);
+  }
+
+  .needs-motion .needs-signal--upper {
+    transform: translate3d(-29px, -42px, 0);
+  }
+
+  .needs-motion .needs-signal--right {
+    transform: translate3d(56px, 16px, 0);
+  }
+
+  .needs-motion .needs-needle-motion {
+    transform: rotate(0);
+  }
+
+  .needs-motion .needs-control-fill {
+    transform: scaleX(1);
+  }
+
+  .needs-motion .needs-control-ticks-active {
+    clip-path: inset(0);
+  }
+
+  .needs-motion .needs-control-cursor {
+    transform: translate3d(17px, 0, 0);
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .needs-motion {
+    order: initial;
+    margin-top: 0;
+  }
+
+  .needs-motion--mobile {
+    display: none;
+  }
+
+  .needs-motion--tablet {
+    display: block;
+    width: min(704px, 100%);
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 1025px) {
+  .needs-motion {
+    order: initial;
+    margin-top: 0;
+  }
+
+  .needs-motion--mobile,
+  .needs-motion--tablet {
+    display: none;
+  }
+
+  .needs-motion--desktop {
+    display: block;
+    width: 625px;
+  }
+}
+

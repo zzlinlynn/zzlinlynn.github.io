@@ -1,0 +1,421 @@
+.judgment-motion {
+  --line: #b8b8bd;
+  --accent: #4552ff;
+  --motion-ease: cubic-bezier(.4, 0, .2, 1);
+  --emerge-ease: cubic-bezier(.2, .75, .25, 1);
+  position: relative;
+  display: none;
+  width: 100%;
+  margin: 0 auto;
+  cursor: default;
+}
+
+.judgment-motion--mobile {
+  display: block;
+  width: min(294px, 100%);
+}
+
+.judgment-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.judgment-hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.judgment-motion-dot,
+.judgment-gate-contraction-line-motion,
+.judgment-gate-arrow-line-motion,
+.judgment-gate-arrowhead-motion,
+.judgment-triangle-line-motion,
+.judgment-advantage-line-motion,
+.judgment-ray-motion,
+.judgment-animation-sentinel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.judgment-motion-dot,
+.judgment-triangle-dot-motion,
+.judgment-advantage-dot-motion {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.judgment-gate-contraction-mask,
+.judgment-gate-arrow-mask,
+.judgment-triangle-mask,
+.judgment-advantage-mask {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.judgment-gate-arrowhead-motion,
+.judgment-ray-motion {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.judgment-motion:is(
+  .is-pending,
+  .is-playing,
+  .is-complete,
+  .is-mobile-ready
+) .judgment-animated-static {
+  opacity: 0;
+}
+
+.judgment-motion:is(
+  .is-pending,
+  .is-playing,
+  .is-complete,
+  .is-mobile-ready
+) :is(
+  .judgment-motion-dot,
+  .judgment-gate-contraction-line-motion,
+  .judgment-gate-arrow-line-motion,
+  .judgment-gate-arrowhead-motion,
+  .judgment-triangle-line-motion,
+  .judgment-advantage-line-motion,
+  .judgment-ray-motion
+) {
+  opacity: 1;
+}
+
+.judgment-gate-dot-motion {
+  fill: #fff;
+  stroke: var(--line);
+  stroke-width: 1.2;
+  transform: translate3d(0, 0, 0);
+}
+
+.judgment-gate-final-dot-motion {
+  opacity: 0;
+}
+
+.judgment-triangle-dot-motion {
+  opacity: 0;
+  transform: scale(.45);
+}
+
+.judgment-advantage-dot-motion {
+  opacity: 0;
+  transform: translate3d(0, 0, 0) scale(.72);
+}
+
+.judgment-motion.is-complete .judgment-gate-dot-motion,
+.judgment-motion.is-mobile-complete-gate .judgment-gate-dot-motion {
+  opacity: 0;
+  transform: translate3d(34.5px, 0, 0);
+}
+
+.judgment-motion.is-complete .judgment-gate-final-dot-motion,
+.judgment-motion.is-mobile-complete-gate .judgment-gate-final-dot-motion {
+  opacity: 1;
+}
+
+.judgment-motion.is-complete .judgment-gate-contraction-mask,
+.judgment-motion.is-mobile-complete-gate .judgment-gate-contraction-mask {
+  stroke-dashoffset: 0;
+}
+
+.judgment-motion.is-complete .judgment-gate-arrow-mask,
+.judgment-motion.is-mobile-complete-gate .judgment-gate-arrow-mask,
+.judgment-motion.is-complete .judgment-gate-arrowhead-motion,
+.judgment-motion.is-mobile-complete-gate .judgment-gate-arrowhead-motion {
+  stroke-dashoffset: 0;
+}
+
+.judgment-motion.is-complete .judgment-gate-arrowhead-motion,
+.judgment-motion.is-mobile-complete-gate .judgment-gate-arrowhead-motion {
+  opacity: 1;
+}
+
+.judgment-motion.is-complete .judgment-triangle-mask,
+.judgment-motion.is-mobile-complete-compare .judgment-triangle-mask {
+  stroke-dashoffset: 0;
+}
+
+.judgment-motion.is-complete .judgment-triangle-dot-motion,
+.judgment-motion.is-mobile-complete-compare .judgment-triangle-dot-motion {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.judgment-motion.is-complete .judgment-advantage-mask,
+.judgment-motion.is-mobile-complete-advantage .judgment-advantage-mask,
+.judgment-motion.is-complete .judgment-ray-motion,
+.judgment-motion.is-mobile-complete-advantage .judgment-ray-motion {
+  stroke-dashoffset: 0;
+}
+
+.judgment-motion.is-complete .judgment-advantage-dot-motion,
+.judgment-motion.is-mobile-complete-advantage .judgment-advantage-dot-motion {
+  opacity: 1;
+  transform: translate3d(0, -28px, 0) scale(1);
+}
+
+.judgment-motion.is-playing .judgment-gate-dot-motion,
+.judgment-motion.is-mobile-playing-gate .judgment-gate-dot-motion,
+.judgment-motion.is-replaying-gate .judgment-gate-dot-motion {
+  animation: judgment-gate-absorb 200ms var(--motion-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-gate-dot-motion {
+  animation-delay: 80ms;
+}
+
+.judgment-motion.is-playing .judgment-gate-contraction-mask {
+  animation: judgment-line-reveal 240ms 80ms var(--motion-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-gate-final-dot-motion {
+  animation: judgment-gate-final-arrive 240ms 320ms
+    var(--emerge-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-gate-arrow-mask--0 {
+  animation: judgment-line-reveal 360ms 600ms var(--motion-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-gate-arrowhead-motion {
+  animation: judgment-arrowhead-reveal 160ms 960ms var(--emerge-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-gate,
+  .is-replaying-gate
+) .judgment-gate-contraction-mask {
+  animation: judgment-line-reveal 240ms var(--motion-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-gate,
+  .is-replaying-gate
+) .judgment-gate-final-dot-motion {
+  animation: judgment-gate-final-arrive 240ms 240ms
+    var(--emerge-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-gate,
+  .is-replaying-gate
+) .judgment-gate-arrow-mask--0 {
+  animation: judgment-line-reveal 360ms 520ms var(--motion-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-gate,
+  .is-replaying-gate
+) .judgment-gate-arrowhead-motion {
+  animation: judgment-arrowhead-reveal 160ms 880ms var(--emerge-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-triangle-mask {
+  animation: judgment-line-reveal 620ms 1160ms var(--motion-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-triangle-dot-motion {
+  animation: judgment-dot-arrive 280ms 1760ms var(--emerge-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-compare,
+  .is-replaying-compare
+) .judgment-triangle-mask {
+  animation: judgment-line-reveal 620ms var(--motion-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-compare,
+  .is-replaying-compare
+) .judgment-triangle-dot-motion {
+  animation: judgment-dot-arrive 280ms 600ms var(--emerge-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-advantage-mask {
+  animation: judgment-line-reveal 680ms 2080ms var(--motion-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-advantage-dot-motion {
+  animation: judgment-advantage-rise 680ms 2080ms var(--emerge-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-ray-motion {
+  animation: judgment-ray-burst 360ms
+    calc(2740ms + var(--ray-index) * 28ms) var(--emerge-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-advantage,
+  .is-replaying-advantage
+) .judgment-advantage-mask {
+  animation: judgment-line-reveal 680ms var(--motion-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-advantage,
+  .is-replaying-advantage
+) .judgment-advantage-dot-motion {
+  animation: judgment-advantage-rise 680ms var(--emerge-ease) both;
+}
+
+.judgment-motion:is(
+  .is-mobile-playing-advantage,
+  .is-replaying-advantage
+) .judgment-ray-motion {
+  animation: judgment-ray-burst 360ms
+    calc(660ms + var(--ray-index) * 28ms) var(--emerge-ease) both;
+}
+
+.judgment-motion.is-playing .judgment-animation-sentinel {
+  animation: judgment-motion-timeline 3300ms linear;
+}
+
+@keyframes judgment-gate-absorb {
+  0% {
+    opacity: 1;
+    fill: #fff;
+    stroke: var(--line);
+    transform: translate3d(0, 0, 0);
+  }
+
+  45% {
+    opacity: .55;
+    fill: #fff;
+    stroke: var(--line);
+    transform: translate3d(16px, 0, 0);
+  }
+
+  80% {
+    opacity: .15;
+    fill: #fff;
+    stroke: var(--line);
+    transform: translate3d(30px, 0, 0);
+  }
+
+  100% {
+    opacity: 0;
+    fill: #fff;
+    stroke: var(--line);
+    transform: translate3d(34.5px, 0, 0);
+  }
+}
+
+@keyframes judgment-gate-final-arrive {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes judgment-line-reveal {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes judgment-arrowhead-reveal {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes judgment-dot-arrive {
+  from {
+    opacity: 0;
+    transform: scale(.45);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes judgment-advantage-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(.72);
+  }
+
+  14% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, -28px, 0) scale(1);
+  }
+}
+
+@keyframes judgment-ray-burst {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 1;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes judgment-motion-timeline {
+  from,
+  to {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .judgment-motion--mobile {
+    display: none;
+  }
+
+  .judgment-motion--tablet {
+    display: block;
+    width: min(672px, 100%);
+  }
+}
+
+@media (min-width: 1025px) {
+  .judgment-motion--tablet {
+    display: none;
+  }
+
+  .judgment-motion--desktop {
+    display: block;
+    width: min(625px, 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .judgment-motion *,
+  .judgment-motion *::before,
+  .judgment-motion *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0ms !important;
+  }
+}

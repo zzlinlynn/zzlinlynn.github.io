@@ -1,0 +1,320 @@
+.decision-motion {
+  --motion-step-1: 168px;
+  --motion-step-2: 368px;
+  --spine-start: 1;
+  --spine-mid: .53719;
+  position: relative;
+  display: none;
+  width: 100%;
+  margin-top: 40px;
+  cursor: default;
+}
+
+.decision-motion--mobile {
+  display: block;
+  width: min(342px, 100%);
+  margin-inline: auto;
+}
+
+.decision-motion--tablet {
+  --motion-step-1: 197px;
+  --motion-step-2: 416px;
+  --spine-start: .94972;
+  --spine-mid: .50128;
+}
+
+.decision-motion svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.decision-motion .motion-dot,
+.decision-motion .motion-traveler {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.decision-motion .motion-traveler,
+.decision-motion .motion-timeline-sentinel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.decision-motion .motion-intro-path,
+.decision-motion .motion-spine,
+.decision-motion .third-arrow,
+.decision-motion .third-reveal-mask {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.decision-motion.is-pending .motion-dot--1,
+.decision-motion.is-pending .motion-dot--2,
+.decision-motion.is-pending .motion-dot--3 {
+  opacity: 0;
+}
+
+.decision-motion.is-pending .motion-intro-path,
+.decision-motion.is-pending .motion-spine,
+.decision-motion.is-pending .third-arrow,
+.decision-motion.is-pending .third-reveal-mask {
+  stroke-dashoffset: 1;
+}
+
+.decision-motion.is-playing .motion-intro-path {
+  animation: draw-intro-path 3000ms linear both;
+}
+
+.decision-motion.is-playing .motion-dot--1 {
+  animation: reveal-first 3000ms linear both;
+}
+
+.decision-motion.is-playing .motion-dot--2 {
+  animation: reveal-second 3000ms linear both;
+}
+
+.decision-motion.is-playing .motion-dot--3 {
+  animation: reveal-third 3000ms linear both;
+}
+
+.decision-motion.is-playing .motion-spine {
+  animation: draw-spine 3000ms linear both;
+}
+
+.decision-motion.is-playing .third-reveal-mask {
+  animation: draw-third-feedback 3000ms linear both;
+}
+
+.decision-motion.is-playing .third-arrow {
+  animation: draw-third-arrow 3000ms linear both;
+}
+
+.decision-motion.is-playing .motion-traveler {
+  animation: travel-across-decisions 3000ms linear both;
+  will-change: transform, opacity;
+}
+
+.decision-motion.is-playing .motion-timeline-sentinel {
+  animation: motion-timeline 3000ms linear both;
+}
+
+.decision-motion.is-complete .motion-dot--1,
+.decision-motion.is-complete .motion-dot--2,
+.decision-motion.is-complete .motion-dot--3 {
+  opacity: 1;
+  transform: none;
+}
+
+.decision-motion.is-complete .motion-intro-path,
+.decision-motion.is-complete .motion-spine,
+.decision-motion.is-complete .third-arrow,
+.decision-motion.is-complete .third-reveal-mask {
+  stroke-dashoffset: 0;
+}
+
+@keyframes draw-intro-path {
+  0% {
+    stroke-dashoffset: 1;
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+
+  20%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes reveal-first {
+  0%,
+  19.99% {
+    opacity: 0;
+    transform: scale(.72);
+  }
+
+  20% {
+    opacity: 0;
+    transform: scale(.72);
+    animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+  }
+
+  24%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes draw-spine {
+  0% {
+    stroke-dashoffset: 1;
+  }
+
+  24% {
+    stroke-dashoffset: var(--spine-start);
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+
+  50% {
+    stroke-dashoffset: var(--spine-mid);
+  }
+
+  55% {
+    stroke-dashoffset: var(--spine-mid);
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+
+  82%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes travel-across-decisions {
+  0%,
+  23.99% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  24% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate3d(var(--motion-step-1), 0, 0);
+    animation-timing-function: linear;
+  }
+
+  55% {
+    opacity: 1;
+    transform: translate3d(var(--motion-step-1), 0, 0);
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+
+  82%,
+  96% {
+    opacity: 1;
+    transform: translate3d(var(--motion-step-2), 0, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--motion-step-2), 0, 0);
+  }
+}
+
+@keyframes motion-timeline {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: .001;
+  }
+}
+
+@keyframes reveal-second {
+  0%,
+  49.99% {
+    opacity: 0;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes reveal-third {
+  0%,
+  81.99% {
+    opacity: 0;
+  }
+
+  82%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes draw-third-feedback {
+  0% {
+    stroke-dashoffset: 1;
+  }
+
+  82% {
+    stroke-dashoffset: 1;
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+
+  96%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-third-arrow {
+  0% {
+    stroke-dashoffset: 1;
+  }
+
+  91% {
+    stroke-dashoffset: 1;
+    animation-timing-function: cubic-bezier(.65, 0, .35, 1);
+  }
+
+  97%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decision-motion.is-pending .motion-dot--1,
+  .decision-motion.is-pending .motion-dot--2,
+  .decision-motion.is-pending .motion-dot--3,
+  .decision-motion .motion-dot--1,
+  .decision-motion .motion-dot--2,
+  .decision-motion .motion-dot--3 {
+    opacity: 1;
+  }
+
+  .decision-motion.is-pending .motion-intro-path,
+  .decision-motion.is-pending .motion-spine,
+  .decision-motion.is-pending .third-arrow,
+  .decision-motion.is-pending .third-reveal-mask {
+    stroke-dashoffset: 0;
+  }
+
+  .decision-motion .motion-traveler {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .decision-motion--mobile {
+    display: none;
+  }
+
+  .decision-motion--tablet {
+    display: block;
+    width: min(704px, 100%);
+  }
+}
+
+@media (min-width: 1025px) {
+  .decision-motion--mobile,
+  .decision-motion--tablet {
+    display: none;
+  }
+
+  .decision-motion--desktop {
+    display: block;
+    width: 625px;
+  }
+}

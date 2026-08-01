@@ -255,14 +255,9 @@ img {
   object-position: center;
 }
 
-.judgment-visual,
 .product-media,
 .guidelines-media {
   border-radius: 6px;
-}
-
-.judgment-visual {
-  aspect-ratio: 342 / 740;
 }
 
 .research-visual {
@@ -537,10 +532,6 @@ img {
     max-width: 704px;
   }
 
-  .judgment-visual {
-    aspect-ratio: 704 / 236;
-  }
-
   .product-media {
     aspect-ratio: 704 / 292;
   }
@@ -718,10 +709,6 @@ img {
 
   .responsive-visual {
     max-width: 625px;
-  }
-
-  .judgment-visual {
-    aspect-ratio: 625 / 236;
   }
 
   .product-media {

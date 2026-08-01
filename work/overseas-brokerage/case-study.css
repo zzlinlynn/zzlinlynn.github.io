@@ -281,250 +281,6 @@ img {
   order: 1;
 }
 
-.needs-diagrams {
-  order: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-  margin-top: 16px;
-}
-
-.need-item {
-  width: 160px;
-  text-align: center;
-}
-
-.need-visual {
-  position: relative;
-  width: 160px;
-  height: 134px;
-}
-
-.need-item img {
-  width: 160px;
-  height: 134px;
-}
-
-.need-signal {
-  position: absolute;
-  z-index: 1;
-  top: 58px;
-  left: 71px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #4552ff;
-  pointer-events: none;
-  transform: translate3d(0, 0, 0);
-  transition: transform 420ms cubic-bezier(.4, 0, .2, 1);
-  will-change: transform;
-}
-
-.need-signal--right {
-  transition-delay: 120ms;
-}
-
-.need-signal--upper {
-  transition-delay: 240ms;
-}
-
-.need-dial-overlay {
-  position: absolute;
-  z-index: 1;
-  top: 67px;
-  left: 80px;
-  display: none;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
-.need-dial-overlay::before,
-.need-dial-overlay::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  border-radius: 999px;
-  transform-origin: 0 50%;
-}
-
-.need-dial-overlay::before {
-  top: -1.5px;
-  width: 32px;
-  height: 3px;
-  background: #4552ff;
-  transform: rotate(315deg);
-}
-
-.need-dial-overlay::after {
-  top: -.5px;
-  width: 51px;
-  height: 1px;
-  background: linear-gradient(to right, #fff 0 31px, #4552ff 31px 100%);
-  transform: rotate(45deg);
-  transition: transform 700ms cubic-bezier(.22, 1.2, .36, 1);
-  transition-timing-function: linear(
-    0,
-    .27 11.86%,
-    .7 26.14%,
-    .95 42.86%,
-    1 54.71%,
-    1.014 69%,
-    1.005 85.71%,
-    1
-  );
-  will-change: transform;
-}
-
-.need-visual--control {
-  --control-ease: linear(
-    0,
-    .0716,
-    .218,
-    .3778,
-    .5231,
-    .6442,
-    .7399,
-    .8128,
-    .867,
-    .9066,
-    .935,
-    .9551,
-    .9692,
-    .979,
-    .9858,
-    .9904,
-    1
-  );
-}
-
-.need-control-fill,
-.need-control-ticks-active,
-.need-control-cursor {
-  position: absolute;
-  z-index: 1;
-  display: none;
-  pointer-events: none;
-}
-
-.need-control-fill {
-  top: 60px;
-  left: 58px;
-  width: 17px;
-  height: 17px;
-  background: #4552ff;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  transition: transform 600ms cubic-bezier(.2, .7, .2, 1);
-  transition-timing-function: var(--control-ease);
-  will-change: transform;
-}
-
-.need-control-ticks-active {
-  top: 79.5px;
-  left: 58px;
-  width: 17px;
-  height: 8px;
-  overflow: hidden;
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 600ms cubic-bezier(.2, .7, .2, 1);
-  transition-timing-function: var(--control-ease);
-  will-change: clip-path;
-}
-
-.need-control-ticks-active::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 0 2px;
-  background: repeating-linear-gradient(
-    90deg,
-    #4552ff 0 1px,
-    transparent 1px 2px
-  );
-}
-
-.need-control-cursor {
-  z-index: 2;
-  top: 20.5px;
-  left: 58px;
-  width: 1px;
-  height: 87px;
-  background: #4552ff;
-  transform: translate3d(0, 0, 0);
-  transition: transform 600ms cubic-bezier(.2, .7, .2, 1);
-  transition-timing-function: var(--control-ease);
-  will-change: transform;
-}
-
-.need-control-cursor::before {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: -3.5px;
-  width: 0;
-  height: 0;
-  border-top: 7px solid #4552ff;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .need-dial-overlay,
-  .need-control-fill,
-  .need-control-ticks-active,
-  .need-control-cursor {
-    display: block;
-  }
-
-  .need-visual:hover .need-signal--left {
-    transform: translate3d(-56px, 0, 0);
-  }
-
-  .need-visual:hover .need-signal--upper {
-    transform: translate3d(-29px, -42px, 0);
-  }
-
-  .need-visual:hover .need-signal--right {
-    transform: translate3d(56px, 16px, 0);
-  }
-
-  .need-visual--execute:hover .need-dial-overlay::after {
-    transform: rotate(315deg);
-  }
-
-  .need-visual--control:hover .need-control-fill {
-    transform: scaleX(1);
-  }
-
-  .need-visual--control:hover .need-control-ticks-active {
-    clip-path: inset(0);
-  }
-
-  .need-visual--control:hover .need-control-cursor {
-    transform: translate3d(17px, 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .need-signal,
-  .need-dial-overlay,
-  .need-control-fill,
-  .need-control-ticks-active,
-  .need-control-cursor {
-    display: none;
-  }
-}
-
-.need-item figcaption,
-.decision-diagram figcaption {
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 32px;
-  text-align: center;
-}
-
 .inverse-section {
   background: var(--ink);
   color: #fff;
@@ -686,28 +442,6 @@ img {
 
 .overview-content {
   width: 100%;
-}
-
-.decision-diagrams {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 32px;
-  width: 100%;
-  margin-top: 40px;
-}
-
-.decision-diagram {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.decision-diagram img {
-  width: auto;
-  max-width: 213px;
-  height: 134px;
-  object-fit: contain;
 }
 
 .decision-divider {
@@ -1045,16 +779,6 @@ img {
     gap: 24px;
   }
 
-  .needs-diagrams {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 0;
-    order: initial;
-    margin-top: 0;
-  }
-
   .needs-synthesis {
     order: initial;
   }
@@ -1080,18 +804,6 @@ img {
 
   .decision-overview {
     gap: 24px;
-  }
-
-  .decision-diagrams {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-    margin-top: 40px;
-  }
-
-  .decision-diagram img {
-    width: 100%;
-    max-width: 213px;
-    object-fit: contain;
   }
 
   .decision-preview--one {
@@ -1225,11 +937,6 @@ img {
     display: grid;
     grid-template-columns: 240px 625px;
     gap: 96px;
-  }
-
-  .decision-diagrams {
-    grid-template-columns: 213px 200px 200px;
-    gap: 6px;
   }
 
   .decision-preview--two {

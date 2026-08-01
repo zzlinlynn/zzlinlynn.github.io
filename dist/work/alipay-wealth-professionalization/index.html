@@ -12,9 +12,11 @@
   <link rel="stylesheet" href="/fonts.css?v=20260729-font-family-set-1">
   <link rel="stylesheet" href="/case-nav.css?v=20260801-scroll-reveal-1">
   <link rel="stylesheet" href="./case-study.css?v=20260729-figma-arrow-1">
+  <link rel="stylesheet" href="./judgment-motion.css?v=20260801-judgment-motion-1">
   <link rel="stylesheet" href="/case-next-project.css?v=20260729-next-project-1">
   <link rel="stylesheet" href="/footer-strip.css?v=20260801-reading-progress-5">
   <script src="/case-nav.js?v=20260801-next-auto-scroll-3" defer></script>
+  <script src="./judgment-animation.js?v=20260801-judgment-motion-1" defer></script>
 </head>
 <body>
   <div class="ui case-nav-ui">
@@ -104,11 +106,1439 @@
         <h2 class="section-label" id="judgment-label">Judgment Model</h2>
         <div class="reading reading-stack">
           <p>通过用户调研，我得到了一个完整的机制：用户会先判断平台是否达到可信底线，再比较它是否在核心关键任务中提供的价值；营销、复杂和混乱会造成减分，透明数据、重点清晰和高效操作才能形成正向加分。</p>
-          <picture class="responsive-visual judgment-visual">
-            <source media="(min-width: 1025px)" srcset="/assets/alipay-wealth-professionalization/judgment-desktop.png">
-            <source media="(min-width: 768px)" srcset="/assets/alipay-wealth-professionalization/judgment-tablet.png">
-            <img src="/assets/alipay-wealth-professionalization/judgment-mobile.png" alt="用户对平台专业感的三阶段判断模型：可信底线、比较判断与可感优势" width="342" height="740" loading="lazy">
-          </picture>
+          <figure
+            class="judgment-motion judgment-motion--desktop"
+            data-judgment-motion
+            data-variant="desktop"
+            aria-label="用户对平台专业感的三阶段判断模型动画"
+          >
+            <svg class="judgment-svg" aria-hidden="true" focusable="false" width="625" height="236" viewBox="0 0 625 236" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path class="judgment-animated-static judgment-animated-static--gate-contraction-line-0" d="M51 72C58.6236 84.436 72.9765 92.5656 88 95.8503M103 97.5C100.692 97.5 98.3507 97.3778 96 97.1354" stroke="url(#paint0_linear_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-contraction-line-1" d="M51 123C58.6236 110.564 72.9765 102.434 88 99.1497M103 97.5C100.692 97.5 98.3507 97.6222 96 97.8646" stroke="url(#paint1_linear_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M35 69C39.4183 69 43 65.4183 43 61C43 56.5817 39.4183 53 35 53C30.5817 53 27 56.5817 27 61C27 65.4183 30.5817 69 35 69Z" stroke="#B8B8BD"/>
+  <path d="M19 93C23.4183 93 27 89.4183 27 85C27 80.5817 23.4183 77 19 77C14.5817 77 11 80.5817 11 85C11 89.4183 14.5817 93 19 93Z" stroke="#B8B8BD"/>
+  <path d="M35 117C39.4183 117 43 113.418 43 109C43 104.582 39.4183 101 35 101C30.5817 101 27 104.582 27 109C27 113.418 30.5817 117 35 117Z" stroke="#B8B8BD"/>
+  <path d="M19 141C23.4183 141 27 137.418 27 133C27 128.582 23.4183 125 19 125C14.5817 125 11 128.582 11 133C11 137.418 14.5817 141 19 141Z" stroke="#B8B8BD"/>
+  <ellipse cx="101.6" cy="97.5803" rx="5.6" ry="16.2581" stroke="#7C7C83"/>
+  <ellipse cx="103" cy="97" rx="7" ry="18" stroke="#7C7C83"/>
+  <path d="M89 59.5882L117 44V134.412L89 150V59.5882Z" stroke="#7C7C83"/>
+  <circle cx="68.5" cy="88.5" r="1.5" fill="#7C7C83"/>
+  <circle cx="68.5" cy="106.5" r="1.5" fill="#7C7C83"/>
+  <line x1="68.4" y1="89.4" x2="68.4" y2="105.6" stroke="#7C7C83" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrow-hidden-line-0" d="M129.5 97.5L103 97.5" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrow-line-0" d="M168 97.5H138" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-dot" d="M132 107C137.523 107 142 102.523 142 97C142 91.4772 137.523 87 132 87C126.477 87 122 91.4772 122 97C122 102.523 126.477 107 132 107Z" fill="#4552FF"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrowhead" d="M164 99.5C164 99.5 168 98 168 97.5C168 97 164 95.5 164 95.5" stroke="#B8B8BD" stroke-linecap="round"/>
+  <path d="M146 133C150.418 133 154 129.418 154 125C154 120.582 150.418 117 146 117C141.582 117 138 120.582 138 125C138 129.418 141.582 133 146 133Z" stroke="#B8B8BD"/>
+  <path d="M146 77C150.418 77 154 73.4183 154 69C154 64.5817 150.418 61 146 61C141.582 61 138 64.5817 138 69C138 73.4183 141.582 77 146 77Z" stroke="#B8B8BD"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="58" y="202.4">&#x53ef;&#x4fe1;&#x5e95;&#x7ebf;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="35" y="230">&#x5fc5;&#x987b;&#x5148;&#x8fc7;&#x5b89;&#x5168;&#x4e0e;&#x6027;&#x80fd;&#x95e8;&#x69db;</tspan></text>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-0" d="M312.5 62L312.5 86" stroke="url(#paint2_linear_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-1" d="M306.5 103L273.167 128" stroke="url(#paint3_linear_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-2" d="M318.5 103L352 128.125" stroke="url(#paint4_linear_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-dot" d="M312.5 106C318.023 106 322.5 101.523 322.5 96C322.5 90.4772 318.023 86 312.5 86C306.977 86 302.5 90.4772 302.5 96C302.5 101.523 306.977 106 312.5 106Z" fill="#4552FF"/>
+  <path d="M306.5 59L270.554 125.5" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M317.5 59L354.622 126" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M274.5 133L351.5 133" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M312.5 61C316.918 61 320.5 57.4183 320.5 53C320.5 48.5817 316.918 45 312.5 45C308.082 45 304.5 48.5817 304.5 53C304.5 57.4183 308.082 61 312.5 61Z" stroke="#B8B8BD"/>
+  <path d="M266.5 141C270.918 141 274.5 137.418 274.5 133C274.5 128.582 270.918 125 266.5 125C262.082 125 258.5 128.582 258.5 133C258.5 137.418 262.082 141 266.5 141Z" stroke="#B8B8BD"/>
+  <path d="M358.5 141C362.918 141 366.5 137.418 366.5 133C366.5 128.582 362.918 125 358.5 125C354.082 125 350.5 128.582 350.5 133C350.5 137.418 354.082 141 358.5 141Z" stroke="#B8B8BD"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="280.5" y="202.4">&#x6bd4;&#x8f83;&#x5224;&#x65ad;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="222.5" y="230">&#x7528;&#x6237;&#x4f1a;&#x5c06;&#x5f53;&#x524d;&#x4f53;&#x9a8c;&#x4e0e;&#x7ade;&#x54c1;&#x548c;&#x65e2;&#x6709;&#x7ecf;&#x9a8c;&#x6bd4;&#x8f83;</tspan></text>
+  <ellipse cx="535" cy="127.5" rx="68" ry="22.5" stroke="url(#paint5_radial_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M572 142C576.418 142 580 138.418 580 134C580 129.582 576.418 126 572 126C567.582 126 564 129.582 564 134C564 138.418 567.582 142 572 142Z" stroke="#B8B8BD"/>
+  <path d="M504 131C508.418 131 512 127.418 512 123C512 118.582 508.418 115 504 115C499.582 115 496 118.582 496 123C496 127.418 499.582 131 504 131Z" stroke="#B8B8BD"/>
+  <path d="M563.5 135.653C555.487 137.136 545.857 138 535.5 138C507.61 138 485 131.732 485 124C485 116.268 507.61 110 535.5 110C563.39 110 586 116.268 586 124C586 126.499 583.638 128.845 579.5 130.876" stroke="url(#paint6_radial_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M511.253 126.5C516.94 128.028 525.468 129 535 129C552.121 129 566 125.866 566 122C566 118.134 552.121 115 535 115C524.739 115 515.642 116.126 510 117.86" stroke="url(#paint7_radial_133_1708_desktop)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <line class="judgment-animated-static judgment-animated-static--advantage-line" x1="535.4" y1="107.4" x2="535.4" y2="123.6" stroke="#7C7C83" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-dot" d="M535 106C540.523 106 545 101.523 545 96C545 90.4772 540.523 86 535 86C529.477 86 525 90.4772 525 96C525 101.523 529.477 106 535 106Z" fill="#4552FF"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-0" d="M514 83L519.5 86" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-1" d="M521.5 74L524.964 80" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-2" d="M555 83L549.5 86" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-3" d="M547.5 74L544.036 80" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-4" d="M534.5 68V76.5" stroke="#7C7C83"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="503" y="202.4">&#x53ef;&#x611f;&#x4f18;&#x52bf;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="465" y="230">&#x900f;&#x660e;&#x6570;&#x636e;&#x3001;&#x91cd;&#x70b9;&#x6e05;&#x6670;&#x548c;&#x9ad8;&#x6548;&#x64cd;&#x4f5c;</tspan></text>
+  <defs>
+  <linearGradient id="paint0_linear_133_1708_desktop" x1="77" y1="72" x2="77" y2="97.5" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint1_linear_133_1708_desktop" x1="77" y1="123" x2="77" y2="97.5" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint2_linear_133_1708_desktop" x1="313" y1="62" x2="313" y2="86" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint3_linear_133_1708_desktop" x1="273.5" y1="128" x2="302.952" y2="99.3523" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#B8B8C1" stop-opacity="0.2"/>
+  <stop offset="1" stop-color="#B8B8C1" stop-opacity="0.8"/>
+  </linearGradient>
+  <linearGradient id="paint4_linear_133_1708_desktop" x1="352.5" y1="128" x2="322.063" y2="99.2304" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <radialGradient id="paint5_radial_133_1708_desktop" cx="0" cy="0" r="1" gradientTransform="matrix(-69.0149 0.111941 -0.0207297 -22.3881 536.015 127.388)" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+  <radialGradient id="paint6_radial_133_1708_desktop" cx="0" cy="0" r="1" gradientTransform="matrix(-51.2537 0.0696519 -0.0153949 -13.9303 536.254 123.93)" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+  <radialGradient id="paint7_radial_133_1708_desktop" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(538.418 121.965) rotate(179.93) scale(28.4179 6.96518)">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+
+      <mask
+        id="judgment_gate_occlusion_desktop"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+        style="mask-type: luminance"
+      >
+        <rect x="-1000" y="-1000" width="3000" height="3000" fill="white"/>
+        <path d="M89 59.5882L117 44V134.412L89 150V59.5882Z" fill="black"/>
+        <ellipse
+          cx="103"
+          cy="97"
+          rx="7"
+          ry="18"
+          fill="white"
+        />
+      </mask>
+      <mask
+        id="judgment_gate_panel_cutout_desktop"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+        style="mask-type: luminance"
+      >
+        <rect x="-1000" y="-1000" width="3000" height="3000" fill="white"/>
+        <ellipse
+          cx="103"
+          cy="97"
+          rx="7"
+          ry="18"
+          fill="black"
+        />
+      </mask>
+
+      <mask
+        id="judgment_gate_contraction_mask_desktop_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-contraction-mask judgment-gate-contraction-mask--0"
+          d="M51 72C58.6236 84.436 72.9765 92.5656 88 95.8503C93 96.943 98 97.5 103 97.5"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_gate_contraction_mask_desktop_1"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-contraction-mask judgment-gate-contraction-mask--1"
+          d="M51 123C58.6236 110.564 72.9765 102.434 88 99.1497C93 98.057 98 97.5 103 97.5"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+      <mask
+        id="judgment_gate_arrow_mask_desktop_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-arrow-mask judgment-gate-arrow-mask--0"
+          d="M138 97.5H168"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+      <mask
+        id="judgment_triangle_mask_desktop_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--0"
+          d="M312.5 62L312.5 86"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_triangle_mask_desktop_1"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--1"
+          d="M273.167 128L306.5 103"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_triangle_mask_desktop_2"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--2"
+          d="M352 128.125L318.5 103"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_advantage_mask_desktop"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-advantage-mask"
+          d="M535.4 124L535.4 107.4"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+  </defs>
+
+    <g class="judgment-motion-layer">
+
+      <path
+        class="judgment-gate-contraction-line-motion judgment-gate-contraction-line-motion--0"
+        d="M51 72C58.6236 84.436 72.9765 92.5656 88 95.8503M103 97.5C100.692 97.5 98.3507 97.3778 96 97.1354"
+        fill="none"
+        stroke="url(#paint0_linear_133_1708_desktop)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_contraction_mask_desktop_0)"
+      />
+      <path
+        class="judgment-gate-contraction-line-motion judgment-gate-contraction-line-motion--1"
+        d="M51 123C58.6236 110.564 72.9765 102.434 88 99.1497M103 97.5C100.692 97.5 98.3507 97.6222 96 97.8646"
+        fill="none"
+        stroke="url(#paint1_linear_133_1708_desktop)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_contraction_mask_desktop_1)"
+      />
+
+      <path
+        class="judgment-gate-arrow-line-motion judgment-gate-arrow-line-motion--0"
+        d="M138 97.5H168"
+        fill="none"
+        stroke="#B8B8BD"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_arrow_mask_desktop_0)"
+      />
+      <path
+        class="judgment-gate-arrowhead-motion"
+        d="M164 99.5C164 99.5 168 98 168 97.5C168 97 164 95.5 164 95.5"
+        pathLength="1"
+        fill="none"
+        stroke="#B8B8BD"
+        stroke-linecap="round"
+      />
+      <g class="judgment-gate-surface" pointer-events="none">
+        <path
+          d="M89 59.5882L117 44V134.412L89 150V59.5882Z"
+          fill="#FFFFFF"
+          stroke="#7C7C83"
+          mask="url(#judgment_gate_panel_cutout_desktop)"
+        />
+        <ellipse
+          cx="101.6"
+          cy="97.5803"
+          rx="5.6"
+          ry="16.2581"
+          fill="none"
+          stroke="#7C7C83"
+        />
+      </g>
+      <circle
+        class="judgment-motion-dot judgment-gate-dot-motion"
+        cx="68.5"
+        cy="97"
+        r="10"
+        mask="url(#judgment_gate_occlusion_desktop)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-gate-final-dot-motion"
+        cx="132"
+        cy="97"
+        r="10"
+        fill="#4552FF"
+      />
+      <ellipse
+        class="judgment-gate-front-rim"
+        cx="103"
+        cy="97"
+        rx="7"
+        ry="18"
+        fill="none"
+        stroke="#7C7C83"
+        pointer-events="none"
+      />
+
+
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--0"
+        d="M312.5 62L312.5 86"
+        fill="none"
+        stroke="url(#paint2_linear_133_1708_desktop)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_desktop_0)"
+      />
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--1"
+        d="M273.167 128L306.5 103"
+        fill="none"
+        stroke="url(#paint3_linear_133_1708_desktop)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_desktop_1)"
+      />
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--2"
+        d="M352 128.125L318.5 103"
+        fill="none"
+        stroke="url(#paint4_linear_133_1708_desktop)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_desktop_2)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-triangle-dot-motion"
+        cx="312.5"
+        cy="96"
+        r="10"
+        fill="#4552FF"
+      />
+
+      <path
+        class="judgment-advantage-line-motion"
+        d="M535.4 124L535.4 107.4"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_advantage_mask_desktop)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-advantage-dot-motion"
+        cx="535"
+        cy="124"
+        r="10"
+        fill="#4552FF"
+      />
+
+      <path
+        class="judgment-ray-motion"
+        d="M519.5 86L514 83"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 0"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M524.964 80L521.5 74"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 1"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M549.5 86L555 83"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 2"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M544.036 80L547.5 74"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 3"
+      />
+      <path
+        class="judgment-ray-motion judgment-ray-motion--last"
+        d="M534.5 76.5V68"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 4"
+      />
+
+      <rect
+        class="judgment-animation-sentinel"
+        width="1"
+        height="1"
+        fill="#000"
+      />
+
+      <rect
+        class="judgment-hit"
+        data-judgment-part="gate"
+        x="0"
+        y="0"
+        width="180"
+        height="236"
+      />
+      <rect
+        class="judgment-hit"
+        data-judgment-part="compare"
+        x="210"
+        y="0"
+        width="205"
+        height="236"
+      />
+      <rect
+        class="judgment-hit"
+        data-judgment-part="advantage"
+        x="445"
+        y="0"
+        width="180"
+        height="236"
+      />
+    </g>
+
+  </svg>
+
+          </figure>
+
+          <figure
+            class="judgment-motion judgment-motion--tablet"
+            data-judgment-motion
+            data-variant="tablet"
+            aria-label="用户对平台专业感的三阶段判断模型动画"
+          >
+            <svg class="judgment-svg" aria-hidden="true" focusable="false" width="672" height="236" viewBox="0 0 672 236" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path class="judgment-animated-static judgment-animated-static--gate-contraction-line-0" d="M51 72C58.6236 84.436 72.9765 92.5656 88 95.8503M103 97.5C100.692 97.5 98.3507 97.3778 96 97.1354" stroke="url(#paint0_linear_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-contraction-line-1" d="M51 123C58.6236 110.564 72.9765 102.434 88 99.1497M103 97.5C100.692 97.5 98.3507 97.6222 96 97.8646" stroke="url(#paint1_linear_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M35 69C39.4183 69 43 65.4183 43 61C43 56.5817 39.4183 53 35 53C30.5817 53 27 56.5817 27 61C27 65.4183 30.5817 69 35 69Z" stroke="#B8B8BD"/>
+  <path d="M19 93C23.4183 93 27 89.4183 27 85C27 80.5817 23.4183 77 19 77C14.5817 77 11 80.5817 11 85C11 89.4183 14.5817 93 19 93Z" stroke="#B8B8BD"/>
+  <path d="M35 117C39.4183 117 43 113.418 43 109C43 104.582 39.4183 101 35 101C30.5817 101 27 104.582 27 109C27 113.418 30.5817 117 35 117Z" stroke="#B8B8BD"/>
+  <path d="M19 141C23.4183 141 27 137.418 27 133C27 128.582 23.4183 125 19 125C14.5817 125 11 128.582 11 133C11 137.418 14.5817 141 19 141Z" stroke="#B8B8BD"/>
+  <ellipse cx="101.6" cy="97.5803" rx="5.6" ry="16.2581" stroke="#7C7C83"/>
+  <ellipse cx="103" cy="97" rx="7" ry="18" stroke="#7C7C83"/>
+  <path d="M89 59.5882L117 44V134.412L89 150V59.5882Z" stroke="#7C7C83"/>
+  <circle cx="68.5" cy="88.5" r="1.5" fill="#7C7C83"/>
+  <circle cx="68.5" cy="106.5" r="1.5" fill="#7C7C83"/>
+  <line x1="68.4" y1="89.4" x2="68.4" y2="105.6" stroke="#7C7C83" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrow-hidden-line-0" d="M129.5 97.5L103 97.5" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrow-line-0" d="M168 97.5H138" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-dot" d="M132 107C137.523 107 142 102.523 142 97C142 91.4772 137.523 87 132 87C126.477 87 122 91.4772 122 97C122 102.523 126.477 107 132 107Z" fill="#4552FF"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrowhead" d="M164 99.5C164 99.5 168 98 168 97.5C168 97 164 95.5 164 95.5" stroke="#B8B8BD" stroke-linecap="round"/>
+  <path d="M146 133C150.418 133 154 129.418 154 125C154 120.582 150.418 117 146 117C141.582 117 138 120.582 138 125C138 129.418 141.582 133 146 133Z" stroke="#B8B8BD"/>
+  <path d="M146 77C150.418 77 154 73.4183 154 69C154 64.5817 150.418 61 146 61C141.582 61 138 64.5817 138 69C138 73.4183 141.582 77 146 77Z" stroke="#B8B8BD"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="58" y="202.4">&#x53ef;&#x4fe1;&#x5e95;&#x7ebf;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="35" y="230">&#x5fc5;&#x987b;&#x5148;&#x8fc7;&#x5b89;&#x5168;&#x4e0e;&#x6027;&#x80fd;&#x95e8;&#x69db;</tspan></text>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-0" d="M336 62L336 86" stroke="url(#paint2_linear_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-1" d="M330 103L296.667 128" stroke="url(#paint3_linear_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-2" d="M342 103L375.5 128.125" stroke="url(#paint4_linear_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-dot" d="M336 106C341.523 106 346 101.523 346 96C346 90.4772 341.523 86 336 86C330.477 86 326 90.4772 326 96C326 101.523 330.477 106 336 106Z" fill="#4552FF"/>
+  <path d="M330 59L294.054 125.5" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M341 59L378.122 126" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M298 133L375 133" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M336 61C340.418 61 344 57.4183 344 53C344 48.5817 340.418 45 336 45C331.582 45 328 48.5817 328 53C328 57.4183 331.582 61 336 61Z" stroke="#B8B8BD"/>
+  <path d="M290 141C294.418 141 298 137.418 298 133C298 128.582 294.418 125 290 125C285.582 125 282 128.582 282 133C282 137.418 285.582 141 290 141Z" stroke="#B8B8BD"/>
+  <path d="M382 141C386.418 141 390 137.418 390 133C390 128.582 386.418 125 382 125C377.582 125 374 128.582 374 133C374 137.418 377.582 141 382 141Z" stroke="#B8B8BD"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="304" y="202.4">&#x6bd4;&#x8f83;&#x5224;&#x65ad;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="246" y="230">&#x7528;&#x6237;&#x4f1a;&#x5c06;&#x5f53;&#x524d;&#x4f53;&#x9a8c;&#x4e0e;&#x7ade;&#x54c1;&#x548c;&#x65e2;&#x6709;&#x7ecf;&#x9a8c;&#x6bd4;&#x8f83;</tspan></text>
+  <ellipse cx="582" cy="127.5" rx="68" ry="22.5" stroke="url(#paint5_radial_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M619 142C623.418 142 627 138.418 627 134C627 129.582 623.418 126 619 126C614.582 126 611 129.582 611 134C611 138.418 614.582 142 619 142Z" stroke="#B8B8BD"/>
+  <path d="M551 131C555.418 131 559 127.418 559 123C559 118.582 555.418 115 551 115C546.582 115 543 118.582 543 123C543 127.418 546.582 131 551 131Z" stroke="#B8B8BD"/>
+  <path d="M610.5 135.653C602.487 137.136 592.857 138 582.5 138C554.61 138 532 131.732 532 124C532 116.268 554.61 110 582.5 110C610.39 110 633 116.268 633 124C633 126.499 630.638 128.845 626.5 130.876" stroke="url(#paint6_radial_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M558.253 126.5C563.94 128.028 572.468 129 582 129C599.121 129 613 125.866 613 122C613 118.134 599.121 115 582 115C571.739 115 562.642 116.126 557 117.86" stroke="url(#paint7_radial_133_1956_tablet)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <line class="judgment-animated-static judgment-animated-static--advantage-line" x1="582.4" y1="107.4" x2="582.4" y2="123.6" stroke="#7C7C83" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-dot" d="M582 106C587.523 106 592 101.523 592 96C592 90.4772 587.523 86 582 86C576.477 86 572 90.4772 572 96C572 101.523 576.477 106 582 106Z" fill="#4552FF"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-0" d="M561 83L566.5 86" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-1" d="M568.5 74L571.964 80" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-2" d="M602 83L596.5 86" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-3" d="M594.5 74L591.036 80" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-4" d="M581.5 68V76.5" stroke="#7C7C83"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="550" y="202.4">&#x53ef;&#x611f;&#x4f18;&#x52bf;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="512" y="230">&#x900f;&#x660e;&#x6570;&#x636e;&#x3001;&#x91cd;&#x70b9;&#x6e05;&#x6670;&#x548c;&#x9ad8;&#x6548;&#x64cd;&#x4f5c;</tspan></text>
+  <defs>
+  <linearGradient id="paint0_linear_133_1956_tablet" x1="77" y1="72" x2="77" y2="97.5" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint1_linear_133_1956_tablet" x1="77" y1="123" x2="77" y2="97.5" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint2_linear_133_1956_tablet" x1="336.5" y1="62" x2="336.5" y2="86" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint3_linear_133_1956_tablet" x1="297" y1="128" x2="326.452" y2="99.3523" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#B8B8C1" stop-opacity="0.2"/>
+  <stop offset="1" stop-color="#B8B8C1" stop-opacity="0.8"/>
+  </linearGradient>
+  <linearGradient id="paint4_linear_133_1956_tablet" x1="376" y1="128" x2="345.563" y2="99.2304" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <radialGradient id="paint5_radial_133_1956_tablet" cx="0" cy="0" r="1" gradientTransform="matrix(-69.0149 0.111941 -0.0207297 -22.3881 583.015 127.388)" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+  <radialGradient id="paint6_radial_133_1956_tablet" cx="0" cy="0" r="1" gradientTransform="matrix(-51.2537 0.0696519 -0.0153949 -13.9303 583.254 123.93)" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+  <radialGradient id="paint7_radial_133_1956_tablet" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(585.418 121.965) rotate(179.93) scale(28.4179 6.96518)">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+
+      <mask
+        id="judgment_gate_occlusion_tablet"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+        style="mask-type: luminance"
+      >
+        <rect x="-1000" y="-1000" width="3000" height="3000" fill="white"/>
+        <path d="M89 59.5882L117 44V134.412L89 150V59.5882Z" fill="black"/>
+        <ellipse
+          cx="103"
+          cy="97"
+          rx="7"
+          ry="18"
+          fill="white"
+        />
+      </mask>
+      <mask
+        id="judgment_gate_panel_cutout_tablet"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+        style="mask-type: luminance"
+      >
+        <rect x="-1000" y="-1000" width="3000" height="3000" fill="white"/>
+        <ellipse
+          cx="103"
+          cy="97"
+          rx="7"
+          ry="18"
+          fill="black"
+        />
+      </mask>
+
+      <mask
+        id="judgment_gate_contraction_mask_tablet_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-contraction-mask judgment-gate-contraction-mask--0"
+          d="M51 72C58.6236 84.436 72.9765 92.5656 88 95.8503C93 96.943 98 97.5 103 97.5"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_gate_contraction_mask_tablet_1"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-contraction-mask judgment-gate-contraction-mask--1"
+          d="M51 123C58.6236 110.564 72.9765 102.434 88 99.1497C93 98.057 98 97.5 103 97.5"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+      <mask
+        id="judgment_gate_arrow_mask_tablet_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-arrow-mask judgment-gate-arrow-mask--0"
+          d="M138 97.5H168"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+      <mask
+        id="judgment_triangle_mask_tablet_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--0"
+          d="M336 62L336 86"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_triangle_mask_tablet_1"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--1"
+          d="M296.667 128L330 103"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_triangle_mask_tablet_2"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--2"
+          d="M375.5 128.125L342 103"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_advantage_mask_tablet"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-advantage-mask"
+          d="M582.4 124L582.4 107.4"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+  </defs>
+
+    <g class="judgment-motion-layer">
+
+      <path
+        class="judgment-gate-contraction-line-motion judgment-gate-contraction-line-motion--0"
+        d="M51 72C58.6236 84.436 72.9765 92.5656 88 95.8503M103 97.5C100.692 97.5 98.3507 97.3778 96 97.1354"
+        fill="none"
+        stroke="url(#paint0_linear_133_1956_tablet)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_contraction_mask_tablet_0)"
+      />
+      <path
+        class="judgment-gate-contraction-line-motion judgment-gate-contraction-line-motion--1"
+        d="M51 123C58.6236 110.564 72.9765 102.434 88 99.1497M103 97.5C100.692 97.5 98.3507 97.6222 96 97.8646"
+        fill="none"
+        stroke="url(#paint1_linear_133_1956_tablet)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_contraction_mask_tablet_1)"
+      />
+
+      <path
+        class="judgment-gate-arrow-line-motion judgment-gate-arrow-line-motion--0"
+        d="M138 97.5H168"
+        fill="none"
+        stroke="#B8B8BD"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_arrow_mask_tablet_0)"
+      />
+      <path
+        class="judgment-gate-arrowhead-motion"
+        d="M164 99.5C164 99.5 168 98 168 97.5C168 97 164 95.5 164 95.5"
+        pathLength="1"
+        fill="none"
+        stroke="#B8B8BD"
+        stroke-linecap="round"
+      />
+      <g class="judgment-gate-surface" pointer-events="none">
+        <path
+          d="M89 59.5882L117 44V134.412L89 150V59.5882Z"
+          fill="#FFFFFF"
+          stroke="#7C7C83"
+          mask="url(#judgment_gate_panel_cutout_tablet)"
+        />
+        <ellipse
+          cx="101.6"
+          cy="97.5803"
+          rx="5.6"
+          ry="16.2581"
+          fill="none"
+          stroke="#7C7C83"
+        />
+      </g>
+      <circle
+        class="judgment-motion-dot judgment-gate-dot-motion"
+        cx="68.5"
+        cy="97"
+        r="10"
+        mask="url(#judgment_gate_occlusion_tablet)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-gate-final-dot-motion"
+        cx="132"
+        cy="97"
+        r="10"
+        fill="#4552FF"
+      />
+      <ellipse
+        class="judgment-gate-front-rim"
+        cx="103"
+        cy="97"
+        rx="7"
+        ry="18"
+        fill="none"
+        stroke="#7C7C83"
+        pointer-events="none"
+      />
+
+
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--0"
+        d="M336 62L336 86"
+        fill="none"
+        stroke="url(#paint2_linear_133_1956_tablet)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_tablet_0)"
+      />
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--1"
+        d="M296.667 128L330 103"
+        fill="none"
+        stroke="url(#paint3_linear_133_1956_tablet)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_tablet_1)"
+      />
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--2"
+        d="M375.5 128.125L342 103"
+        fill="none"
+        stroke="url(#paint4_linear_133_1956_tablet)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_tablet_2)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-triangle-dot-motion"
+        cx="336"
+        cy="96"
+        r="10"
+        fill="#4552FF"
+      />
+
+      <path
+        class="judgment-advantage-line-motion"
+        d="M582.4 124L582.4 107.4"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_advantage_mask_tablet)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-advantage-dot-motion"
+        cx="582"
+        cy="124"
+        r="10"
+        fill="#4552FF"
+      />
+
+      <path
+        class="judgment-ray-motion"
+        d="M566.5 86L561 83"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 0"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M571.964 80L568.5 74"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 1"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M596.5 86L602 83"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 2"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M591.036 80L594.5 74"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 3"
+      />
+      <path
+        class="judgment-ray-motion judgment-ray-motion--last"
+        d="M581.5 76.5V68"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 4"
+      />
+
+      <rect
+        class="judgment-animation-sentinel"
+        width="1"
+        height="1"
+        fill="#000"
+      />
+
+      <rect
+        class="judgment-hit"
+        data-judgment-part="gate"
+        x="0"
+        y="0"
+        width="180"
+        height="236"
+      />
+      <rect
+        class="judgment-hit"
+        data-judgment-part="compare"
+        x="230"
+        y="0"
+        width="212"
+        height="236"
+      />
+      <rect
+        class="judgment-hit"
+        data-judgment-part="advantage"
+        x="490"
+        y="0"
+        width="182"
+        height="236"
+      />
+    </g>
+
+  </svg>
+
+          </figure>
+
+          <figure
+            class="judgment-motion judgment-motion--mobile"
+            data-judgment-motion
+            data-variant="mobile"
+            aria-label="用户对平台专业感的三阶段判断模型动画"
+          >
+            <svg class="judgment-svg" aria-hidden="true" focusable="false" width="294" height="740" viewBox="0 0 294 740" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path class="judgment-animated-static judgment-animated-static--gate-contraction-line-0" d="M108 56C115.624 68.436 129.976 76.5656 145 79.8503M160 81.5C157.692 81.5 155.351 81.3778 153 81.1354" stroke="url(#paint0_linear_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-contraction-line-1" d="M108 107C115.624 94.564 129.976 86.4344 145 83.1497M160 81.5C157.692 81.5 155.351 81.6222 153 81.8646" stroke="url(#paint1_linear_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M92 53C96.4183 53 100 49.4183 100 45C100 40.5817 96.4183 37 92 37C87.5817 37 84 40.5817 84 45C84 49.4183 87.5817 53 92 53Z" stroke="#B8B8BD"/>
+  <path d="M76 77C80.4183 77 84 73.4183 84 69C84 64.5817 80.4183 61 76 61C71.5817 61 68 64.5817 68 69C68 73.4183 71.5817 77 76 77Z" stroke="#B8B8BD"/>
+  <path d="M92 101C96.4183 101 100 97.4183 100 93C100 88.5817 96.4183 85 92 85C87.5817 85 84 88.5817 84 93C84 97.4183 87.5817 101 92 101Z" stroke="#B8B8BD"/>
+  <path d="M76 125C80.4183 125 84 121.418 84 117C84 112.582 80.4183 109 76 109C71.5817 109 68 112.582 68 117C68 121.418 71.5817 125 76 125Z" stroke="#B8B8BD"/>
+  <ellipse cx="158.6" cy="81.5803" rx="5.6" ry="16.2581" stroke="#7C7C83"/>
+  <ellipse cx="160" cy="81" rx="7" ry="18" stroke="#7C7C83"/>
+  <path d="M146 43.5882L174 28V118.412L146 134V43.5882Z" stroke="#7C7C83"/>
+  <circle cx="125.5" cy="72.5" r="1.5" fill="#7C7C83"/>
+  <circle cx="125.5" cy="90.5" r="1.5" fill="#7C7C83"/>
+  <line x1="125.4" y1="73.4" x2="125.4" y2="89.6" stroke="#7C7C83" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrow-hidden-line-0" d="M186.5 81.5L160 81.5" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrow-line-0" d="M225 81.5H195" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-dot" d="M189 91C194.523 91 199 86.5228 199 81C199 75.4772 194.523 71 189 71C183.477 71 179 75.4772 179 81C179 86.5228 183.477 91 189 91Z" fill="#4552FF"/>
+  <path class="judgment-animated-static judgment-animated-static--gate-arrowhead" d="M221 83.5C221 83.5 225 82 225 81.5C225 81 221 79.5 221 79.5" stroke="#B8B8BD" stroke-linecap="round"/>
+  <path d="M203 117C207.418 117 211 113.418 211 109C211 104.582 207.418 101 203 101C198.582 101 195 104.582 195 109C195 113.418 198.582 117 203 117Z" stroke="#B8B8BD"/>
+  <path d="M203 61C207.418 61 211 57.4183 211 53C211 48.5817 207.418 45 203 45C198.582 45 195 48.5817 195 53C195 57.4183 198.582 61 203 61Z" stroke="#B8B8BD"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="115" y="186.4">&#x53ef;&#x4fe1;&#x5e95;&#x7ebf;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="92" y="214">&#x5fc5;&#x987b;&#x5148;&#x8fc7;&#x5b89;&#x5168;&#x4e0e;&#x6027;&#x80fd;&#x95e8;&#x69db;</tspan></text>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-0" d="M147 305L147 329" stroke="url(#paint2_linear_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-1" d="M141 346L107.667 371" stroke="url(#paint3_linear_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-line-2" d="M153 346L186.5 371.125" stroke="url(#paint4_linear_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--compare-dot" d="M147 349C152.523 349 157 344.523 157 339C157 333.477 152.523 329 147 329C141.477 329 137 333.477 137 339C137 344.523 141.477 349 147 349Z" fill="#4552FF"/>
+  <path d="M141 302L105.054 368.5" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M152 302L189.122 369" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M109 376L186 376" stroke="#B8B8BD" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M147 304C151.418 304 155 300.418 155 296C155 291.582 151.418 288 147 288C142.582 288 139 291.582 139 296C139 300.418 142.582 304 147 304Z" stroke="#B8B8BD"/>
+  <path d="M101 384C105.418 384 109 380.418 109 376C109 371.582 105.418 368 101 368C96.5817 368 93 371.582 93 376C93 380.418 96.5817 384 101 384Z" stroke="#B8B8BD"/>
+  <path d="M193 384C197.418 384 201 380.418 201 376C201 371.582 197.418 368 193 368C188.582 368 185 371.582 185 376C185 380.418 188.582 384 193 384Z" stroke="#B8B8BD"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="115" y="438.4">&#x6bd4;&#x8f83;&#x5224;&#x65ad;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="57" y="466">&#x7528;&#x6237;&#x4f1a;&#x5c06;&#x5f53;&#x524d;&#x4f53;&#x9a8c;&#x4e0e;&#x7ade;&#x54c1;&#x548c;&#x65e2;&#x6709;&#x7ecf;&#x9a8c;&#x6bd4;&#x8f83;</tspan></text>
+  <ellipse cx="147" cy="628.5" rx="68" ry="22.5" stroke="url(#paint5_radial_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M184 643C188.418 643 192 639.418 192 635C192 630.582 188.418 627 184 627C179.582 627 176 630.582 176 635C176 639.418 179.582 643 184 643Z" stroke="#B8B8BD"/>
+  <path d="M116 632C120.418 632 124 628.418 124 624C124 619.582 120.418 616 116 616C111.582 616 108 619.582 108 624C108 628.418 111.582 632 116 632Z" stroke="#B8B8BD"/>
+  <path d="M175.5 636.653C167.487 638.136 157.857 639 147.5 639C119.61 639 97 632.732 97 625C97 617.268 119.61 611 147.5 611C175.39 611 198 617.268 198 625C198 627.499 195.638 629.845 191.5 631.876" stroke="url(#paint6_radial_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path d="M123.253 627.5C128.94 629.028 137.468 630 147 630C164.121 630 178 626.866 178 623C178 619.134 164.121 616 147 616C136.739 616 127.642 617.126 122 618.86" stroke="url(#paint7_radial_133_2018_mobile)" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <line class="judgment-animated-static judgment-animated-static--advantage-line" x1="147.4" y1="608.4" x2="147.4" y2="624.6" stroke="#7C7C83" stroke-width="0.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-dot" d="M147 607C152.523 607 157 602.523 157 597C157 591.477 152.523 587 147 587C141.477 587 137 591.477 137 597C137 602.523 141.477 607 147 607Z" fill="#4552FF"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-0" d="M126 584L131.5 587" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-1" d="M133.5 575L136.964 581" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-2" d="M167 584L161.5 587" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-3" d="M159.5 575L156.036 581" stroke="#7C7C83"/>
+  <path class="judgment-animated-static judgment-animated-static--advantage-ray-4" d="M146.5 569V577.5" stroke="#7C7C83"/>
+  <text fill="#333333" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="16" letter-spacing="0px"><tspan x="115" y="690.4">&#x53ef;&#x611f;&#x4f18;&#x52bf;</tspan></text>
+  <text fill="#7C7C83" style="white-space: pre" xml:space="preserve" font-family="Noto Sans SC" font-size="10" letter-spacing="0px"><tspan x="77" y="718">&#x900f;&#x660e;&#x6570;&#x636e;&#x3001;&#x91cd;&#x70b9;&#x6e05;&#x6670;&#x548c;&#x9ad8;&#x6548;&#x64cd;&#x4f5c;</tspan></text>
+  <defs>
+  <linearGradient id="paint0_linear_133_2018_mobile" x1="134" y1="56" x2="134" y2="81.5" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint1_linear_133_2018_mobile" x1="134" y1="107" x2="134" y2="81.5" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint2_linear_133_2018_mobile" x1="147.5" y1="305" x2="147.5" y2="329" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <linearGradient id="paint3_linear_133_2018_mobile" x1="108" y1="371" x2="137.452" y2="342.352" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#B8B8C1" stop-opacity="0.2"/>
+  <stop offset="1" stop-color="#B8B8C1" stop-opacity="0.8"/>
+  </linearGradient>
+  <linearGradient id="paint4_linear_133_2018_mobile" x1="187" y1="371" x2="156.563" y2="342.23" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </linearGradient>
+  <radialGradient id="paint5_radial_133_2018_mobile" cx="0" cy="0" r="1" gradientTransform="matrix(-69.0149 0.111941 -0.0207297 -22.3881 148.015 628.388)" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+  <radialGradient id="paint6_radial_133_2018_mobile" cx="0" cy="0" r="1" gradientTransform="matrix(-51.2537 0.0696519 -0.0153949 -13.9303 148.254 624.93)" gradientUnits="userSpaceOnUse">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+  <radialGradient id="paint7_radial_133_2018_mobile" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(150.418 622.965) rotate(179.93) scale(28.4179 6.96518)">
+  <stop stop-color="#E3E3E3"/>
+  <stop offset="1" stop-color="#B8B8BD"/>
+  </radialGradient>
+
+      <mask
+        id="judgment_gate_occlusion_mobile"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+        style="mask-type: luminance"
+      >
+        <rect x="-1000" y="-1000" width="3000" height="3000" fill="white"/>
+        <path d="M146 43.5882L174 28V118.412L146 134V43.5882Z" fill="black"/>
+        <ellipse
+          cx="160"
+          cy="81"
+          rx="7"
+          ry="18"
+          fill="white"
+        />
+      </mask>
+      <mask
+        id="judgment_gate_panel_cutout_mobile"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+        style="mask-type: luminance"
+      >
+        <rect x="-1000" y="-1000" width="3000" height="3000" fill="white"/>
+        <ellipse
+          cx="160"
+          cy="81"
+          rx="7"
+          ry="18"
+          fill="black"
+        />
+      </mask>
+
+      <mask
+        id="judgment_gate_contraction_mask_mobile_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-contraction-mask judgment-gate-contraction-mask--0"
+          d="M108 56C115.624 68.436 129.976 76.5656 145 79.8503C150 80.943 155 81.5 160 81.5"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_gate_contraction_mask_mobile_1"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-contraction-mask judgment-gate-contraction-mask--1"
+          d="M108 107C115.624 94.564 129.976 86.4344 145 83.1497C150 82.057 155 81.5 160 81.5"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+      <mask
+        id="judgment_gate_arrow_mask_mobile_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-gate-arrow-mask judgment-gate-arrow-mask--0"
+          d="M195 81.5H225"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+      <mask
+        id="judgment_triangle_mask_mobile_0"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--0"
+          d="M147 305L147 329"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_triangle_mask_mobile_1"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--1"
+          d="M107.667 371L141 346"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_triangle_mask_mobile_2"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-triangle-mask judgment-triangle-mask--2"
+          d="M186.5 371.125L153 346"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+      <mask
+        id="judgment_advantage_mask_mobile"
+        maskUnits="userSpaceOnUse"
+        x="-1000"
+        y="-1000"
+        width="3000"
+        height="3000"
+      >
+        <path
+          class="judgment-advantage-mask"
+          d="M147.4 625L147.4 608.4"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </mask>
+
+  </defs>
+
+    <g class="judgment-motion-layer">
+
+      <path
+        class="judgment-gate-contraction-line-motion judgment-gate-contraction-line-motion--0"
+        d="M108 56C115.624 68.436 129.976 76.5656 145 79.8503M160 81.5C157.692 81.5 155.351 81.3778 153 81.1354"
+        fill="none"
+        stroke="url(#paint0_linear_133_2018_mobile)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_contraction_mask_mobile_0)"
+      />
+      <path
+        class="judgment-gate-contraction-line-motion judgment-gate-contraction-line-motion--1"
+        d="M108 107C115.624 94.564 129.976 86.4344 145 83.1497M160 81.5C157.692 81.5 155.351 81.6222 153 81.8646"
+        fill="none"
+        stroke="url(#paint1_linear_133_2018_mobile)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_contraction_mask_mobile_1)"
+      />
+
+      <path
+        class="judgment-gate-arrow-line-motion judgment-gate-arrow-line-motion--0"
+        d="M195 81.5H225"
+        fill="none"
+        stroke="#B8B8BD"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_gate_arrow_mask_mobile_0)"
+      />
+      <path
+        class="judgment-gate-arrowhead-motion"
+        d="M221 83.5C221 83.5 225 82 225 81.5C225 81 221 79.5 221 79.5"
+        pathLength="1"
+        fill="none"
+        stroke="#B8B8BD"
+        stroke-linecap="round"
+      />
+      <g class="judgment-gate-surface" pointer-events="none">
+        <path
+          d="M146 43.5882L174 28V118.412L146 134V43.5882Z"
+          fill="#FFFFFF"
+          stroke="#7C7C83"
+          mask="url(#judgment_gate_panel_cutout_mobile)"
+        />
+        <ellipse
+          cx="158.6"
+          cy="81.5803"
+          rx="5.6"
+          ry="16.2581"
+          fill="none"
+          stroke="#7C7C83"
+        />
+      </g>
+      <circle
+        class="judgment-motion-dot judgment-gate-dot-motion"
+        cx="125.5"
+        cy="81"
+        r="10"
+        mask="url(#judgment_gate_occlusion_mobile)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-gate-final-dot-motion"
+        cx="189"
+        cy="81"
+        r="10"
+        fill="#4552FF"
+      />
+      <ellipse
+        class="judgment-gate-front-rim"
+        cx="160"
+        cy="81"
+        rx="7"
+        ry="18"
+        fill="none"
+        stroke="#7C7C83"
+        pointer-events="none"
+      />
+
+
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--0"
+        d="M147 305L147 329"
+        fill="none"
+        stroke="url(#paint2_linear_133_2018_mobile)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_mobile_0)"
+      />
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--1"
+        d="M107.667 371L141 346"
+        fill="none"
+        stroke="url(#paint3_linear_133_2018_mobile)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_mobile_1)"
+      />
+      <path
+        class="judgment-triangle-line-motion judgment-triangle-line-motion--2"
+        d="M186.5 371.125L153 346"
+        fill="none"
+        stroke="url(#paint4_linear_133_2018_mobile)"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_triangle_mask_mobile_2)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-triangle-dot-motion"
+        cx="147"
+        cy="339"
+        r="10"
+        fill="#4552FF"
+      />
+
+      <path
+        class="judgment-advantage-line-motion"
+        d="M147.4 625L147.4 608.4"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-width="0.8"
+        stroke-linecap="round"
+        stroke-dasharray="2 2"
+        mask="url(#judgment_advantage_mask_mobile)"
+      />
+      <circle
+        class="judgment-motion-dot judgment-advantage-dot-motion"
+        cx="147"
+        cy="625"
+        r="10"
+        fill="#4552FF"
+      />
+
+      <path
+        class="judgment-ray-motion"
+        d="M131.5 587L126 584"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 0"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M136.964 581L133.5 575"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 1"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M161.5 587L167 584"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 2"
+      />
+      <path
+        class="judgment-ray-motion"
+        d="M156.036 581L159.5 575"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 3"
+      />
+      <path
+        class="judgment-ray-motion judgment-ray-motion--last"
+        d="M146.5 577.5V569"
+        pathLength="1"
+        fill="none"
+        stroke="#7C7C83"
+        stroke-linecap="round"
+        style="--ray-index: 4"
+      />
+
+      <rect
+        class="judgment-animation-sentinel"
+        width="1"
+        height="1"
+        fill="#000"
+      />
+
+      <rect
+        class="judgment-hit"
+        data-judgment-part="gate"
+        x="0"
+        y="0"
+        width="294"
+        height="236"
+      />
+      <rect
+        class="judgment-hit"
+        data-judgment-part="compare"
+        x="0"
+        y="252"
+        width="294"
+        height="236"
+      />
+      <rect
+        class="judgment-hit"
+        data-judgment-part="advantage"
+        x="0"
+        y="504"
+        width="294"
+        height="236"
+      />
+    </g>
+
+  </svg>
+
+          </figure>
         </div>
       </div>
     </section>
