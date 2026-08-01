@@ -15,6 +15,9 @@ if (surface && world && sourceTile) {
   const projectModal = surface.querySelector("[data-project-modal]");
   const projectModalBody = surface.querySelector("[data-project-modal-body]");
   const projectCloseButton = surface.querySelector("[data-project-close]");
+  const reducedMotionPreference = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
   const projectTemplates = new Map(
     Array.from(document.querySelectorAll("template[data-project-template]"))
       .map((template) => [template.dataset.projectTemplate, template])
@@ -30,6 +33,7 @@ if (surface && world && sourceTile) {
     pointerX: 0,
     pointerY: 0,
     pointerProjectId: null,
+    pointerProjectCard: null,
     isDragging: false,
     viewportWidth: 0,
     viewportHeight: 0,
@@ -40,6 +44,7 @@ if (surface && world && sourceTile) {
   let modalTransitionVersion = 0;
   let modalHideTimer = 0;
   let activeGalleryCarousel = null;
+  let activeProjectFlip = null;
 
   const wrapCoordinate = (value, size) => {
     if (!Number.isFinite(value)) return 0;
@@ -198,6 +203,280 @@ if (surface && world && sourceTile) {
     if (!modalHideTimer) return;
     window.clearTimeout(modalHideTimer);
     modalHideTimer = 0;
+  };
+
+  const prepareTransitionClone = (root) => {
+    if (!(root instanceof Element)) return;
+
+    root.removeAttribute("id");
+    root.removeAttribute("data-project-id");
+    root.querySelectorAll("[id]").forEach((element) => {
+      element.removeAttribute("id");
+    });
+    root.querySelectorAll("[data-project-id]").forEach((element) => {
+      element.removeAttribute("data-project-id");
+    });
+    root
+      .querySelectorAll(
+        "a, button, input, select, textarea, [tabindex], [contenteditable]"
+      )
+      .forEach((element) => {
+        element.setAttribute("tabindex", "-1");
+      });
+  };
+
+  const cancelActiveProjectFlip = () => {
+    if (!activeProjectFlip) return;
+
+    const { element, animations } = activeProjectFlip;
+    activeProjectFlip = null;
+    animations.forEach((animation) => animation.cancel());
+    element.remove();
+    projectModal?.classList.remove("is-flipping");
+  };
+
+  const finishProjectOpen = (projectId, transitionVersion) => {
+    if (
+      !projectModal ||
+      !projectModalBody ||
+      !projectCloseButton ||
+      modalTransitionVersion !== transitionVersion ||
+      !projectModal.classList.contains("is-open") ||
+      projectModal.dataset.activeProject !== projectId
+    ) {
+      return;
+    }
+
+    activeGalleryCarousel?.destroy();
+    activeGalleryCarousel = initGalleryCarousel(projectModalBody);
+    projectModal.classList.remove("is-flipping");
+    projectModal.classList.add("is-ready");
+    projectCloseButton.focus({ preventScroll: true });
+  };
+
+  const revealActiveProjectFlip = () => {
+    if (!activeProjectFlip) return;
+
+    const { projectId, transitionVersion } = activeProjectFlip;
+    const isAlreadyReady = projectModal?.classList.contains("is-ready");
+    cancelActiveProjectFlip();
+
+    if (!isAlreadyReady) {
+      finishProjectOpen(projectId, transitionVersion);
+    } else {
+      projectCloseButton?.focus({ preventScroll: true });
+    }
+  };
+
+  const startProjectFlip = ({
+    projectId,
+    sourceCard,
+    sourceRect,
+    sourceWidth,
+    sourceHeight,
+    transitionVersion
+  }) => {
+    if (
+      !projectModal ||
+      !projectModalBody ||
+      !(sourceCard instanceof Element) ||
+      !sourceRect ||
+      typeof sourceCard.animate !== "function" ||
+      reducedMotionPreference.matches
+    ) {
+      finishProjectOpen(projectId, transitionVersion);
+      return;
+    }
+
+    const targetCard = projectModalBody.querySelector(".project-detail-card");
+    if (!(targetCard instanceof Element)) {
+      finishProjectOpen(projectId, transitionVersion);
+      return;
+    }
+
+    targetCard.querySelectorAll("img").forEach((image, index) => {
+      if (index === 0) image.loading = "eager";
+      image.decoding = "async";
+    });
+
+    const targetRect = targetCard.getBoundingClientRect();
+    const modalRect = projectModal.getBoundingClientRect();
+    if (
+      sourceRect.width <= 0 ||
+      sourceRect.height <= 0 ||
+      sourceWidth <= 0 ||
+      sourceHeight <= 0 ||
+      targetRect.width <= 0 ||
+      targetRect.height <= 0
+    ) {
+      finishProjectOpen(projectId, transitionVersion);
+      return;
+    }
+
+    const flip = document.createElement("div");
+    const flipInner = document.createElement("div");
+    const frontFace = document.createElement("div");
+    const backFace = document.createElement("div");
+    const sourceClone = sourceCard.cloneNode(true);
+    const targetClone = targetCard.cloneNode(true);
+
+    flip.className = "project-flip";
+    flip.setAttribute("aria-hidden", "true");
+    flip.setAttribute("inert", "");
+    flipInner.className = "project-flip__inner";
+    frontFace.className = "project-flip__face project-flip__front";
+    backFace.className = "project-flip__face project-flip__back";
+    sourceClone.classList.add("project-flip__source-card");
+    targetClone.classList.add("project-flip__target-card");
+    sourceClone.style.setProperty("--flip-source-width", `${sourceWidth}px`);
+    sourceClone.style.setProperty("--flip-source-height", `${sourceHeight}px`);
+    sourceClone.style.setProperty(
+      "--flip-source-scale-x",
+      String(targetRect.width / sourceWidth)
+    );
+    sourceClone.style.setProperty(
+      "--flip-source-scale-y",
+      String(targetRect.height / sourceHeight)
+    );
+
+    prepareTransitionClone(sourceClone);
+    prepareTransitionClone(targetClone);
+    frontFace.append(sourceClone);
+    backFace.append(targetClone);
+    flipInner.append(frontFace, backFace);
+    flip.append(flipInner);
+
+    const targetLeft =
+      targetRect.left - modalRect.left + projectModal.scrollLeft;
+    const targetTop =
+      targetRect.top - modalRect.top + projectModal.scrollTop;
+    const sourceLeft =
+      sourceRect.left - modalRect.left + projectModal.scrollLeft;
+    const sourceTop =
+      sourceRect.top - modalRect.top + projectModal.scrollTop;
+    const translateX = sourceLeft - targetLeft;
+    const translateY = sourceTop - targetTop;
+    const scaleX = sourceRect.width / targetRect.width;
+    const scaleY = sourceRect.height / targetRect.height;
+
+    flip.style.left = `${targetLeft}px`;
+    flip.style.top = `${targetTop}px`;
+    flip.style.width = `${targetRect.width}px`;
+    flip.style.height = `${targetRect.height}px`;
+    projectModal.append(flip);
+
+    const duration = 560;
+    const flightAnimation = flip.animate(
+      [
+        {
+          transform: `translate3d(${translateX}px, ${translateY}px, 0) scale3d(${scaleX}, ${scaleY}, 1)`,
+          easing: "cubic-bezier(0.22, 0.75, 0.2, 1)",
+          offset: 0
+        },
+        {
+          transform: "translate3d(0, 0, 0) scale3d(1, 1, 1)",
+          easing: "linear",
+          offset: 0.62
+        },
+        {
+          transform: "translate3d(0, 0, 0) scale3d(1, 1, 1)",
+          offset: 1
+        }
+      ],
+      { duration, easing: "linear", fill: "both" }
+    );
+    const turnAnimation = flipInner.animate(
+      [
+        {
+          transform: "rotateY(0deg) rotateZ(0deg)",
+          easing: "cubic-bezier(0.4, 0, 1, 1)",
+          offset: 0
+        },
+        {
+          transform: "rotateY(90deg) rotateZ(0deg)",
+          offset: 0.5
+        },
+        {
+          transform: "rotateY(-90deg) rotateZ(0deg)",
+          easing: "cubic-bezier(0, 0, 0.2, 1)",
+          offset: 0.5001
+        },
+        {
+          transform: "rotateY(0deg) rotateZ(0deg)",
+          offset: 1
+        }
+      ],
+      { duration, easing: "linear", fill: "both" }
+    );
+    const frontFaceAnimation = frontFace.animate(
+      [
+        { opacity: 1, offset: 0 },
+        { opacity: 1, offset: 0.48 },
+        { opacity: 0, offset: 0.52 },
+        { opacity: 0, offset: 1 }
+      ],
+      { duration, easing: "linear", fill: "both" }
+    );
+    const backFaceAnimation = backFace.animate(
+      [
+        { opacity: 0, offset: 0 },
+        { opacity: 0, offset: 0.48 },
+        { opacity: 1, offset: 0.52 },
+        { opacity: 1, offset: 1 }
+      ],
+      { duration, easing: "linear", fill: "both" }
+    );
+
+    activeProjectFlip = {
+      element: flip,
+      animations: [
+        flightAnimation,
+        turnAnimation,
+        frontFaceAnimation,
+        backFaceAnimation
+      ],
+      projectId,
+      transitionVersion
+    };
+
+    Promise.all([
+      flightAnimation.finished.catch(() => null),
+      turnAnimation.finished.catch(() => null),
+      frontFaceAnimation.finished.catch(() => null),
+      backFaceAnimation.finished.catch(() => null)
+    ]).then(() => {
+      if (
+        !activeProjectFlip ||
+        activeProjectFlip.element !== flip ||
+        modalTransitionVersion !== transitionVersion ||
+        !projectModal.classList.contains("is-open") ||
+        projectModal.dataset.activeProject !== projectId
+      ) {
+        return;
+      }
+
+      projectModal.classList.add("is-ready");
+      projectModal.classList.remove("is-flipping");
+      activeProjectFlip = null;
+      flightAnimation.cancel();
+      turnAnimation.cancel();
+      frontFaceAnimation.cancel();
+      backFaceAnimation.cancel();
+      flip.remove();
+      projectCloseButton?.focus({ preventScroll: true });
+      window.requestAnimationFrame(() => {
+        if (
+          modalTransitionVersion !== transitionVersion ||
+          !projectModal.classList.contains("is-open") ||
+          projectModal.dataset.activeProject !== projectId
+        ) {
+          return;
+        }
+
+        activeGalleryCarousel?.destroy();
+        activeGalleryCarousel = initGalleryCarousel(projectModalBody);
+      });
+    });
   };
 
   const restorePreviousFocus = () => {
@@ -462,10 +741,11 @@ if (surface && world && sourceTile) {
     }
 
     cancelPendingModalHide();
+    cancelActiveProjectFlip();
     activeGalleryCarousel?.destroy();
     activeGalleryCarousel = null;
     const transitionVersion = modalTransitionVersion;
-    projectModal.classList.remove("is-open");
+    projectModal.classList.remove("is-open", "is-ready", "is-flipping");
     projectModal.setAttribute("aria-hidden", "true");
     surface.classList.remove("has-open-project");
     restorePreviousFocus();
@@ -482,6 +762,7 @@ if (surface && world && sourceTile) {
       projectModalBody.replaceChildren();
       projectModal.removeAttribute("aria-labelledby");
       delete projectModal.dataset.activeProject;
+      projectModal.classList.remove("is-ready", "is-flipping");
       modalHideTimer = 0;
     };
 
@@ -494,13 +775,23 @@ if (surface && world && sourceTile) {
     modalHideTimer = window.setTimeout(finishClosing, transitionTime + 50);
   };
 
-  const openProject = (projectId) => {
+  const openProject = (projectId, sourceCard = null) => {
     if (!projectModal || !projectModalBody || !projectCloseButton) return;
 
     const template = projectTemplates.get(projectId);
     if (!template) return;
 
+    const sourceElement =
+      sourceCard instanceof HTMLElement && sourceCard.isConnected
+        ? sourceCard
+        : null;
+    const sourceRect = sourceElement?.getBoundingClientRect() || null;
+    const sourceWidth = sourceElement?.offsetWidth || 0;
+    const sourceHeight = sourceElement?.offsetHeight || 0;
+
     cancelPendingModalHide();
+    cancelActiveProjectFlip();
+    const transitionVersion = modalTransitionVersion;
     if (!isProjectModalVisible()) {
       previousFocus =
         document.activeElement instanceof HTMLElement
@@ -531,14 +822,23 @@ if (surface && world && sourceTile) {
     projectModal.setAttribute("aria-labelledby", title.id);
     projectModal.removeAttribute("aria-hidden");
     projectModal.dataset.activeProject = projectId;
+    projectModal.scrollTop = 0;
+    projectModal.scrollLeft = 0;
     projectModal.hidden = false;
-    projectModal.classList.remove("is-open");
+    projectModal.classList.remove("is-open", "is-ready", "is-flipping");
     surface.classList.add("has-open-project");
     // Flush the hidden state so the entrance transition starts reliably.
     void projectModal.offsetWidth;
-    projectModal.classList.add("is-open");
-    activeGalleryCarousel = initGalleryCarousel(projectModalBody);
-    projectCloseButton.focus({ preventScroll: true });
+    projectModal.classList.add("is-open", "is-flipping");
+    projectModal.focus({ preventScroll: true });
+    startProjectFlip({
+      projectId,
+      sourceCard: sourceElement,
+      sourceRect,
+      sourceWidth,
+      sourceHeight,
+      transitionVersion
+    });
   };
 
   const finishPointer = (event, openOnClick = false) => {
@@ -551,9 +851,11 @@ if (surface && world && sourceTile) {
 
     const pointerId = state.activePointerId;
     const projectId = state.pointerProjectId;
+    const projectCard = state.pointerProjectCard;
     const wasDragging = state.isDragging;
     state.activePointerId = null;
     state.pointerProjectId = null;
+    state.pointerProjectCard = null;
     state.isDragging = false;
     surface.classList.remove("is-dragging");
 
@@ -566,7 +868,7 @@ if (surface && world && sourceTile) {
     }
 
     if (openOnClick && !wasDragging && projectId) {
-      openProject(projectId);
+      openProject(projectId, projectCard);
     }
   };
 
@@ -593,6 +895,7 @@ if (surface && world && sourceTile) {
     state.pointerX = event.clientX;
     state.pointerY = event.clientY;
     state.pointerProjectId = projectCard?.dataset.projectId || null;
+    state.pointerProjectCard = projectCard;
     state.isDragging = false;
 
     try {
@@ -653,6 +956,13 @@ if (surface && world && sourceTile) {
       event.target === projectModal ||
       (event.target instanceof Element &&
         event.target.hasAttribute("data-project-backdrop"));
+    if (
+      backdrop &&
+      projectModal.classList.contains("is-flipping") &&
+      !projectModal.classList.contains("is-ready")
+    ) {
+      return;
+    }
     if (backdrop) closeProject();
   });
 
@@ -671,11 +981,25 @@ if (surface && world && sourceTile) {
     }
 
     if (event.key === "Tab") {
+      if (
+        projectModal.classList.contains("is-flipping") &&
+        !projectModal.classList.contains("is-ready")
+      ) {
+        event.preventDefault();
+        projectModal.focus({ preventScroll: true });
+        return;
+      }
+
       const focusableElements = Array.from(
         projectModal.querySelectorAll(
           'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
         )
-      ).filter((element) => !element.closest("[hidden]"));
+      ).filter(
+        (element) =>
+          element !== projectModal &&
+          element.getAttribute("tabindex") !== "-1" &&
+          !element.closest('[hidden], [inert], [aria-hidden="true"]')
+      );
 
       if (focusableElements.length === 0) {
         event.preventDefault();
@@ -741,7 +1065,7 @@ if (surface && world && sourceTile) {
       (event.key === "Enter" || event.key === " ")
     ) {
       event.preventDefault();
-      openProject(projectCard.dataset.projectId);
+      openProject(projectCard.dataset.projectId, projectCard);
       return;
     }
 
@@ -784,7 +1108,12 @@ if (surface && world && sourceTile) {
   });
 
   const resizeObserver = new ResizeObserver(() => {
+    revealActiveProjectFlip();
     if (updateScale(true)) requestRender();
+  });
+
+  reducedMotionPreference.addEventListener("change", (event) => {
+    if (event.matches) revealActiveProjectFlip();
   });
 
   resizeObserver.observe(surface);
