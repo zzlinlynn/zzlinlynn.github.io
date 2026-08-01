@@ -56,7 +56,84 @@ const setupCaseCursor = () => {
   render();
 };
 
+const setupCaseReveal = () => {
+  const caseStudy = document.querySelector(".case-study");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (!caseStudy || reducedMotion.matches || !("IntersectionObserver" in window)) return;
+
+  const sectionTargets = [...caseStudy.querySelectorAll(":scope > .case-section")]
+    .slice(1)
+    .map((section) => section.querySelector(":scope > .section-inner, :scope > .section-layout"))
+    .filter(Boolean);
+  const nextProject = caseStudy.querySelector(":scope > .case-next-project");
+  const targets = nextProject ? [...sectionTargets, nextProject] : sectionTargets;
+
+  if (!targets.length) return;
+
+  const initialRevealLine = window.innerHeight * .9;
+
+  targets.forEach((target) => {
+    [...target.children].forEach((item, index) => {
+      item.classList.add("case-reveal-item");
+      item.style.setProperty("--case-reveal-order", String(Math.min(index, 4)));
+    });
+
+    const bounds = target.getBoundingClientRect();
+    target.dataset.caseReveal = bounds.top <= initialRevealLine ? "visible" : "pending";
+  });
+
+  document.documentElement.classList.add("case-reveal-ready");
+
+  let observer;
+  const reveal = (target) => {
+    if (target.dataset.caseReveal !== "pending") return;
+    target.dataset.caseReveal = "revealed";
+    observer?.unobserve(target);
+  };
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) reveal(entry.target);
+      });
+    },
+    {
+      rootMargin: "0px 0px -10% 0px",
+      threshold: .08,
+    },
+  );
+
+  targets.forEach((target) => {
+    if (target.dataset.caseReveal === "pending") observer.observe(target);
+  });
+
+  const revealFocusedContent = (event) => {
+    const target = event.target instanceof Element
+      ? event.target.closest("[data-case-reveal]")
+      : null;
+    if (target) reveal(target);
+  };
+
+  const disableReveal = () => {
+    observer.disconnect();
+    targets.forEach((target) => {
+      target.dataset.caseReveal = "visible";
+    });
+    document.documentElement.classList.remove("case-reveal-ready");
+    document.removeEventListener("focusin", revealFocusedContent);
+  };
+
+  document.addEventListener("focusin", revealFocusedContent);
+  if (reducedMotion.addEventListener) {
+    reducedMotion.addEventListener("change", (event) => {
+      if (event.matches) disableReveal();
+    }, { once: true });
+  }
+};
+
 updateCaseNav();
 setupCaseCursor();
+setupCaseReveal();
 window.addEventListener("scroll", updateCaseNav, { passive: true });
 window.addEventListener("pageshow", updateCaseNav);

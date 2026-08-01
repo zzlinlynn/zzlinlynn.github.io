@@ -27,7 +27,7 @@
   left: 0;
   width: 100%;
   overflow: hidden;
-  background: #fff;
+  background: var(--bg, #fff);
 }
 
 .site-footer--shared .pixel-footer-scene canvas {

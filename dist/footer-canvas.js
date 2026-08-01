@@ -239,7 +239,7 @@ const indices=new Uint16Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ]);
 const source=document.createElement('canvas');
 source.width=2048;source.height=447;
-const sourceContext=source.getContext('2d',{alpha:false});
+const sourceContext=source.getContext('2d');
 const image=sourceContext.createImageData(2048,447);
 const data=image.data;
 for(let i=0,j=0;i<indices.length;i++,j+=4){
@@ -247,10 +247,17 @@ for(let i=0,j=0;i<indices.length;i++,j+=4){
   const edgeSafeX=x<4?4:(x>2043?2043:x);
   const edgeSafeIndex=i+(edgeSafeX-x);
   const color=palette[indices[edgeSafeIndex]];
-  data[j]=(color>>>16)&255;
-  data[j+1]=(color>>>8)&255;
-  data[j+2]=color&255;
-  data[j+3]=255;
+  const red=(color>>>16)&255;
+  const green=(color>>>8)&255;
+  const blue=color&255;
+  data[j]=red;
+  data[j+1]=green;
+  data[j+2]=blue;
+  const isPaperWhite=(
+    red>=248&&green>=248&&blue>=248&&
+    Math.max(red,green,blue)-Math.min(red,green,blue)<=3
+  );
+  data[j+3]=isPaperWhite?0:255;
 }
 sourceContext.putImageData(image,0,0);
 function hash2d(x,y,seed){
@@ -356,7 +363,8 @@ function render(){
   canvas.style.width=cssWidth+'px';
   canvas.style.height=cssHeight+'px';
   canvas.style.marginLeft='0';
-  const ctx=canvas.getContext('2d',{alpha:false});
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,targetWidth,targetHeight);
   ctx.imageSmoothingEnabled=true;
   ctx.imageSmoothingQuality='high';
   ctx.drawImage(
