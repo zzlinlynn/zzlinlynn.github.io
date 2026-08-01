@@ -132,6 +132,76 @@ const setupCaseReveal = () => {
   }
 };
 
+const setupNextProjectAutoScroll = () => {
+  const nextProject = document.querySelector(".case-study > .case-next-project");
+  if (!nextProject) return;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const revealThreshold = .08;
+  let isInRevealZone = false;
+  let scrollFrame = 0;
+
+  const scrollToPageBottom = () => {
+    const scroller = document.scrollingElement || document.documentElement;
+    window.scrollTo({
+      top: scroller.scrollHeight,
+      behavior: reducedMotion.matches ? "auto" : "smooth",
+    });
+  };
+
+  const updateTriggerState = (nextIsInRevealZone) => {
+    if (!nextIsInRevealZone) {
+      isInRevealZone = false;
+      window.cancelAnimationFrame(scrollFrame);
+      scrollFrame = 0;
+      return;
+    }
+
+    if (isInRevealZone) return;
+    isInRevealZone = true;
+    scrollFrame = window.requestAnimationFrame(() => {
+      scrollFrame = 0;
+      scrollToPageBottom();
+    });
+  };
+
+  const isPastRevealThreshold = () => {
+    const bounds = nextProject.getBoundingClientRect();
+    const revealLine = window.innerHeight * .9;
+    const visibleTop = Math.max(0, bounds.top);
+    const visibleBottom = Math.min(revealLine, bounds.bottom);
+    const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+    return bounds.height > 0 && visibleHeight / bounds.height >= revealThreshold;
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    const checkVisibility = () => {
+      updateTriggerState(isPastRevealThreshold());
+    };
+
+    window.addEventListener("scroll", checkVisibility, { passive: true });
+    window.addEventListener("resize", checkVisibility, { passive: true });
+    checkVisibility();
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const entry = entries.find((candidate) => candidate.target === nextProject);
+      if (!entry) return;
+      updateTriggerState(
+        entry.isIntersecting && entry.intersectionRatio >= revealThreshold,
+      );
+    },
+    {
+      rootMargin: "0px 0px -10% 0px",
+      threshold: revealThreshold,
+    },
+  );
+
+  observer.observe(nextProject);
+};
+
 const setupReadingProgress = () => {
   const caseStudy = document.querySelector(".case-study");
   const footer = document.querySelector(".site-footer--shared");
@@ -263,6 +333,7 @@ const setupReadingProgress = () => {
 updateCaseNav();
 setupCaseCursor();
 setupCaseReveal();
+setupNextProjectAutoScroll();
 setupReadingProgress();
 window.addEventListener("scroll", updateCaseNav, { passive: true });
 window.addEventListener("pageshow", updateCaseNav);
