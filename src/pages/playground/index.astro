@@ -21,6 +21,7 @@ const projects = [
     detail: {
       title: "IWEN",
       year: "2021",
+      href: "https://lynnzhangdesign.github.io/iwen.html",
       description:
         "The project redesigns an app for English learners that focuses more on English reading. The redesign includes the information architecture, user interface, and brand identity.",
       imageWidth: 262,
@@ -46,6 +47,7 @@ const projects = [
     detail: {
       title: "My Fireworks",
       year: "2021",
+      href: "https://lynnzhangdesign.github.io/fireworks.html",
       description:
         "The project is based on the concept of STEAM education, combined with AR technology to provide an innovative solution for visiting the Shanghai Science and Technology Museum.",
       imageWidth: 237.1,
@@ -71,6 +73,7 @@ const projects = [
     detail: {
       title: "HIVE",
       year: "2021",
+      href: "https://lynnzhangdesign.github.io/hive.html",
       description:
         "This project focuses on the elderly drifters in first-tier cities in China, called Lao Piao, helping them to improve their personal awareness and focus on their needs.",
       imageWidth: 262,
@@ -96,6 +99,7 @@ const projects = [
     detail: {
       title: "NY Transit Museum",
       year: "2022",
+      href: "https://lynnzhangdesign.github.io/NYTransitMuseum.html",
       description:
         "This project leverages insights from user research to improve the navigation and organization of the existing New York Transit Museum (NYTM) website while keeping the web responsive across devices.",
       imageWidth: 262,
@@ -121,6 +125,7 @@ const projects = [
     detail: {
       title: "Furry Kitten",
       year: "2020",
+      href: "https://lynnzhangdesign.github.io/furry_kitten.html",
       description:
         "This project focuses on women of different ages who suffer from depression. It is dedicated to helping them ease the depression that comes with daily life through play therapy.",
       imageWidth: 236,
@@ -146,6 +151,7 @@ const projects = [
     detail: {
       title: "Driven Drizzle",
       year: "2021",
+      href: "https://lynnzhangdesign.github.io/driven.html",
       description:
         "The project aims to experiment with digital technology, combining auditory, visual, and tactile experiences to stimulate audiences to think about the entropy reduction of life.",
       imageWidth: 246,
@@ -171,6 +177,8 @@ const projects = [
     detail: {
       title: "Design Critique",
       year: "2023",
+      href:
+        "https://ixd.prattsi.org/2023/02/design-critique-too-good-to-go-ios-app/",
       description:
         "Too Good To Go is the world's first app against food waste. This critique review follows a user looking for and collecting surprise bags based on Don Norman's <The Design of Everyday Things>.",
       imageWidth: 245,
@@ -196,6 +204,7 @@ const projects = [
     detail: {
       title: "Medscape",
       year: "2023",
+      href: "https://lynnzhangdesign.github.io/medscape.html",
       description:
         "This project aims to enhance the search experience on the Medscape website—including global search, autocomplete, and content search—through in-depth interviews. It involves the user experience of responsive web pages.",
       imageWidth: 262,
@@ -221,6 +230,7 @@ const projects = [
     detail: {
       title: "MOOS",
       year: "2021",
+      href: "https://lynnzhangdesign.github.io/moos.html",
       description:
         "This project explores opportunities around a more sustainable and effective way of disposing of masks in Shanghai. The NFT has been created as an incentive to attract users.",
       imageWidth: 234,
@@ -564,10 +574,20 @@ const projects = [
                     </div>
                     <div class="project-detail-summary">
                       <p>{project.detail.description}</p>
-                      <div class="project-detail-cta" aria-hidden="true">
+                      <a
+                        class="project-detail-cta"
+                        href={project.detail.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`View ${project.detail.title} project (opens in a new tab)`}
+                      >
                         <span>View Project</span>
-                        <span class="project-detail-cta__icon"></span>
-                      </div>
+                        <span
+                          class="project-detail-cta__icon"
+                          style="--project-arrow:url(/assets/playground/details/view-project-arrow.svg);"
+                          aria-hidden="true"
+                        ></span>
+                      </a>
                     </div>
                   </div>
                 </article>

@@ -411,16 +411,41 @@ body .case-nav-ui.playground-nav-ui .site-nav {
   color: var(--project-accent);
   font-size: 12px;
   line-height: 24px;
+  text-decoration: none;
   white-space: nowrap;
+}
+
+.project-detail-cta:hover > span:first-child {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.project-detail-cta:focus-visible {
+  border-radius: 2px;
+  outline: 1.5px solid currentColor;
+  outline-offset: 3px;
 }
 
 .project-detail-cta__icon {
   display: block;
+  flex: 0 0 18px;
   width: 18px;
+  min-width: 18px;
   height: 18px;
-  background: currentColor;
-  -webkit-mask: url("/assets/playground/details/view-project-arrow.svg") center / 9.144px 9.144px no-repeat;
-  mask: url("/assets/playground/details/view-project-arrow.svg") center / 9.144px 9.144px no-repeat;
+  background-color: currentColor;
+  -webkit-mask-image: var(--project-arrow);
+  mask-image: var(--project-arrow);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 9.144px 9.144px;
+  mask-size: 9.144px 9.144px;
+  transition: transform 160ms ease-out;
+}
+
+.project-detail-cta:hover .project-detail-cta__icon {
+  transform: translate(1px, -1px);
 }
 
 .project-detail-card--gallery {
@@ -773,6 +798,7 @@ body .case-nav-ui.playground-nav-ui .site-nav {
   .project-modal,
   .project-modal__content,
   .project-modal__close img,
+  .project-detail-cta__icon,
   .project-detail-gallery__track {
     transition: none;
   }
