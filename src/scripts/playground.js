@@ -8,6 +8,14 @@ if (surface && world && sourceTile) {
   const TILE_WIDTH = 1534;
   const TILE_HEIGHT = 1388;
   const DRAG_THRESHOLD = 8;
+  const AMBIENT_POINTER_X = 12;
+  const AMBIENT_POINTER_Y = 9;
+  const AMBIENT_DRAG_IMPULSE = 0.36;
+  const AMBIENT_IMPULSE_LIMIT = 18;
+  const AMBIENT_MAX_X = 14;
+  const AMBIENT_MAX_Y = 11;
+  const AMBIENT_FOLLOW_RATE = 4.5;
+  const AMBIENT_IMPULSE_DECAY = 5.8;
   const CAROUSEL_AUTOPLAY_DELAY = 3200;
   const CAROUSEL_MANUAL_DELAY = 5200;
   const INITIAL_POSITION = { x: -151, y: -60 };
@@ -17,6 +25,9 @@ if (surface && world && sourceTile) {
   const projectCloseButton = surface.querySelector("[data-project-close]");
   const reducedMotionPreference = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
+  );
+  const finePointerPreference = window.matchMedia(
+    "(any-hover: hover) and (any-pointer: fine)"
   );
   const projectTemplates = new Map(
     Array.from(document.querySelectorAll("template[data-project-template]"))
@@ -40,12 +51,90 @@ if (surface && world && sourceTile) {
     tileSignature: "",
     renderFrame: 0
   };
+  const ambientMotion = {
+    x: 0,
+    y: 0,
+    pointerTargetX: 0,
+    pointerTargetY: 0,
+    impulseX: 0,
+    impulseY: 0,
+    lastTimestamp: 0,
+    pointerInside: false,
+    paused: false,
+    boundsLeft: 0,
+    boundsTop: 0,
+    boundsWidth: 0,
+    boundsHeight: 0
+  };
   let previousFocus = null;
   let modalTransitionVersion = 0;
   let modalHideTimer = 0;
   let activeGalleryCarousel = null;
   let activeProjectFlip = null;
   let activeProjectSource = null;
+
+  const clamp = (value, minimum, maximum) =>
+    Math.min(maximum, Math.max(minimum, value));
+
+  const updateAmbientBounds = () => {
+    const bounds = surface.getBoundingClientRect();
+    ambientMotion.boundsLeft = bounds.left;
+    ambientMotion.boundsTop = bounds.top;
+    ambientMotion.boundsWidth = bounds.width;
+    ambientMotion.boundsHeight = bounds.height;
+  };
+
+  const canAnimateAmbientMotion = () =>
+    finePointerPreference.matches &&
+    !reducedMotionPreference.matches &&
+    !ambientMotion.paused &&
+    !document.hidden;
+
+  const stepAmbientMotion = (timestamp) => {
+    if (!canAnimateAmbientMotion() || !Number.isFinite(timestamp)) {
+      ambientMotion.lastTimestamp = 0;
+      return false;
+    }
+
+    const deltaTime = ambientMotion.lastTimestamp
+      ? Math.min((timestamp - ambientMotion.lastTimestamp) / 1000, 0.05)
+      : 1 / 60;
+    ambientMotion.lastTimestamp = timestamp;
+
+    const impulseDecay = Math.exp(-deltaTime * AMBIENT_IMPULSE_DECAY);
+    ambientMotion.impulseX *= impulseDecay;
+    ambientMotion.impulseY *= impulseDecay;
+
+    const targetX = clamp(
+      ambientMotion.pointerTargetX,
+      -AMBIENT_MAX_X,
+      AMBIENT_MAX_X
+    );
+    const targetY = clamp(
+      ambientMotion.pointerTargetY,
+      -AMBIENT_MAX_Y,
+      AMBIENT_MAX_Y
+    );
+    const follow = 1 - Math.exp(-deltaTime * AMBIENT_FOLLOW_RATE);
+    ambientMotion.x += (targetX - ambientMotion.x) * follow;
+    ambientMotion.y += (targetY - ambientMotion.y) * follow;
+
+    const isSettled =
+      Math.abs(targetX - ambientMotion.x) < 0.015 &&
+      Math.abs(targetY - ambientMotion.y) < 0.015 &&
+      Math.abs(ambientMotion.impulseX) < 0.015 &&
+      Math.abs(ambientMotion.impulseY) < 0.015;
+
+    if (isSettled) {
+      ambientMotion.x = targetX;
+      ambientMotion.y = targetY;
+      ambientMotion.impulseX = 0;
+      ambientMotion.impulseY = 0;
+      ambientMotion.lastTimestamp = 0;
+    }
+
+    return !isSettled;
+  };
 
   const wrapCoordinate = (value, size) => {
     if (!Number.isFinite(value)) return 0;
@@ -125,24 +214,129 @@ if (surface && world && sourceTile) {
     state.viewportWidth = nextWidth;
     state.viewportHeight = nextHeight;
     wrapPosition();
+    updateAmbientBounds();
     surface.style.setProperty("--playground-scale", String(state.scale));
     syncTiles();
     return true;
   };
 
-  const render = () => {
+  const render = (timestamp) => {
     state.renderFrame = 0;
+    const keepAmbientMoving = stepAmbientMotion(timestamp);
     wrapPosition();
-    const x = state.x * state.scale;
-    const y = state.y * state.scale;
+    const x =
+      state.x * state.scale + ambientMotion.x + ambientMotion.impulseX;
+    const y =
+      state.y * state.scale + ambientMotion.y + ambientMotion.impulseY;
     world.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${state.scale})`;
     surface.dataset.panX = state.x.toFixed(2);
     surface.dataset.panY = state.y.toFixed(2);
+    if (keepAmbientMoving) requestRender();
   };
 
   const requestRender = () => {
     if (state.renderFrame) return;
     state.renderFrame = window.requestAnimationFrame(render);
+  };
+
+  const renderNow = () => {
+    if (state.renderFrame) {
+      window.cancelAnimationFrame(state.renderFrame);
+      state.renderFrame = 0;
+    }
+    render();
+  };
+
+  const returnAmbientMotionToRest = (immediate = false) => {
+    ambientMotion.pointerTargetX = 0;
+    ambientMotion.pointerTargetY = 0;
+
+    if (immediate) {
+      ambientMotion.x = 0;
+      ambientMotion.y = 0;
+      ambientMotion.impulseX = 0;
+      ambientMotion.impulseY = 0;
+      ambientMotion.lastTimestamp = 0;
+      renderNow();
+      return;
+    }
+
+    requestRender();
+  };
+
+  const pauseAmbientMotion = () => {
+    ambientMotion.paused = true;
+    ambientMotion.pointerInside = false;
+    ambientMotion.x += ambientMotion.impulseX;
+    ambientMotion.y += ambientMotion.impulseY;
+    ambientMotion.pointerTargetX = ambientMotion.x;
+    ambientMotion.pointerTargetY = ambientMotion.y;
+    ambientMotion.impulseX = 0;
+    ambientMotion.impulseY = 0;
+    ambientMotion.lastTimestamp = 0;
+    renderNow();
+  };
+
+  const resumeAmbientMotion = () => {
+    ambientMotion.paused = false;
+    ambientMotion.pointerInside = false;
+    returnAmbientMotionToRest();
+  };
+
+  const trackAmbientPointer = (event) => {
+    if (
+      event.pointerType !== "mouse" ||
+      !finePointerPreference.matches ||
+      reducedMotionPreference.matches ||
+      ambientMotion.paused ||
+      isProjectModalVisible() ||
+      isInsideProjectModal(event.target)
+    ) {
+      return;
+    }
+
+    if (ambientMotion.boundsWidth <= 0 || ambientMotion.boundsHeight <= 0) {
+      updateAmbientBounds();
+    }
+    if (ambientMotion.boundsWidth <= 0 || ambientMotion.boundsHeight <= 0) {
+      return;
+    }
+
+    const localX = event.clientX - ambientMotion.boundsLeft;
+    const localY = event.clientY - ambientMotion.boundsTop;
+    ambientMotion.pointerInside =
+      localX >= 0 &&
+      localX <= ambientMotion.boundsWidth &&
+      localY >= 0 &&
+      localY <= ambientMotion.boundsHeight;
+    const normalizedX = clamp(
+      (localX / ambientMotion.boundsWidth) * 2 - 1,
+      -1,
+      1
+    );
+    const normalizedY = clamp(
+      (localY / ambientMotion.boundsHeight) * 2 - 1,
+      -1,
+      1
+    );
+    ambientMotion.pointerTargetX = normalizedX * AMBIENT_POINTER_X;
+    ambientMotion.pointerTargetY = normalizedY * AMBIENT_POINTER_Y;
+    requestRender();
+  };
+
+  const addAmbientDragImpulse = (deltaX, deltaY) => {
+    if (!canAnimateAmbientMotion()) return;
+
+    ambientMotion.impulseX = clamp(
+      ambientMotion.impulseX - deltaX * AMBIENT_DRAG_IMPULSE,
+      -AMBIENT_IMPULSE_LIMIT,
+      AMBIENT_IMPULSE_LIMIT
+    );
+    ambientMotion.impulseY = clamp(
+      ambientMotion.impulseY - deltaY * AMBIENT_DRAG_IMPULSE,
+      -AMBIENT_IMPULSE_LIMIT,
+      AMBIENT_IMPULSE_LIMIT
+    );
   };
 
   const resetPosition = () => {
@@ -352,6 +546,7 @@ if (surface && world && sourceTile) {
       );
       activeProjectSource = null;
       modalHideTimer = 0;
+      resumeAmbientMotion();
     };
 
     const transitionTime = getModalTransitionTime();
@@ -984,6 +1179,7 @@ if (surface && world && sourceTile) {
     const template = projectTemplates.get(projectId);
     if (!template) return;
 
+    pauseAmbientMotion();
     const sourceElement =
       sourceCard instanceof HTMLElement && sourceCard.isConnected
         ? sourceCard
@@ -1078,10 +1274,13 @@ if (surface && world && sourceTile) {
 
     if (openOnClick && !wasDragging && projectId) {
       openProject(projectId, projectCard);
+    } else if (!openOnClick || !ambientMotion.pointerInside) {
+      returnAmbientMotionToRest();
     }
   };
 
   surface.addEventListener("pointerdown", (event) => {
+    trackAmbientPointer(event);
     if (
       state.activePointerId !== null ||
       event.isPrimary === false ||
@@ -1115,6 +1314,7 @@ if (surface && world && sourceTile) {
   });
 
   surface.addEventListener("pointermove", (event) => {
+    trackAmbientPointer(event);
     if (event.pointerId !== state.activePointerId) return;
 
     if (!state.isDragging) {
@@ -1136,6 +1336,9 @@ if (surface && world && sourceTile) {
     const deltaY = event.clientY - state.pointerY;
     state.pointerX = event.clientX;
     state.pointerY = event.clientY;
+    if (event.pointerType === "mouse") {
+      addAmbientDragImpulse(deltaX, deltaY);
+    }
     state.x += deltaX / state.scale;
     state.y += deltaY / state.scale;
     wrapPosition();
@@ -1149,10 +1352,25 @@ if (surface && world && sourceTile) {
   surface.addEventListener("lostpointercapture", (event) =>
     finishPointer(event)
   );
+  surface.addEventListener("pointerleave", (event) => {
+    if (event.pointerType !== "mouse") return;
+    ambientMotion.pointerInside = false;
+    if (state.activePointerId === null) returnAmbientMotionToRest();
+  });
   surface.addEventListener("dragstart", (event) => event.preventDefault());
-  window.addEventListener("blur", () => finishPointer());
+  window.addEventListener("blur", () => {
+    finishPointer();
+    returnAmbientMotionToRest(true);
+  });
+  window.addEventListener("pagehide", () => {
+    finishPointer();
+    returnAmbientMotionToRest(true);
+  });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) finishPointer();
+    if (document.hidden) {
+      finishPointer();
+      returnAmbientMotionToRest(true);
+    }
   });
 
   projectCloseButton?.addEventListener("click", (event) => {
@@ -1322,7 +1540,14 @@ if (surface && world && sourceTile) {
   });
 
   reducedMotionPreference.addEventListener("change", (event) => {
-    if (event.matches) revealActiveProjectFlip();
+    if (event.matches) {
+      revealActiveProjectFlip();
+      returnAmbientMotionToRest(true);
+    }
+  });
+
+  finePointerPreference.addEventListener("change", (event) => {
+    if (!event.matches) returnAmbientMotionToRest(true);
   });
 
   resizeObserver.observe(surface);
