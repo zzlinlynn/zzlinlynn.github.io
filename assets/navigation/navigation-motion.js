@@ -351,13 +351,11 @@
       const linksWidth = linksIsland.offsetWidth;
 
       geometry = {
-        startY: mobile ? 8 : tablet ? 10.5 : 12,
-        endY: mobile ? 8.4 : tablet ? 11 : 12,
+        y: mobile ? 8 : tablet ? 10.5 : 12,
         startBrandX: stateOneLeft,
         startLinksX: stateOneRight - linksWidth,
         endBrandX: liveEdge,
-        endLinksX: width - liveEdge - linksWidth,
-        arc: mobile ? 2 : tablet ? 4 : 6
+        endLinksX: width - liveEdge - linksWidth
       };
     }
 
@@ -397,16 +395,15 @@
     function render(nextProgress) {
       if (destroyed) return;
       progress = clamp(nextProgress, 0, 1);
+      brand.classList.toggle("is-name-hidden", progress !== 0);
       if (!geometry) measure();
       const renderedProgress = reduceMotion ? (progress < .5 ? 0 : 1) : progress;
       const eased = smoothstep(renderedProgress);
-      const arc = Math.sin(Math.PI * renderedProgress) * geometry.arc;
       const brandX = mix(geometry.startBrandX, geometry.endBrandX, eased);
       const linksX = mix(geometry.startLinksX, geometry.endLinksX, eased);
-      const y = mix(geometry.startY, geometry.endY, eased) - arc;
 
-      brand.style.transform = `translate3d(${brandX.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
-      linksIsland.style.transform = `translate3d(${linksX.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+      brand.style.transform = `translate3d(${brandX.toFixed(2)}px, ${geometry.y.toFixed(2)}px, 0)`;
+      linksIsland.style.transform = `translate3d(${linksX.toFixed(2)}px, ${geometry.y.toFixed(2)}px, 0)`;
       logoScrollProgress = renderedProgress;
       if (!logoHovering && !logoHoverFrame) applyLogoVisualProgress(renderedProgress);
       updateTypeMotion(renderedProgress);
@@ -478,6 +475,7 @@
           if (row) row.replaceChildren();
         });
         brand.style.removeProperty("transform");
+        brand.classList.remove("is-name-hidden");
         linksIsland.style.removeProperty("transform");
         root.style.removeProperty("--lynn-nav-progress");
         logoMark.style.removeProperty("--logo-order-opacity");

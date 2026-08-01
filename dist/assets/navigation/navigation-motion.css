@@ -76,6 +76,19 @@
   text-transform: uppercase;
 }
 
+.lynn-nav__brand.is-name-hidden .lynn-nav__name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .lynn-nav__links {
   gap: 2px;
 }
