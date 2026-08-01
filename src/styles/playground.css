@@ -131,6 +131,42 @@ body .case-nav-ui.playground-nav-ui .site-nav {
   box-shadow: inset 0 0 0 1px var(--card-line);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .project-card {
+    pointer-events: auto;
+    transform-origin: center;
+    transition:
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 200ms ease-out;
+  }
+
+  .project-card:hover {
+    z-index: 1;
+  }
+
+  .playground-stage:not(.is-dragging) .project-card:hover {
+    transform: translate3d(0, -4px, 0) scale(1.012);
+    box-shadow:
+      inset 0 0 0 1px var(--card-line),
+      0 12px 28px rgb(10 10 10 / 10%),
+      0 3px 8px rgb(10 10 10 / 6%);
+  }
+
+  .playground-stage.is-dragging .project-card {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transition: none;
+  }
+
+  .playground-stage:not(.is-dragging) .project-card:hover {
+    transform: none;
+  }
+}
+
 .project-preview {
   position: relative;
   flex: 0 0 var(--preview-height);

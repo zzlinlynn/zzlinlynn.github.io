@@ -116,14 +116,13 @@
   width: 100vw;
   height: var(--reading-progress-cell);
   overflow: hidden;
-  background-color: #fff;
+  background-color: transparent;
   background-image: repeating-linear-gradient(
     to right,
-    var(--surface-subtle, #f5f5f5) 0 var(--reading-progress-cell),
+    rgb(255 255 255 / .04) 0 var(--reading-progress-cell),
     transparent var(--reading-progress-cell) calc(var(--reading-progress-cell) + var(--reading-progress-gap))
   );
-  contain: paint;
-  isolation: isolate;
+  mix-blend-mode: difference;
   pointer-events: none;
   transform: none;
   transition: none;
@@ -137,7 +136,7 @@
   overflow: hidden;
   background-image: repeating-linear-gradient(
     to right,
-    #000 0 var(--reading-progress-cell),
+    rgb(255 255 255 / .82) 0 var(--reading-progress-cell),
     transparent var(--reading-progress-cell) calc(var(--reading-progress-cell) + var(--reading-progress-gap))
   );
   will-change: width;
@@ -159,6 +158,7 @@
   .reading-progress {
     border: 1px solid CanvasText;
     background: Canvas;
+    mix-blend-mode: normal;
   }
 
   .reading-progress__fill {
