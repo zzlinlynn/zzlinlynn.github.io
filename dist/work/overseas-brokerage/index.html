@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans+SC:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/fonts.css?v=20260729-font-family-set-1">
   <link rel="stylesheet" href="/case-nav.css?v=20260801-scroll-reveal-1">
-  <link rel="stylesheet" href="./case-study.css?v=20260729-7">
+  <link rel="stylesheet" href="./case-study.css?v=20260801-confidential-layers-2">
   <link rel="stylesheet" href="/case-next-project.css?v=20260729-next-project-1">
   <link rel="stylesheet" href="/footer-strip.css?v=20260801-reading-progress-3">
   <script src="/case-nav.js?v=20260801-reading-progress-2" defer></script>
@@ -59,17 +59,34 @@
             </div>
           </dl>
 
-          <picture class="system-overview">
-            <source media="(min-width: 1025px)" srcset="/assets/overseas-brokerage/system-overview-desktop.png">
-            <source media="(min-width: 768px)" srcset="/assets/overseas-brokerage/system-overview-tablet.png">
-            <img
-              src="/assets/overseas-brokerage/system-overview-mobile.png"
-              alt="经过保密模糊处理的券商系统总览"
-              width="342"
-              height="240"
-              fetchpriority="high"
-            >
-          </picture>
+          <figure class="system-overview">
+            <picture class="system-overview__media">
+              <source
+                media="(min-width: 1025px)"
+                srcset="/assets/overseas-brokerage/system-overview-base-desktop.png?v=20260801-confidential-layers-2"
+                width="1858"
+                height="930"
+              >
+              <source
+                media="(min-width: 768px)"
+                srcset="/assets/overseas-brokerage/system-overview-base-tablet.png?v=20260801-confidential-layers-2"
+                width="1408"
+                height="862"
+              >
+              <img
+                class="system-overview__image"
+                src="/assets/overseas-brokerage/system-overview-base-mobile.png?v=20260801-confidential-layers-2"
+                alt="经过保密模糊处理的券商系统总览"
+                width="684"
+                height="480"
+                fetchpriority="high"
+              >
+            </picture>
+            <figcaption class="system-overview__caption">
+              <span class="system-overview__title">01 / SYSTEM OVERVIEW</span>
+              <span class="system-overview__label">CONFIDENTIAL  /  BLURRED PREVIEW</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -253,14 +270,17 @@
               <p>不同入口代表不同的交易意图，不同交易意图需要进入不同的信息层级。</p>
               <p>从个股详情进入时，用户处在盯盘情境，优先保留速度和行情上下文；从持仓进入时，用户则需要更完整的信息和交易控制。</p>
             </div>
-            <img
-              class="decision-preview decision-preview--one"
-              src="/assets/overseas-brokerage/decision-preview-01.png"
-              alt="经过保密模糊处理的场景入口方案预览"
-              width="625"
-              height="336"
-              loading="lazy"
-            >
+            <figure class="decision-preview decision-preview--one">
+              <img
+                class="decision-preview__image"
+                src="/assets/overseas-brokerage/decision-preview-01.png?v=20260801-confidential-previews-1"
+                alt="经过保密模糊处理的场景入口方案预览"
+                width="625"
+                height="336"
+                loading="lazy"
+              >
+              <figcaption class="decision-preview__label">CONFIDENTIAL  /  BLURRED PREVIEW</figcaption>
+            </figure>
           </div>
         </article>
 
@@ -277,14 +297,17 @@
               <p>半屏不是完整全屏下单页的缩小版。它只保留能支撑“看着行情立即交易”的必要变量，把订单管理与更完整控制留给全屏链路，明确半浮层和全屏下单页的职责边界。</p>
               <p>半浮层不覆盖图表，让用户留在行情判断的上下文中，点击图表价格后，可直接将其带入面板并转化为限价单，减少操作和短时记忆负担。</p>
             </div>
-            <img
-              class="decision-preview decision-preview--two"
-              src="/assets/overseas-brokerage/decision-preview-02.png"
-              alt="经过保密模糊处理的半屏交易方案预览"
-              width="625"
-              height="256"
-              loading="lazy"
-            >
+            <figure class="decision-preview decision-preview--two">
+              <img
+                class="decision-preview__image"
+                src="/assets/overseas-brokerage/decision-preview-02.png?v=20260801-confidential-previews-1"
+                alt="经过保密模糊处理的半屏交易方案预览"
+                width="625"
+                height="256"
+                loading="lazy"
+              >
+              <figcaption class="decision-preview__label">CONFIDENTIAL  /  BLURRED PREVIEW</figcaption>
+            </figure>
           </div>
         </article>
 
@@ -301,14 +324,17 @@
               <p>速度不能以状态模糊为代价：用户需要确认结果，也需要继续控制订单。</p>
               <p>提交后半浮层立即切换为订单状态，并提供快速撤单。确认使用 filled 按钮，撤单使用 outline 按钮，帮助用户明确感知当前状态和下一步操作。</p>
             </div>
-            <img
-              class="decision-preview decision-preview--three"
-              src="/assets/overseas-brokerage/decision-preview-03.png"
-              alt="经过保密模糊处理的订单状态方案预览"
-              width="625"
-              height="285"
-              loading="lazy"
-            >
+            <figure class="decision-preview decision-preview--three">
+              <img
+                class="decision-preview__image"
+                src="/assets/overseas-brokerage/decision-preview-03.png?v=20260801-confidential-previews-1"
+                alt="经过保密模糊处理的订单状态方案预览"
+                width="625"
+                height="285"
+                loading="lazy"
+              >
+              <figcaption class="decision-preview__label">CONFIDENTIAL  /  BLURRED PREVIEW</figcaption>
+            </figure>
           </div>
         </article>
       </div>
