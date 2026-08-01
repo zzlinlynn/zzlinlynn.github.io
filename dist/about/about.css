@@ -175,24 +175,51 @@ html {
   white-space: nowrap;
 }
 
-.about-action::after {
-  content: "";
-  position: absolute;
-  left: 2.15rem;
-  right: 0;
-  bottom: -.35rem;
-  height: 1px;
-  background: currentColor;
-  opacity: 0;
-  transform: scaleX(.4);
-  transform-origin: left;
-  transition: opacity 180ms ease, transform 320ms var(--ease);
+.about-action__label {
+  position: relative;
+  display: inline-grid;
 }
 
-.about-action:hover::after,
-.about-action:focus-visible::after {
-  opacity: .5;
-  transform: scaleX(1);
+.about-action__label-normal,
+.about-action__hover-row {
+  grid-area: 1 / 1;
+}
+
+.about-action__label-normal {
+  transition: opacity 60ms linear;
+}
+
+.about-action__hover-row {
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.about-action.is-scrambling .about-action__label-normal {
+  opacity: 0;
+}
+
+.about-action.is-scrambling .about-action__hover-row {
+  opacity: 1;
+}
+
+.about-action__hover-char {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 1ch;
+  width: 1ch;
+  transform-origin: bottom;
+  transition: color 80ms linear, transform 80ms linear;
+}
+
+.about-action__hover-char.is-wide {
+  flex-basis: 1em;
+  width: 1em;
+}
+
+.about-action__hover-char.is-scrambled {
+  color: rgb(var(--ink-rgb) / .4);
+  transform: scale(1.06);
 }
 
 .about-action:focus-visible {
@@ -242,7 +269,9 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about-device-control::after {
+  .about-device-control::after,
+  .about-action__label-normal,
+  .about-action__hover-char {
     transition: none;
   }
 }

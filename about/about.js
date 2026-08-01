@@ -3,6 +3,9 @@ import { ABOUT_PHOTO_PIXEL_DATA } from './about-photo-pixel-data.js';
 
 const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const actionScrambleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*+-?';
+const actionScrambleSteps = 30;
+const actionScrambleInterval = 22;
 const splashPlaybackSpeed = 2;
 const splash = document.getElementById('splash');
 const splashMark = document.getElementById('splash-animation');
@@ -10,6 +13,7 @@ let splashAnimation = null;
 let splashCycleFallback = null;
 let isPageReady = false;
 let hasSplashCycleCompleted = reduceMotion;
+let actionScrambleController = null;
 
 function tryHideSplash() {
   if (isPageReady && hasSplashCycleCompleted) hideSplash();
@@ -140,6 +144,121 @@ function translate() {
   languageToggle?.setAttribute('aria-pressed', String(language === 'zh'));
   languageToggle?.setAttribute('aria-label', language === 'zh' ? 'Switch to English' : 'Switch to Chinese');
   if (languageLabel) languageLabel.textContent = language === 'zh' ? '中' : 'EN';
+  actionScrambleController?.refresh();
+}
+
+function setupActionScramble() {
+  const records = Array.from(document.querySelectorAll('.about-action')).map((element) => {
+    const label = element.querySelector('[data-about-i18n]');
+    if (!label) return null;
+
+    const record = {
+      element,
+      label,
+      text: '',
+      characters: [],
+      timer: 0,
+      pointerInside: false,
+      focused: false
+    };
+
+    function setFrame(tick) {
+      const letters = Array.from(record.text);
+      const resolvedCount = Math.floor(
+        Math.min(tick, actionScrambleSteps) / actionScrambleSteps * letters.length
+      );
+
+      record.characters.forEach((character, index) => {
+        const resolved = index < resolvedCount || tick >= actionScrambleSteps;
+        character.textContent = resolved
+          ? letters[index]
+          : actionScrambleCharacters[
+            Math.floor(Math.random() * actionScrambleCharacters.length)
+          ];
+        character.classList.toggle('is-scrambled', !resolved);
+      });
+    }
+
+    function stop(hide) {
+      if (record.timer) {
+        window.clearInterval(record.timer);
+        record.timer = 0;
+      }
+      setFrame(actionScrambleSteps);
+      if (hide) record.element.classList.remove('is-scrambling');
+    }
+
+    function start() {
+      stop(false);
+      record.element.classList.add('is-scrambling');
+      if (reduceMotion) return;
+
+      let tick = 0;
+      setFrame(tick);
+      record.timer = window.setInterval(() => {
+        tick += 1;
+        setFrame(tick);
+        if (tick >= actionScrambleSteps) stop(false);
+      }, actionScrambleInterval);
+    }
+
+    function refresh() {
+      if (record.timer) {
+        window.clearInterval(record.timer);
+        record.timer = 0;
+      }
+
+      const translationKey = record.label.dataset.aboutI18n;
+      record.text = String(dictionary()[translationKey] || translationKey).trim();
+      const normal = document.createElement('span');
+      normal.className = 'about-action__label-normal';
+      normal.textContent = record.text;
+
+      const hoverRow = document.createElement('span');
+      hoverRow.className = 'about-action__hover-row';
+      hoverRow.setAttribute('aria-hidden', 'true');
+      record.characters = Array.from(record.text).map((letter) => {
+        const character = document.createElement('span');
+        character.className = 'about-action__hover-char';
+        character.classList.toggle('is-wide', letter.codePointAt(0) > 0xff);
+        character.textContent = letter;
+        hoverRow.append(character);
+        return character;
+      });
+
+      record.label.classList.add('about-action__label');
+      record.label.replaceChildren(normal, hoverRow);
+      record.element.classList.remove('is-scrambling');
+      if (record.pointerInside || record.focused) start();
+    }
+
+    element.addEventListener('mouseenter', () => {
+      record.pointerInside = true;
+      start();
+    });
+    element.addEventListener('mouseleave', () => {
+      record.pointerInside = false;
+      if (!record.focused) stop(true);
+    });
+    element.addEventListener('focus', () => {
+      record.focused = true;
+      start();
+    });
+    element.addEventListener('blur', () => {
+      record.focused = false;
+      if (!record.pointerInside) stop(true);
+    });
+
+    record.refresh = refresh;
+    refresh();
+    return record;
+  }).filter(Boolean);
+
+  return {
+    refresh() {
+      records.forEach((record) => record.refresh());
+    }
+  };
 }
 
 function setTheme(theme) {
@@ -908,6 +1027,7 @@ document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
 setTheme(root.dataset.theme || 'light');
 setupSplashAnimation();
 translate();
+actionScrambleController = setupActionScramble();
 setupAboutSlideshow();
 
 window.addEventListener('load', () => {
