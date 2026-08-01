@@ -18,6 +18,7 @@ if (surface && world && sourceTile) {
   const AMBIENT_IMPULSE_DECAY = 5.8;
   const CAROUSEL_AUTOPLAY_DELAY = 3200;
   const CAROUSEL_MANUAL_DELAY = 5200;
+  const ACTIVE_PROJECT_SOURCE_CLASS = "is-active-project-source";
   const INITIAL_POSITION = { x: -151, y: -60 };
   const tileTemplate = sourceTile.cloneNode(true);
   const projectModal = surface.querySelector("[data-project-modal]");
@@ -177,6 +178,10 @@ if (surface && world && sourceTile) {
     surface.dataset.tileRows = String(rows);
     surface.dataset.tileCount = String(columns * rows);
     surface.dataset.worldRepeated = "true";
+
+    if (activeProjectSource?.projectId) {
+      resolveProjectSource(activeProjectSource.projectId);
+    }
   };
 
   const updateScale = (preserveCenter = false) => {
@@ -361,9 +366,41 @@ if (surface && world && sourceTile) {
     return card && surface.contains(card) ? card : null;
   };
 
+  const markActiveProjectSource = (sourceCard) => {
+    if (!activeProjectSource || !(sourceCard instanceof HTMLElement)) {
+      return null;
+    }
+
+    const previousSource = activeProjectSource.element;
+    if (
+      previousSource instanceof HTMLElement &&
+      previousSource !== sourceCard
+    ) {
+      previousSource.classList.remove(ACTIVE_PROJECT_SOURCE_CLASS);
+    }
+
+    activeProjectSource.element = sourceCard;
+    sourceCard.classList.add(ACTIVE_PROJECT_SOURCE_CLASS);
+    return sourceCard;
+  };
+
+  const showActiveProjectSource = () => {
+    if (activeProjectSource?.element instanceof HTMLElement) {
+      activeProjectSource.element.classList.remove(
+        ACTIVE_PROJECT_SOURCE_CLASS
+      );
+    }
+  };
+
+  const clearActiveProjectSource = () => {
+    showActiveProjectSource();
+    activeProjectSource = null;
+  };
+
   const rememberProjectSource = (projectId, sourceCard, sourceRect) => {
+    clearActiveProjectSource();
+
     if (!(sourceCard instanceof HTMLElement)) {
-      activeProjectSource = null;
       return;
     }
 
@@ -376,6 +413,7 @@ if (surface && world && sourceTile) {
       centerX: sourceRect ? sourceRect.left + sourceRect.width / 2 : 0,
       centerY: sourceRect ? sourceRect.top + sourceRect.height / 2 : 0
     };
+    markActiveProjectSource(sourceCard);
   };
 
   const resolveProjectSource = (projectId) => {
@@ -389,7 +427,7 @@ if (surface && world && sourceTile) {
       currentElement.isConnected &&
       currentElement.dataset.projectId === projectId
     ) {
-      return currentElement;
+      return markActiveProjectSource(currentElement);
     }
 
     const matchingCards = Array.from(
@@ -411,8 +449,7 @@ if (surface && world && sourceTile) {
       : null;
 
     if (matchingTileCard instanceof HTMLElement) {
-      activeProjectSource.element = matchingTileCard;
-      return matchingTileCard;
+      return markActiveProjectSource(matchingTileCard);
     }
 
     const closestCard = matchingCards.reduce((closest, card) => {
@@ -427,8 +464,7 @@ if (surface && world && sourceTile) {
     }, null)?.card;
 
     if (closestCard instanceof HTMLElement) {
-      activeProjectSource.element = closestCard;
-      return closestCard;
+      return markActiveProjectSource(closestCard);
     }
 
     return null;
@@ -476,6 +512,7 @@ if (surface && world && sourceTile) {
   const prepareTransitionClone = (root) => {
     if (!(root instanceof Element)) return;
 
+    root.classList.remove(ACTIVE_PROJECT_SOURCE_CLASS);
     root.removeAttribute("id");
     root.removeAttribute("data-project-id");
     root.querySelectorAll("[id]").forEach((element) => {
@@ -516,6 +553,7 @@ if (surface && world && sourceTile) {
 
     const hadActiveFlip = Boolean(activeProjectFlip);
     cancelActiveProjectFlip();
+    showActiveProjectSource();
     projectModal.classList.remove(
       "is-open",
       "is-ready",
@@ -544,7 +582,7 @@ if (surface && world && sourceTile) {
         "is-flipping",
         "is-closing"
       );
-      activeProjectSource = null;
+      clearActiveProjectSource();
       modalHideTimer = 0;
       resumeAmbientMotion();
     };
@@ -1004,7 +1042,7 @@ if (surface && world && sourceTile) {
       }, delay);
     };
 
-    const goToSlide = (index, manual = false) => {
+    const goToSlide = (index, manual = false, useLoopClone = false) => {
       if (!Number.isInteger(index) || index < 0 || index >= slideCount) {
         return;
       }
@@ -1012,9 +1050,10 @@ if (surface && world && sourceTile) {
       if (visualIndex === slideCount) finishLoop();
       clearLoopReset();
       currentIndex = index;
-      visualIndex = index;
+      visualIndex = useLoopClone && index === 0 ? slideCount : index;
       updateCarouselState();
       setTrackPosition(true);
+      if (visualIndex === slideCount) queueLoopReset();
       scheduleAutoplay(
         manual ? CAROUSEL_MANUAL_DELAY : CAROUSEL_AUTOPLAY_DELAY
       );
@@ -1031,6 +1070,23 @@ if (surface && world && sourceTile) {
       if (!dot || !pagination.contains(dot)) return;
       const index = Number.parseInt(dot.dataset.carouselIndex, 10);
       goToSlide(index, true);
+    };
+
+    const handleViewportClick = (event) => {
+      if (!(event.target instanceof Element)) return;
+      const slide = event.target.closest(
+        "[data-carousel-slide], [data-carousel-clone]"
+      );
+      if (!slide || !viewport.contains(slide)) return;
+
+      const slideIndex = slides.indexOf(slide);
+      const cloneIndex = loopClones.indexOf(slide);
+      const index = slideIndex >= 0 ? slideIndex : cloneIndex;
+      if (index < 0 || index === currentIndex) return;
+
+      const shouldMoveLoopCloneForward =
+        cloneIndex === 0 && currentIndex === slideCount - 1;
+      goToSlide(index, true, shouldMoveLoopCloneForward);
     };
 
     const handlePaginationKeydown = (event) => {
@@ -1079,6 +1135,7 @@ if (surface && world && sourceTile) {
     });
 
     track.addEventListener("transitionend", handleTransitionEnd);
+    viewport.addEventListener("click", handleViewportClick);
     pagination?.addEventListener("click", handlePaginationClick);
     pagination?.addEventListener("keydown", handlePaginationKeydown);
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -1097,6 +1154,7 @@ if (surface && world && sourceTile) {
         resizeObserver.disconnect();
         track.classList.remove("is-animating");
         track.removeEventListener("transitionend", handleTransitionEnd);
+        viewport.removeEventListener("click", handleViewportClick);
         pagination?.removeEventListener("click", handlePaginationClick);
         pagination?.removeEventListener("keydown", handlePaginationKeydown);
         document.removeEventListener(

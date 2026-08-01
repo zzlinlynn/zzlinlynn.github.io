@@ -570,7 +570,13 @@ const projects = [
                   class="project-detail-card project-detail-card--standard"
                   style={`--project-accent:${project.accent};--detail-image-width:${project.detail.imageWidth}px;--detail-image-height:${project.detail.imageHeight}px;--detail-image-ratio:${project.detail.imageWidth} / ${project.detail.imageHeight};`}
                 >
-                  <div class="project-detail-image">
+                  <div
+                    class:list={[
+                      "project-detail-image",
+                      project.id === "mobile-app" &&
+                        "project-detail-image--full-frame"
+                    ]}
+                  >
                     <picture>
                       <source
                         srcset={`/assets/playground/${project.file}.webp`}
