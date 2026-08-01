@@ -4,6 +4,7 @@
   --footer-info-height: 1.65rem;
   --shared-footer-frame-x: clamp(3.25rem, 5.8vw, 6.5rem);
   position: relative;
+  z-index: 51;
   flex: 0 0 auto;
   width: 100%;
   height: var(--footer-info-height);
@@ -105,9 +106,110 @@
   vertical-align: -.16em;
 }
 
+.reading-progress {
+  position: fixed;
+  left: 0;
+  bottom: max(5px, env(safe-area-inset-bottom));
+  z-index: 50;
+  width: 100vw;
+  height: clamp(.21875rem, .3325vw, .34375rem);
+  overflow: hidden;
+  background: rgb(68 68 66 / .15);
+  backdrop-filter: grayscale(.45) contrast(.96);
+  -webkit-backdrop-filter: grayscale(.45) contrast(.96);
+  contain: paint;
+  isolation: isolate;
+  pointer-events: none;
+  transform: none;
+  transition: none;
+}
+
+.reading-progress__fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  background: linear-gradient(
+    to top,
+    #282827 0%,
+    #2e2e2d 34%,
+    #383837 70%,
+    #444442 100%
+  );
+  clip-path: inset(0 100% 0 0);
+  image-rendering: pixelated;
+  will-change: clip-path;
+}
+
+.reading-progress__texture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  image-rendering: pixelated;
+}
+
+.reading-progress.has-footer-texture .reading-progress__texture {
+  opacity: 1;
+}
+
+.reading-progress.has-footer-texture .reading-progress__fill::before,
+.reading-progress.has-footer-texture .reading-progress__fill::after {
+  display: none;
+}
+
+.reading-progress__fill::before,
+.reading-progress__fill::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.reading-progress__fill::before {
+  background:
+    linear-gradient(90deg, transparent 0 36%, rgb(154 154 152 / .38) 36% 51%, transparent 51%) 1px 1px / 17px 7px,
+    linear-gradient(90deg, transparent 0 61%, rgb(112 112 110 / .46) 61% 74%, transparent 74%) 6px 4px / 23px 11px,
+    linear-gradient(180deg, transparent 0 43%, rgb(132 132 130 / .28) 43% 59%, transparent 59%) 3px 2px / 13px 9px;
+  mix-blend-mode: screen;
+  opacity: .72;
+}
+
+.reading-progress__fill::after {
+  background:
+    linear-gradient(90deg, transparent 0 72%, rgb(12 12 12 / .3) 72% 82%, transparent 82%) 2px 0 / 31px 13px,
+    linear-gradient(180deg, transparent 0 68%, rgb(18 18 18 / .22) 68% 82%, transparent 82%) 8px 1px / 19px 10px;
+  mix-blend-mode: multiply;
+  opacity: .5;
+}
+
 @media (max-width: 1180px) {
   .site-footer--shared {
     --shared-footer-frame-x: clamp(2rem, 4.6vw, 3.8rem);
+  }
+}
+
+@media print {
+  .reading-progress {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .reading-progress {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .reading-progress__fill {
+    background: Highlight;
+  }
+
+  .reading-progress__texture,
+  .reading-progress__fill::before,
+  .reading-progress__fill::after {
+    display: none;
   }
 }
 
