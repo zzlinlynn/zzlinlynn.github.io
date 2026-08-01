@@ -75,7 +75,6 @@ function setupSplashAnimation() {
 
 function hideSplash() {
   if (!splash || splash.classList.contains('is-hidden')) return;
-  splash.classList.add('is-hidden');
 
   if (splashCycleFallback !== null) {
     window.clearTimeout(splashCycleFallback);
@@ -83,11 +82,20 @@ function hideSplash() {
   }
 
   if (splashAnimation) {
-    window.setTimeout(() => {
-      splashAnimation?.destroy();
-      splashAnimation = null;
-    }, 320);
+    try {
+      splashAnimation.stop();
+      splashAnimation.destroy();
+    } catch {
+      // The splash is still removed if the renderer has already torn itself down.
+    }
+    splashAnimation = null;
   }
+
+  splashMark?.replaceChildren();
+  splash.classList.add('is-hidden');
+  window.setTimeout(() => {
+    splash.hidden = true;
+  }, 320);
 }
 
 const i18n = {
@@ -411,8 +419,8 @@ function setupPointerVars() {
 }
 
 function setupCursor() {
-  if (!finePointer || reduceMotion || window.innerWidth <= 760) return;
-  document.body.classList.add('cursor-on');
+  if (reduceMotion || !cursor || !cursorLabel) return;
+  const cursorMode = window.matchMedia('(min-width: 761px) and (hover: hover) and (pointer: fine)');
   const cursorShape = cursor.querySelector('.cursor__shape');
   const measurementContext = document.createElement('canvas').getContext('2d');
   if (measurementContext) {
@@ -425,7 +433,21 @@ function setupCursor() {
   let cy = y;
   let down = false;
 
+  function resetCursorState() {
+    down = false;
+    cursor.classList.remove('is-active', 'is-label', 'is-soft', 'is-down');
+  }
+
+  function syncCursorMode() {
+    document.body.classList.toggle('cursor-on', cursorMode.matches);
+    if (!cursorMode.matches) resetCursorState();
+  }
+
+  syncCursorMode();
+  cursorMode.addEventListener('change', syncCursorMode);
+
   function setTarget(event) {
+    if (!cursorMode.matches) return;
     const target = event.target.closest('[data-cursor-label-key], [data-cursor-soft], a, button');
     cursor.classList.toggle('is-active', true);
     cursor.classList.toggle('is-down', down);
@@ -452,6 +474,7 @@ function setupCursor() {
   }, { passive: true });
   document.addEventListener('pointerleave', () => cursor.classList.remove('is-active'));
   document.addEventListener('pointerdown', () => {
+    if (!cursorMode.matches) return;
     down = true;
     cursor.classList.add('is-down');
   }, { passive: true });

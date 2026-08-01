@@ -67,7 +67,6 @@ function setupSplashAnimation() {
 
 function hideSplash() {
   if (!splash || splash.classList.contains('is-hidden')) return;
-  splash.classList.add('is-hidden');
 
   if (splashCycleFallback !== null) {
     window.clearTimeout(splashCycleFallback);
@@ -75,11 +74,20 @@ function hideSplash() {
   }
 
   if (splashAnimation) {
-    window.setTimeout(() => {
-      splashAnimation?.destroy();
-      splashAnimation = null;
-    }, 320);
+    try {
+      splashAnimation.stop();
+      splashAnimation.destroy();
+    } catch {
+      // The splash is still removed if the renderer has already torn itself down.
+    }
+    splashAnimation = null;
   }
+
+  splashMark?.replaceChildren();
+  splash.classList.add('is-hidden');
+  window.setTimeout(() => {
+    splash.hidden = true;
+  }, 320);
 }
 
 const aboutI18n = {
