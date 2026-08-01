@@ -7,20 +7,39 @@ if (surface && world && sourceTile) {
   const MIN_SCALE = 0.54;
   const TILE_WIDTH = 1534;
   const TILE_HEIGHT = 1388;
+  const DRAG_THRESHOLD = 8;
+  const CAROUSEL_AUTOPLAY_DELAY = 3200;
+  const CAROUSEL_MANUAL_DELAY = 5200;
   const INITIAL_POSITION = { x: -151, y: -60 };
   const tileTemplate = sourceTile.cloneNode(true);
+  const projectModal = surface.querySelector("[data-project-modal]");
+  const projectModalBody = surface.querySelector("[data-project-modal-body]");
+  const projectCloseButton = surface.querySelector("[data-project-close]");
+  const projectTemplates = new Map(
+    Array.from(document.querySelectorAll("template[data-project-template]"))
+      .map((template) => [template.dataset.projectTemplate, template])
+      .filter(([projectId]) => projectId)
+  );
   const state = {
     x: INITIAL_POSITION.x,
     y: INITIAL_POSITION.y,
     scale: 1,
     activePointerId: null,
+    pointerStartX: 0,
+    pointerStartY: 0,
     pointerX: 0,
     pointerY: 0,
+    pointerProjectId: null,
+    isDragging: false,
     viewportWidth: 0,
     viewportHeight: 0,
     tileSignature: "",
     renderFrame: 0
   };
+  let previousFocus = null;
+  let modalTransitionVersion = 0;
+  let modalHideTimer = 0;
+  let activeGalleryCarousel = null;
 
   const wrapCoordinate = (value, size) => {
     if (!Number.isFinite(value)) return 0;
@@ -126,7 +145,403 @@ if (surface && world && sourceTile) {
     requestRender();
   };
 
-  const finishDrag = (event) => {
+  const isInsideProjectModal = (target) =>
+    Boolean(
+      projectModal &&
+        target instanceof Node &&
+        projectModal.contains(target)
+    );
+
+  const isProjectModalVisible = () =>
+    Boolean(projectModal && !projectModal.hidden);
+
+  const getProjectCard = (target) => {
+    if (!(target instanceof Element)) return null;
+    const card = target.closest("[data-project-id]");
+    return card && surface.contains(card) ? card : null;
+  };
+
+  const parseTransitionTime = (value) => {
+    const time = Number.parseFloat(value);
+    if (!Number.isFinite(time)) return 0;
+    return value.trim().endsWith("ms") ? time : time * 1000;
+  };
+
+  const getTransitionTime = (element) => {
+    const style = window.getComputedStyle(element);
+    const durations = style.transitionDuration
+      .split(",")
+      .map(parseTransitionTime);
+    const delays = style.transitionDelay.split(",").map(parseTransitionTime);
+    const count = Math.max(durations.length, delays.length);
+    let longest = 0;
+
+    for (let index = 0; index < count; index += 1) {
+      const duration = durations[index % durations.length] || 0;
+      const delay = delays[index % delays.length] || 0;
+      longest = Math.max(longest, duration + delay);
+    }
+
+    return longest;
+  };
+
+  const getModalTransitionTime = () => {
+    if (!projectModal) return 0;
+    return [projectModal, ...projectModal.querySelectorAll("*")].reduce(
+      (longest, element) => Math.max(longest, getTransitionTime(element)),
+      0
+    );
+  };
+
+  const cancelPendingModalHide = () => {
+    modalTransitionVersion += 1;
+    if (!modalHideTimer) return;
+    window.clearTimeout(modalHideTimer);
+    modalHideTimer = 0;
+  };
+
+  const restorePreviousFocus = () => {
+    const focusTarget = previousFocus;
+    previousFocus = null;
+
+    if (
+      focusTarget &&
+      focusTarget.isConnected &&
+      typeof focusTarget.focus === "function"
+    ) {
+      focusTarget.focus({ preventScroll: true });
+      return;
+    }
+
+    surface.focus({ preventScroll: true });
+  };
+
+  const initGalleryCarousel = (root) => {
+    if (!(root instanceof Element)) return null;
+
+    const carousel = root.querySelector("[data-gallery-carousel]");
+    const viewport = carousel?.querySelector("[data-carousel-viewport]");
+    const track = carousel?.querySelector("[data-carousel-track]");
+    const pagination = carousel?.querySelector("[data-carousel-pagination]");
+    const slides = track
+      ? Array.from(track.querySelectorAll("[data-carousel-slide]"))
+      : [];
+    const dots = pagination
+      ? Array.from(pagination.querySelectorAll("[data-carousel-dot]"))
+      : [];
+
+    if (!carousel || !viewport || !track || slides.length < 2) return null;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    slides.forEach((slide) => {
+      slide.querySelectorAll("img").forEach((image) => {
+        image.loading = "eager";
+      });
+    });
+
+    const loopClones = slides.map((slide) => {
+      const clone = slide.cloneNode(true);
+      clone.removeAttribute("data-carousel-slide");
+      clone.removeAttribute("role");
+      clone.removeAttribute("aria-roledescription");
+      clone.removeAttribute("aria-label");
+      clone.setAttribute("aria-hidden", "true");
+      clone.dataset.carouselClone = "";
+      clone.querySelectorAll("img").forEach((image) => {
+        image.alt = "";
+      });
+      return clone;
+    });
+    track.append(...loopClones);
+
+    const slideCount = slides.length;
+    let currentIndex = 0;
+    let visualIndex = 0;
+    let autoplayTimer = 0;
+    let loopResetTimer = 0;
+    let destroyed = false;
+
+    const clearAutoplay = () => {
+      if (!autoplayTimer) return;
+      window.clearTimeout(autoplayTimer);
+      autoplayTimer = 0;
+    };
+
+    const clearLoopReset = () => {
+      if (!loopResetTimer) return;
+      window.clearTimeout(loopResetTimer);
+      loopResetTimer = 0;
+    };
+
+    const getSlideStep = () => {
+      const slideWidth = slides[0].getBoundingClientRect().width;
+      const gap = Number.parseFloat(
+        window.getComputedStyle(track).columnGap
+      );
+      return slideWidth + (Number.isFinite(gap) ? gap : 0);
+    };
+
+    const updateCarouselState = () => {
+      dots.forEach((dot, index) => {
+        if (index === currentIndex) {
+          dot.setAttribute("aria-current", "true");
+        } else {
+          dot.removeAttribute("aria-current");
+        }
+      });
+
+      slides.forEach((slide, index) => {
+        slide.setAttribute(
+          "aria-hidden",
+          index === currentIndex ? "false" : "true"
+        );
+      });
+    };
+
+    const setTrackPosition = (animate) => {
+      track.classList.toggle(
+        "is-animating",
+        Boolean(animate && !reducedMotion.matches)
+      );
+      track.style.transform = `translate3d(${-visualIndex * getSlideStep()}px, 0, 0)`;
+    };
+
+    const finishLoop = () => {
+      if (destroyed || visualIndex !== slideCount) return;
+      clearLoopReset();
+      visualIndex = 0;
+      setTrackPosition(false);
+      void track.offsetWidth;
+    };
+
+    const queueLoopReset = () => {
+      clearLoopReset();
+      if (reducedMotion.matches) {
+        finishLoop();
+        return;
+      }
+
+      loopResetTimer = window.setTimeout(finishLoop, 780);
+    };
+
+    const scheduleAutoplay = (delay = CAROUSEL_AUTOPLAY_DELAY) => {
+      clearAutoplay();
+      if (destroyed || reducedMotion.matches || document.hidden) return;
+      autoplayTimer = window.setTimeout(() => {
+        autoplayTimer = 0;
+
+        if (currentIndex === slideCount - 1) {
+          currentIndex = 0;
+          visualIndex = slideCount;
+        } else {
+          currentIndex += 1;
+          visualIndex = currentIndex;
+        }
+
+        updateCarouselState();
+        setTrackPosition(true);
+        if (visualIndex === slideCount) queueLoopReset();
+        scheduleAutoplay();
+      }, delay);
+    };
+
+    const goToSlide = (index, manual = false) => {
+      if (!Number.isInteger(index) || index < 0 || index >= slideCount) {
+        return;
+      }
+
+      if (visualIndex === slideCount) finishLoop();
+      clearLoopReset();
+      currentIndex = index;
+      visualIndex = index;
+      updateCarouselState();
+      setTrackPosition(true);
+      scheduleAutoplay(
+        manual ? CAROUSEL_MANUAL_DELAY : CAROUSEL_AUTOPLAY_DELAY
+      );
+    };
+
+    const handleTransitionEnd = (event) => {
+      if (event.target !== track || event.propertyName !== "transform") return;
+      finishLoop();
+    };
+
+    const handlePaginationClick = (event) => {
+      if (!(event.target instanceof Element)) return;
+      const dot = event.target.closest("[data-carousel-dot]");
+      if (!dot || !pagination.contains(dot)) return;
+      const index = Number.parseInt(dot.dataset.carouselIndex, 10);
+      goToSlide(index, true);
+    };
+
+    const handlePaginationKeydown = (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+        return;
+      }
+
+      const focusedIndex = dots.indexOf(document.activeElement);
+      if (focusedIndex < 0) return;
+      event.preventDefault();
+
+      let nextIndex = focusedIndex;
+      if (event.key === "ArrowLeft") {
+        nextIndex = (focusedIndex - 1 + slideCount) % slideCount;
+      } else if (event.key === "ArrowRight") {
+        nextIndex = (focusedIndex + 1) % slideCount;
+      } else if (event.key === "Home") {
+        nextIndex = 0;
+      } else if (event.key === "End") {
+        nextIndex = slideCount - 1;
+      }
+
+      dots[nextIndex]?.focus({ preventScroll: true });
+      goToSlide(nextIndex, true);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        clearAutoplay();
+      } else {
+        scheduleAutoplay();
+      }
+    };
+
+    const handleMotionChange = () => {
+      if (visualIndex === slideCount) {
+        finishLoop();
+      } else {
+        setTrackPosition(false);
+      }
+      scheduleAutoplay();
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      setTrackPosition(false);
+    });
+
+    track.addEventListener("transitionend", handleTransitionEnd);
+    pagination?.addEventListener("click", handlePaginationClick);
+    pagination?.addEventListener("keydown", handlePaginationKeydown);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    reducedMotion.addEventListener("change", handleMotionChange);
+    resizeObserver.observe(viewport);
+    updateCarouselState();
+    setTrackPosition(false);
+    scheduleAutoplay();
+
+    return {
+      destroy() {
+        if (destroyed) return;
+        destroyed = true;
+        clearAutoplay();
+        clearLoopReset();
+        resizeObserver.disconnect();
+        track.classList.remove("is-animating");
+        track.removeEventListener("transitionend", handleTransitionEnd);
+        pagination?.removeEventListener("click", handlePaginationClick);
+        pagination?.removeEventListener("keydown", handlePaginationKeydown);
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange
+        );
+        reducedMotion.removeEventListener("change", handleMotionChange);
+      }
+    };
+  };
+
+  const closeProject = () => {
+    if (
+      !projectModal ||
+      !projectModalBody ||
+      projectModal.hidden ||
+      !projectModal.classList.contains("is-open")
+    ) {
+      return;
+    }
+
+    cancelPendingModalHide();
+    activeGalleryCarousel?.destroy();
+    activeGalleryCarousel = null;
+    const transitionVersion = modalTransitionVersion;
+    projectModal.classList.remove("is-open");
+    projectModal.setAttribute("aria-hidden", "true");
+    surface.classList.remove("has-open-project");
+    restorePreviousFocus();
+
+    const finishClosing = () => {
+      if (
+        modalTransitionVersion !== transitionVersion ||
+        projectModal.classList.contains("is-open")
+      ) {
+        return;
+      }
+
+      projectModal.hidden = true;
+      projectModalBody.replaceChildren();
+      projectModal.removeAttribute("aria-labelledby");
+      delete projectModal.dataset.activeProject;
+      modalHideTimer = 0;
+    };
+
+    const transitionTime = getModalTransitionTime();
+    if (transitionTime <= 0) {
+      finishClosing();
+      return;
+    }
+
+    modalHideTimer = window.setTimeout(finishClosing, transitionTime + 50);
+  };
+
+  const openProject = (projectId) => {
+    if (!projectModal || !projectModalBody || !projectCloseButton) return;
+
+    const template = projectTemplates.get(projectId);
+    if (!template) return;
+
+    cancelPendingModalHide();
+    if (!isProjectModalVisible()) {
+      previousFocus =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+    }
+
+    const content = template.content.cloneNode(true);
+    activeGalleryCarousel?.destroy();
+    activeGalleryCarousel = null;
+    projectModalBody.replaceChildren(content);
+
+    let title = projectModalBody.querySelector(
+      "[data-project-title], h1, h2, h3, [role='heading']"
+    );
+    const safeProjectId = projectId.replace(/[^a-zA-Z0-9_-]+/g, "-");
+    const titleId = `playground-project-${safeProjectId || "detail"}-title`;
+
+    if (!title) {
+      title = document.createElement("span");
+      title.className = "visually-hidden";
+      title.textContent =
+        template.dataset.projectLabel || projectId.replace(/[-_]+/g, " ");
+      projectModalBody.prepend(title);
+    }
+
+    if (!title.id || /\s/.test(title.id)) title.id = titleId;
+    projectModal.setAttribute("aria-labelledby", title.id);
+    projectModal.removeAttribute("aria-hidden");
+    projectModal.dataset.activeProject = projectId;
+    projectModal.hidden = false;
+    projectModal.classList.remove("is-open");
+    surface.classList.add("has-open-project");
+    // Flush the hidden state so the entrance transition starts reliably.
+    void projectModal.offsetWidth;
+    projectModal.classList.add("is-open");
+    activeGalleryCarousel = initGalleryCarousel(projectModalBody);
+    projectCloseButton.focus({ preventScroll: true });
+  };
+
+  const finishPointer = (event, openOnClick = false) => {
     if (
       state.activePointerId === null ||
       (event && event.pointerId !== state.activePointerId)
@@ -135,7 +550,11 @@ if (surface && world && sourceTile) {
     }
 
     const pointerId = state.activePointerId;
+    const projectId = state.pointerProjectId;
+    const wasDragging = state.isDragging;
     state.activePointerId = null;
+    state.pointerProjectId = null;
+    state.isDragging = false;
     surface.classList.remove("is-dragging");
 
     try {
@@ -145,28 +564,61 @@ if (surface && world && sourceTile) {
     } catch {
       // Pointer capture may already have been released during cancellation.
     }
+
+    if (openOnClick && !wasDragging && projectId) {
+      openProject(projectId);
+    }
   };
 
   surface.addEventListener("pointerdown", (event) => {
     if (
       state.activePointerId !== null ||
-      !event.isPrimary ||
-      event.button !== 0
+      event.isPrimary === false ||
+      event.button !== 0 ||
+      isProjectModalVisible() ||
+      isInsideProjectModal(event.target)
     ) {
       return;
     }
 
-    event.preventDefault();
+    const projectCard = getProjectCard(event.target);
+    if (!projectCard) {
+      event.preventDefault();
+      surface.focus({ preventScroll: true });
+    }
+
     state.activePointerId = event.pointerId;
+    state.pointerStartX = event.clientX;
+    state.pointerStartY = event.clientY;
     state.pointerX = event.clientX;
     state.pointerY = event.clientY;
-    surface.setPointerCapture(event.pointerId);
-    surface.classList.add("is-dragging");
-    surface.focus({ preventScroll: true });
+    state.pointerProjectId = projectCard?.dataset.projectId || null;
+    state.isDragging = false;
+
+    try {
+      surface.setPointerCapture(event.pointerId);
+    } catch {
+      // Pointer capture is unavailable for some synthetic pointer events.
+    }
   });
 
   surface.addEventListener("pointermove", (event) => {
     if (event.pointerId !== state.activePointerId) return;
+
+    if (!state.isDragging) {
+      const distanceX = event.clientX - state.pointerStartX;
+      const distanceY = event.clientY - state.pointerStartY;
+      if (
+        distanceX * distanceX + distanceY * distanceY <
+        DRAG_THRESHOLD * DRAG_THRESHOLD
+      ) {
+        return;
+      }
+
+      state.isDragging = true;
+      surface.classList.add("is-dragging");
+      surface.focus({ preventScroll: true });
+    }
 
     const deltaX = event.clientX - state.pointerX;
     const deltaY = event.clientY - state.pointerY;
@@ -178,18 +630,81 @@ if (surface && world && sourceTile) {
     requestRender();
   });
 
-  surface.addEventListener("pointerup", finishDrag);
-  surface.addEventListener("pointercancel", finishDrag);
-  surface.addEventListener("lostpointercapture", finishDrag);
+  surface.addEventListener("pointerup", (event) =>
+    finishPointer(event, true)
+  );
+  surface.addEventListener("pointercancel", (event) => finishPointer(event));
+  surface.addEventListener("lostpointercapture", (event) =>
+    finishPointer(event)
+  );
   surface.addEventListener("dragstart", (event) => event.preventDefault());
-  window.addEventListener("blur", () => finishDrag());
+  window.addEventListener("blur", () => finishPointer());
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) finishDrag();
+    if (document.hidden) finishPointer();
+  });
+
+  projectCloseButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    closeProject();
+  });
+
+  projectModal?.addEventListener("click", (event) => {
+    const backdrop =
+      event.target === projectModal ||
+      (event.target instanceof Element &&
+        event.target.hasAttribute("data-project-backdrop"));
+    if (backdrop) closeProject();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (
+      !isProjectModalVisible() ||
+      !projectModal?.classList.contains("is-open")
+    ) {
+      return;
+    }
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeProject();
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const focusableElements = Array.from(
+        projectModal.querySelectorAll(
+          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => !element.closest("[hidden]"));
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const focusedIndex = focusableElements.indexOf(document.activeElement);
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements.at(-1);
+
+      if (focusedIndex < 0) {
+        event.preventDefault();
+        (event.shiftKey ? lastElement : firstElement)?.focus({
+          preventScroll: true
+        });
+      } else if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement?.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement?.focus({ preventScroll: true });
+      }
+    }
   });
 
   surface.addEventListener(
     "wheel",
     (event) => {
+      if (isInsideProjectModal(event.target) || isProjectModalVisible()) return;
       if (event.ctrlKey) return;
       event.preventDefault();
 
@@ -217,6 +732,19 @@ if (surface && world && sourceTile) {
   );
 
   surface.addEventListener("keydown", (event) => {
+    if (isInsideProjectModal(event.target) || isProjectModalVisible()) return;
+
+    const projectCard = getProjectCard(event.target);
+    if (
+      projectCard &&
+      !event.repeat &&
+      (event.key === "Enter" || event.key === " ")
+    ) {
+      event.preventDefault();
+      openProject(projectCard.dataset.projectId);
+      return;
+    }
+
     if (event.altKey || event.ctrlKey || event.metaKey) return;
 
     const step = event.shiftKey ? 112 : 56;
