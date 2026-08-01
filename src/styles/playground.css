@@ -47,14 +47,6 @@ img {
   display: block;
 }
 
-body .case-nav-ui.playground-nav-ui .site-nav {
-  border-color: var(--case-nav-line);
-  background: var(--case-nav-plate);
-  box-shadow: 0 14px 44px rgb(0 0 0 / 8%);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-}
-
 .playground-page {
   width: 100%;
   height: auto;

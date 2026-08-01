@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="/fonts.css?v=20260729-font-family-set-1">
   <link rel="stylesheet" href="styles.css?v=20260801-responsive-cursor-fix-1">
   <link rel="stylesheet" href="/footer-strip.css?v=20260801-footer-bg-match-1">
+  <link rel="stylesheet" href="/assets/brand/logo-motion.css?v=20260801-navigation-motion-1">
+  <link rel="stylesheet" href="/assets/navigation/navigation-motion.css?v=20260801-navigation-motion-1">
+  <script src="/assets/brand/logo-motion.js?v=20260801-navigation-motion-1" defer></script>
+  <script src="/assets/navigation/navigation-motion.js?v=20260801-navigation-motion-1" defer></script>
+  <script src="/assets/navigation/navigation-init.js?v=20260801-navigation-motion-1" defer></script>
 </head>
 <body class="home-body geist-pixel">
   <div class="splash splash--lottie" id="splash" aria-hidden="true">
@@ -28,39 +33,35 @@
     </div>
   </div>
 
-  <div class="ui" aria-hidden="false">
-    <nav class="site-nav" aria-label="Primary">
-      <a class="logo" href="/" data-cursor-soft>
-        <span class="logo__mark" aria-hidden="true"></span>
-        <span>Lynn</span>
+  <nav
+    class="lynn-navigation-motion"
+    data-navigation-motion
+    data-scroll-target="#hero"
+    data-state-one-left-anchor="[data-nav-state-one-left]"
+    data-state-one-right-anchor="[data-nav-state-one-right]"
+    aria-label="Primary"
+  >
+    <a class="lynn-nav__island lynn-nav__brand" data-nav-brand href="/#top">
+      <span class="lynn-nav__mark" data-logo-motion aria-hidden="true">
+        <img class="logo-motion__fallback" src="/assets/brand/logo.svg" alt="">
+      </span>
+      <span class="lynn-nav__name">Lynn</span>
+    </a>
+
+    <div class="lynn-nav__island lynn-nav__links" data-nav-links>
+      <a class="lynn-nav__link" data-nav-label="Work" href="#work" aria-label="Work">
+        <span class="lynn-nav__label-sizer">Work</span>
+        <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
       </a>
-      <div class="tools">
-        <span class="tool lang-tool" aria-label="Language">
-          <button class="lang-toggle" type="button" data-lang-toggle aria-label="Switch language">
-            <span data-lang-label>EN</span>
-          </button>
-        </span>
-        <span class="tool theme-tool" aria-label="Theme">
-          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
-            <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"></path>
-            </svg>
-            <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M20 14.4A7.6 7.6 0 0 1 9.6 4 8 8 0 1 0 20 14.4Z"></path>
-            </svg>
-          </button>
-        </span>
-      </div>
-      <div class="nav-links">
-        <a href="#work" data-i18n="nav.work" data-cursor-soft></a>
-        <a href="/about/" data-i18n="nav.about" data-cursor-soft></a>
-      </div>
-    </nav>
-  </div>
+      <a class="lynn-nav__link" data-nav-label="About" href="/about/" aria-label="About">
+        <span class="lynn-nav__label-sizer">About</span>
+        <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
+      </a>
+    </div>
+  </nav>
 
   <main class="page" id="top">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero" id="hero" data-navigation-hero aria-labelledby="hero-title">
       <div class="hero-rails" data-parallax data-depth="44" aria-hidden="true">
         <span></span>
         <span></span>
@@ -72,7 +73,7 @@
         </div>
       </div>
       <p class="hero-summary" data-i18n="hero.sub" data-parallax data-depth="42"></p>
-      <div class="hero-bottom" data-parallax data-depth="84">
+      <div class="hero-bottom" data-parallax data-depth="84" data-nav-state-one-left data-nav-state-one-right>
         <div class="hero-title-block hero-title-block--left">
           <h1 id="hero-title" data-i18n-html="hero.title"></h1>
         </div>

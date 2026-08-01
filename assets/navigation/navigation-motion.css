@@ -1,0 +1,244 @@
+/* Lynn Navigation Motion v1.0.0 — production component */
+
+.lynn-navigation-motion {
+  --lynn-nav-ink: #0a0a0a;
+  --lynn-nav-font: "Geist Pixel", monospace;
+  --lynn-nav-font-size: 12px;
+  --lynn-nav-character-gap: 2px;
+  --lynn-nav-mark-size: 22px;
+  position: fixed;
+  z-index: 100;
+  inset: 0 0 auto;
+  height: 57.6px;
+  color: var(--lynn-nav-ink);
+  pointer-events: none;
+}
+
+.lynn-nav__island {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  min-height: 38.4px;
+  color: inherit;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.lynn-nav__brand {
+  gap: 6px;
+  padding-block: 4.8px;
+  text-decoration: none;
+}
+
+.lynn-nav__mark {
+  --logo-order-opacity: 1;
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 auto;
+  width: var(--lynn-nav-mark-size);
+  height: var(--lynn-nav-mark-size);
+  color: inherit;
+}
+
+.lynn-nav__mark::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: url("../brand/logo.svg") center / contain no-repeat;
+  opacity: var(--logo-order-opacity);
+  pointer-events: none;
+}
+
+.lynn-nav__mark .logo-motion__svg {
+  position: relative;
+  z-index: 1;
+  opacity: calc(1 - var(--logo-order-opacity));
+}
+
+.lynn-nav__mark .logo-motion__pixel {
+  stroke: currentColor;
+  stroke-width: 18;
+  paint-order: stroke fill;
+}
+
+.lynn-nav__name,
+.lynn-nav__link {
+  font-family: var(--lynn-nav-font);
+  font-size: var(--lynn-nav-font-size);
+  font-weight: 400;
+  font-kerning: none;
+  font-variant-ligatures: none;
+  letter-spacing: var(--lynn-nav-character-gap);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.lynn-nav__links {
+  gap: 2px;
+}
+
+.lynn-nav__link {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 56px;
+  min-height: 28.8px;
+  padding: 0 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.lynn-nav__link[aria-current="page"] {
+  color: var(--lynn-nav-ink);
+}
+
+.lynn-nav__brand:focus-visible,
+.lynn-nav__link:focus-visible {
+  outline: 1px dashed currentColor;
+  outline-offset: 4px;
+}
+
+.lynn-nav__label-sizer {
+  visibility: hidden;
+}
+
+.lynn-nav__glyph-row,
+.lynn-nav__hover-row {
+  position: absolute;
+  inset: 0 6.4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--lynn-nav-character-gap);
+  font-family: var(--lynn-nav-font);
+  pointer-events: none;
+}
+
+.lynn-nav__glyph-row {
+  transition: opacity 60ms linear;
+}
+
+.lynn-nav__hover-row {
+  opacity: 0;
+}
+
+.lynn-nav__link.is-scrambling .lynn-nav__glyph-row {
+  opacity: 0;
+}
+
+.lynn-nav__link.is-scrambling .lynn-nav__hover-row {
+  opacity: 1;
+}
+
+.lynn-nav__glyph-slot,
+.lynn-nav__hover-char {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 8px;
+  width: 8px;
+  min-width: 8px;
+  height: 18px;
+}
+
+.lynn-nav__glyph-normal,
+.lynn-nav__glyph-variant {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.lynn-nav__glyph-variant {
+  width: 12px;
+  height: 20px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lynn-nav__glyph-pixel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--pixel-size);
+  height: var(--pixel-size);
+  background: var(--pixel-color);
+  box-shadow: var(--pixel-trail, none);
+  transform: translate3d(var(--pixel-x), var(--pixel-y), 0);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.lynn-nav__hover-char {
+  transform-origin: bottom;
+  transition: color 80ms linear, transform 80ms linear;
+}
+
+.lynn-nav__hover-char.is-scrambled {
+  color: rgb(10 10 10 / .4);
+  transform: scale(1.06);
+}
+
+@media (min-width: 761px) and (max-width: 1024px) {
+  .lynn-navigation-motion {
+    --lynn-nav-mark-size: 20px;
+  }
+
+  .lynn-nav__island {
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 760px) {
+  .lynn-navigation-motion {
+    --lynn-nav-mark-size: 16px;
+    height: 45.6px;
+  }
+
+  .lynn-nav__island {
+    min-height: 30.4px;
+  }
+
+  .lynn-nav__brand {
+    gap: 4.2px;
+    padding-block: 4.4px;
+  }
+
+  .lynn-nav__links {
+    gap: 0;
+  }
+
+  .lynn-nav__link {
+    min-width: 51.2px;
+    min-height: 27.2px;
+    padding-inline: 5.6px;
+  }
+
+  .lynn-nav__glyph-row,
+  .lynn-nav__hover-row {
+    inset-inline: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lynn-nav__island,
+  .lynn-nav__glyph-normal,
+  .lynn-nav__glyph-variant,
+  .lynn-nav__glyph-pixel {
+    will-change: auto;
+  }
+
+  .lynn-nav__hover-char {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .lynn-nav__glyph-pixel {
+    background: CanvasText;
+  }
+}

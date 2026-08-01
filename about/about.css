@@ -104,7 +104,6 @@ html {
   transition: opacity 160ms ease, transform 180ms ease;
 }
 
-.about-device-control:hover::after,
 .about-device-control:focus-visible::after {
   opacity: .42;
   transform: scale(1);

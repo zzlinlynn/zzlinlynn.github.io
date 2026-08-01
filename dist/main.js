@@ -772,19 +772,11 @@ function setupWorkColorReveal() {
 function setupParallax() {
   const items = Array.from(document.querySelectorAll('[data-parallax]'));
   const scenes = Array.from(document.querySelectorAll('.work-panel, .lab-strip, .site-footer'));
-  const updateChrome = () => {
-    document.body.classList.toggle('is-scrolled', window.scrollY > (window.innerHeight || 1) * .32);
-  };
-  if (reduceMotion) {
-    updateChrome();
-    window.addEventListener('scroll', updateChrome, { passive: true });
-    return;
-  }
+  if (reduceMotion) return;
   function update() {
     const viewport = window.innerHeight || 1;
     let currentScene = null;
     let closestSceneDistance = Infinity;
-    updateChrome();
     root.style.setProperty('--scroll-y', `${window.scrollY}px`);
     items.forEach((item) => {
       const rect = item.getBoundingClientRect();

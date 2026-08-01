@@ -16,30 +16,48 @@
   <link rel="stylesheet" href="./decision-motion.css?v=20260801-decision-motion-1">
   <link rel="stylesheet" href="/case-next-project.css?v=20260729-next-project-1">
   <link rel="stylesheet" href="/footer-strip.css?v=20260801-reading-progress-7">
+  <link rel="stylesheet" href="/assets/brand/logo-motion.css?v=20260801-navigation-motion-1">
+  <link rel="stylesheet" href="/assets/navigation/navigation-motion.css?v=20260801-navigation-motion-1">
   <script src="/case-nav.js?v=20260801-next-auto-scroll-3" defer></script>
   <script src="./needs-animation.js?v=20260801-needs-motion-1" defer></script>
   <script src="./decision-animation.js?v=20260801-decision-motion-1" defer></script>
+  <script src="/assets/brand/logo-motion.js?v=20260801-navigation-motion-1" defer></script>
+  <script src="/assets/navigation/navigation-motion.js?v=20260801-navigation-motion-1" defer></script>
+  <script src="/assets/navigation/navigation-init.js?v=20260801-navigation-motion-1" defer></script>
 </head>
 <body>
-  <div class="ui case-nav-ui">
-    <nav class="site-nav" aria-label="Primary">
-      <a class="logo" href="/">
-        <span class="logo__mark" aria-hidden="true"></span>
-        <span>Lynn</span>
+  <nav
+    class="lynn-navigation-motion"
+    data-navigation-motion
+    data-scroll-target="#hero"
+    data-state-one-left-anchor="[data-nav-state-one-left]"
+    data-state-one-right-anchor="[data-nav-state-one-right]"
+    aria-label="Primary"
+  >
+    <a class="lynn-nav__island lynn-nav__brand" data-nav-brand href="/#top">
+      <span class="lynn-nav__mark" data-logo-motion aria-hidden="true">
+        <img class="logo-motion__fallback" src="/assets/brand/logo.svg" alt="">
+      </span>
+      <span class="lynn-nav__name">Lynn</span>
+    </a>
+
+    <div class="lynn-nav__island lynn-nav__links" data-nav-links>
+      <a class="lynn-nav__link" data-nav-label="Work" href="/#work" aria-label="Work">
+        <span class="lynn-nav__label-sizer">Work</span>
+        <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
       </a>
-      <div class="nav-links">
-        <a href="/#work">Work</a>
-        <a href="/about/">About</a>
-      </div>
-    </nav>
-  </div>
+      <a class="lynn-nav__link" data-nav-label="About" href="/about/" aria-label="About">
+        <span class="lynn-nav__label-sizer">About</span>
+        <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
+      </a>
+    </div>
+  </nav>
 
   <main class="case-study" id="top">
-    <section class="case-section case-hero" aria-labelledby="case-title">
+    <section class="case-section case-hero" id="hero" data-navigation-hero aria-labelledby="case-title">
       <div class="section-inner">
         <header class="hero-copy">
-          <p class="eyebrow">Case Study</p>
-          <h1 id="case-title">复杂无法被消除<br>但确定性可以被设计</h1>
+          <h1 id="case-title" data-nav-state-one-left>复杂无法被消除<br>但确定性可以被设计</h1>
           <p class="hero-intro">在境外券商 App 的 0–1 重建中，我作为项目前期唯一的交互设计师，在6个月内独立搭建开户、资金、交易与资产管理等核心链路。面对跨境投资中的规则复杂、高风险和状态不确定，我以“理解、执行、掌控”为体验主线，推动14个模块、43条核心链路进入开发。</p>
         </header>
 
@@ -63,7 +81,7 @@
             </div>
           </dl>
 
-          <figure class="system-overview">
+          <figure class="system-overview" data-nav-state-one-right>
             <picture class="system-overview__media">
               <source
                 media="(min-width: 1025px)"

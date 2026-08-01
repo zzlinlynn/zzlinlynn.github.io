@@ -1,7 +1,3 @@
-const updateCaseNav = () => {
-  document.body.classList.toggle("is-scrolled", window.scrollY > 12);
-};
-
 const setupCaseCursor = () => {
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -273,10 +269,7 @@ const setupReadingProgress = () => {
   }
 };
 
-updateCaseNav();
 setupCaseCursor();
 setupCaseReveal();
 setupNextProjectAutoScroll();
 setupReadingProgress();
-window.addEventListener("scroll", updateCaseNav, { passive: true });
-window.addEventListener("pageshow", updateCaseNav);

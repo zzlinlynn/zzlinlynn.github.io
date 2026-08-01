@@ -150,10 +150,6 @@ function setTheme(theme) {
   window.dispatchEvent(new CustomEvent('portfolio-theme-change'));
 }
 
-function updateScrolledState() {
-  document.body.classList.toggle('is-scrolled', window.scrollY > 12);
-}
-
 function decodePixelFrames(canvas) {
   const { width, height, opaqueMask, frames } = ABOUT_DEVICE_PIXEL_DATA;
   const encodedMask = window.atob(opaqueMask);
@@ -909,12 +905,9 @@ document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
   setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
 });
 
-window.addEventListener('scroll', updateScrolledState, { passive: true });
-
 setTheme(root.dataset.theme || 'light');
 setupSplashAnimation();
 translate();
-updateScrolledState();
 setupAboutSlideshow();
 
 window.addEventListener('load', () => {

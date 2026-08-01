@@ -18,36 +18,54 @@
   <link rel="stylesheet" href="./creator-trace.css">
   <link rel="stylesheet" href="/case-next-project.css?v=20260729-next-project-1">
   <link rel="stylesheet" href="/footer-strip.css?v=20260801-reading-progress-7">
+  <link rel="stylesheet" href="/assets/brand/logo-motion.css?v=20260801-navigation-motion-1">
+  <link rel="stylesheet" href="/assets/navigation/navigation-motion.css?v=20260801-navigation-motion-1">
   <script src="/case-nav.js?v=20260801-next-auto-scroll-3" defer></script>
   <script src="./creator-trace.js" defer></script>
+  <script src="/assets/brand/logo-motion.js?v=20260801-navigation-motion-1" defer></script>
+  <script src="/assets/navigation/navigation-motion.js?v=20260801-navigation-motion-1" defer></script>
+  <script src="/assets/navigation/navigation-init.js?v=20260801-navigation-motion-1" defer></script>
 </head>
 <body>
-  <div class="ui case-nav-ui">
-    <nav class="site-nav" aria-label="Primary">
-      <a class="logo" href="/">
-        <span class="logo__mark" aria-hidden="true"></span>
-        <span>Lynn</span>
+  <nav
+    class="lynn-navigation-motion"
+    data-navigation-motion
+    data-scroll-target="#hero"
+    data-state-one-left-anchor="[data-nav-state-one-left]"
+    data-state-one-right-anchor="[data-nav-state-one-right]"
+    aria-label="Primary"
+  >
+    <a class="lynn-nav__island lynn-nav__brand" data-nav-brand href="/#top">
+      <span class="lynn-nav__mark" data-logo-motion aria-hidden="true">
+        <img class="logo-motion__fallback" src="/assets/brand/logo.svg" alt="">
+      </span>
+      <span class="lynn-nav__name">Lynn</span>
+    </a>
+
+    <div class="lynn-nav__island lynn-nav__links" data-nav-links>
+      <a class="lynn-nav__link" data-nav-label="Work" href="/#work" aria-label="Work">
+        <span class="lynn-nav__label-sizer">Work</span>
+        <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
       </a>
-      <div class="nav-links">
-        <a href="/#work">Work</a>
-        <a href="/about/">About</a>
-      </div>
-    </nav>
-  </div>
+      <a class="lynn-nav__link" data-nav-label="About" href="/about/" aria-label="About">
+        <span class="lynn-nav__label-sizer">About</span>
+        <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
+      </a>
+    </div>
+  </nav>
 
   <main class="case-study" id="top">
-    <section class="case-section case-hero" aria-labelledby="case-title">
+    <section class="case-section case-hero" id="hero" data-navigation-hero aria-labelledby="case-title">
       <div class="section-inner">
         <header class="hero-copy">
-          <p class="eyebrow">Case Study</p>
-          <h1 id="case-title">当<span class="tablet-title-space" aria-hidden="true">&nbsp;</span>AI<span class="tablet-title-space" aria-hidden="true">&nbsp;</span>开始设计<br>判断必须可以追溯</h1>
+          <h1 id="case-title" data-nav-state-one-left>当<span class="tablet-title-space" aria-hidden="true">&nbsp;</span>AI<span class="tablet-title-space" aria-hidden="true">&nbsp;</span>开始设计<br>判断必须可以追溯</h1>
           <p class="hero-intro">
             我 0–1 搭建了一套可治理的 Design Agent 工作流：将散落在 Figma 中的设计经验提取成可追溯、可复用、可校验的设计知识，再通过阶段化决策、组件合同、token
             约束和质量检查，约束 Creator 生成符合金融业务、品牌和设计系统规范的 UI 与前端代码。
           </p>
         </header>
 
-        <dl class="metadata-grid">
+        <dl class="metadata-grid" data-nav-state-one-right>
           <div class="metadata-item">
             <dt>Role</dt>
             <dd>AI Workflow / UX System Designer</dd>

@@ -1,0 +1,38 @@
+/* Lynn Logo Motion — production component styles */
+
+.logo-motion {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  line-height: 0;
+}
+
+.logo-motion__svg,
+.logo-motion__fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.logo-motion__svg {
+  overflow: visible;
+  pointer-events: none;
+}
+
+.logo-motion__fallback {
+  object-fit: contain;
+}
+
+.logo-motion__pixel {
+  fill: currentColor;
+  shape-rendering: crispEdges;
+}
+
+@media (forced-colors: active) {
+  .logo-motion__pixel {
+    fill: CanvasText;
+  }
+}
