@@ -37,6 +37,48 @@ function markPageReady() {
   tryHideSplash();
 }
 
+function waitForWindowLoad() {
+  if (document.readyState === 'complete') return Promise.resolve();
+  return new Promise((resolve) => {
+    window.addEventListener('load', resolve, { once: true });
+  });
+}
+
+async function waitForImage(image) {
+  image.loading = 'eager';
+
+  if (!image.complete) {
+    await new Promise((resolve) => {
+      image.addEventListener('load', resolve, { once: true });
+      image.addEventListener('error', resolve, { once: true });
+    });
+  }
+
+  if (!image.naturalWidth || typeof image.decode !== 'function') return;
+  try {
+    await image.decode();
+  } catch {
+    // A completed image request is allowed to settle even if decoding reports an error.
+  }
+}
+
+function waitForDocumentImages() {
+  return Promise.all(Array.from(document.images, waitForImage));
+}
+
+async function waitForPageResources(...resources) {
+  const fontsReady = document.fonts?.ready || Promise.resolve();
+  await Promise.allSettled([
+    waitForWindowLoad(),
+    fontsReady,
+    ...resources
+  ]);
+  await new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  });
+  markPageReady();
+}
+
 function setupSplashAnimation() {
   if (!splashMark || !window.LOADING_ANIMATION || typeof window.lottie?.loadAnimation !== 'function') {
     markSplashCycleComplete();
@@ -502,10 +544,10 @@ function setupCursor() {
 }
 
 function setupWorkColorReveal() {
-  if (!finePointer) return;
+  if (!finePointer) return Promise.resolve();
   const stages = Array.from(document.querySelectorAll('.work-stage'))
     .filter((stage) => stage.querySelector('.work-media--color'));
-  if (!stages.length) return;
+  if (!stages.length) return Promise.resolve();
 
   const alphaMasks = new Map();
   const alphaLoads = new Map();
@@ -600,8 +642,9 @@ function setupWorkColorReveal() {
       await image.decode();
     } catch {
       await new Promise((resolve, reject) => {
-        if (image.complete && image.naturalWidth) {
-          resolve();
+        if (image.complete) {
+          if (image.naturalWidth) resolve();
+          else reject(new Error('Foreground image failed to load'));
           return;
         }
         image.addEventListener('load', resolve, { once: true });
@@ -753,7 +796,12 @@ function setupWorkColorReveal() {
     stage.addEventListener('pointercancel', clear);
   });
 
-  document.querySelectorAll('.work-media--foreground').forEach(primeAlphaMask);
+  const initialMaskLoads = new Set();
+  document.querySelectorAll('.work-media--foreground').forEach((image) => {
+    const source = primeAlphaMask(image);
+    const load = source ? alphaLoads.get(source) : null;
+    if (load) initialMaskLoads.add(load);
+  });
   const clearAll = () => {
     stages.forEach((stage) => {
       const state = stageStates.get(stage);
@@ -767,6 +815,7 @@ function setupWorkColorReveal() {
   };
   window.addEventListener('scroll', clearAll, { passive: true });
   window.addEventListener('resize', clearAll);
+  return Promise.all(Array.from(initialMaskLoads, (load) => load.catch(() => undefined)));
 }
 
 function setupParallax() {
@@ -1037,12 +1086,13 @@ function setupScrollReveal() {
 
 function setupHeroPortrait() {
   const canvas = document.getElementById('hero-portrait-canvas');
-  if (!canvas) return;
+  if (!canvas) return Promise.resolve();
   const hero = canvas.closest('.hero');
   const ctx = canvas.getContext('2d');
   const image = new Image();
   const sourceCanvas = document.createElement('canvas');
   const sourceCtx = sourceCanvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx || !sourceCtx) return Promise.resolve();
   let width = 0;
   let height = 0;
   let dpr = 1;
@@ -1059,6 +1109,11 @@ function setupHeroPortrait() {
   let projectionAnchorX = .5;
   let projectionAnchorY = .46;
   let visibleField = { left: 0, top: 0, right: 0, bottom: 0 };
+  let resolveInitialPortrait;
+  let hasHandledInitialImage = false;
+  const initialPortraitReady = new Promise((resolve) => {
+    resolveInitialPortrait = resolve;
+  });
   const portraitPointer = {
     x: 0,
     y: 0,
@@ -1333,14 +1388,6 @@ function setupHeroPortrait() {
 
   function samplePhoto(x, y) {
     const projected = portraitProjection(x, y);
-    if (!sourceData) {
-      const { nx, ny } = projected;
-      const hair = insideEllipse(nx, ny, .50, .37, .24, .31) && !insideEllipse(nx, ny, .51, .42, .16, .2);
-      const face = insideEllipse(nx, ny, .50, .39, .17, .22);
-      const shoulder = ny > .68;
-      const lum = hair ? 58 : face ? 176 : shoulder ? 112 : 214;
-      return { r: lum, g: lum, b: lum, lum, sat: .08 };
-    }
     const sx = Math.floor(projected.sx);
     const sy = Math.floor(projected.sy);
     const index = (sy * width + sx) * 4;
@@ -1528,6 +1575,10 @@ function setupHeroPortrait() {
     updatePortraitProjection();
     updateVisibleField();
     if (!sourceData) prepareSource();
+    if (!sourceData) {
+      ctx.clearRect(0, 0, width, height);
+      return;
+    }
     const interactive = updatePortraitPointer();
     const heroRect = hero ? hero.getBoundingClientRect() : null;
     const heroVisible = !heroRect || (heroRect.bottom > -120 && heroRect.top < window.innerHeight + 120);
@@ -1650,19 +1701,23 @@ function setupHeroPortrait() {
     drawPortrait();
   }
 
-  image.addEventListener('load', () => {
-    resizePortrait(true);
-    restartPortrait();
-  });
-  image.addEventListener('error', () => {
-    sourceData = null;
-    resizePortrait(true);
-    restartPortrait();
-  });
+  function handleInitialImage(loaded) {
+    if (hasHandledInitialImage) return;
+    hasHandledInitialImage = true;
+    if (!loaded) sourceData = null;
+    try {
+      resizePortrait(true);
+      restartPortrait();
+    } finally {
+      resolveInitialPortrait();
+    }
+  }
+
+  image.addEventListener('load', () => handleInitialImage(true), { once: true });
+  image.addEventListener('error', () => handleInitialImage(false), { once: true });
   image.src = 'assets/lynn-rgb-portrait-studio-1600.jpg';
   if (image.complete) {
-    resizePortrait(true);
-    restartPortrait();
+    handleInitialImage(Boolean(image.naturalWidth));
   }
   window.addEventListener('resize', schedulePortraitResize, { passive: true });
   window.visualViewport?.addEventListener('resize', schedulePortraitResize, { passive: true });
@@ -1704,6 +1759,7 @@ function setupHeroPortrait() {
       requestPortraitInteraction();
     });
   }
+  return initialPortraitReady;
 }
 
 function setupInkField() {
@@ -1870,17 +1926,14 @@ window.addEventListener('keydown', (event) => {
 
 setTheme(root.dataset.theme || 'light');
 setupSplashAnimation();
+const documentImagesReady = waitForDocumentImages();
 translate();
 setupPointerVars();
 setupCursor();
 setupWorkShowcase();
-setupWorkColorReveal();
+const workColorReady = setupWorkColorReveal();
 setupScrollReveal();
 setupParallax();
-setupHeroPortrait();
+const heroPortraitReady = setupHeroPortrait();
 setupInkField();
-
-window.addEventListener('load', () => {
-  window.setTimeout(markPageReady, 360);
-});
-window.setTimeout(markPageReady, 1100);
+void waitForPageResources(documentImagesReady, workColorReady, heroPortraitReady);

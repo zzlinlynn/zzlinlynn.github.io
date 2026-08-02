@@ -1,5 +1,12 @@
-import { ABOUT_DEVICE_PIXEL_DATA } from './about-device-pixel-data.js';
-import { ABOUT_PHOTO_PIXEL_DATA } from './about-photo-pixel-data.js';
+let ABOUT_DEVICE_PIXEL_DATA = null;
+let ABOUT_PHOTO_PIXEL_DATA = null;
+const aboutPixelDataReady = Promise.all([
+  import('./about-device-pixel-data.js'),
+  import('./about-photo-pixel-data.js')
+]).then(([deviceModule, photoModule]) => {
+  ABOUT_DEVICE_PIXEL_DATA = deviceModule.ABOUT_DEVICE_PIXEL_DATA;
+  ABOUT_PHOTO_PIXEL_DATA = photoModule.ABOUT_PHOTO_PIXEL_DATA;
+});
 
 const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -31,6 +38,60 @@ function markSplashCycleComplete() {
 function markPageReady() {
   isPageReady = true;
   tryHideSplash();
+}
+
+function waitForWindowLoad() {
+  if (document.readyState === 'complete') return Promise.resolve();
+  return new Promise((resolve) => {
+    window.addEventListener('load', resolve, { once: true });
+  });
+}
+
+async function waitForImage(image) {
+  image.loading = 'eager';
+
+  if (!image.complete) {
+    await new Promise((resolve) => {
+      image.addEventListener('load', resolve, { once: true });
+      image.addEventListener('error', resolve, { once: true });
+    });
+  }
+
+  if (!image.naturalWidth || typeof image.decode !== 'function') return;
+  try {
+    await image.decode();
+  } catch {
+    // A completed image request is allowed to settle even if decoding reports an error.
+  }
+}
+
+function waitForDocumentImages() {
+  return Promise.all(Array.from(document.images, waitForImage));
+}
+
+function waitForImageSource(source) {
+  const image = new Image();
+  image.decoding = 'async';
+  image.src = source;
+  return waitForImage(image);
+}
+
+async function waitForPageResources(...resources) {
+  const fontsReady = document.fonts
+    ? Promise.all([
+        document.fonts.load('400 1em "Geist Pixel"'),
+        document.fonts.ready
+      ])
+    : Promise.resolve();
+  await Promise.allSettled([
+    waitForWindowLoad(),
+    fontsReady,
+    ...resources
+  ]);
+  await new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  });
+  markPageReady();
 }
 
 function setupSplashAnimation() {
@@ -455,7 +516,7 @@ function setupAboutSlideshow() {
   const slideshow = document.querySelector('[data-about-slideshow]');
   const canvas = slideshow?.querySelector('[data-pixel-device]');
   const context = canvas?.getContext('2d', { alpha: true });
-  if (!slideshow || !canvas || !context) return;
+  if (!slideshow || !canvas || !context) return Promise.resolve();
 
   const deviceFrames = decodePixelFrames(canvas);
   const photoFrames = decodePhotoFrames();
@@ -1013,6 +1074,7 @@ function setupAboutSlideshow() {
   paintStillFrame();
   requestParticleFrame();
   startTimer();
+  return new Promise((resolve) => requestAnimationFrame(resolve));
 }
 
 document.querySelector('[data-lang-toggle]')?.addEventListener('click', () => {
@@ -1026,11 +1088,13 @@ document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
 
 setTheme(root.dataset.theme || 'light');
 setupSplashAnimation();
+const documentImagesReady = waitForDocumentImages();
+const staticImagesReady = Promise.all([
+  '/assets/brand/logo.svg',
+  '/assets/brand/loading-logo.png?v=20260729-splash-logo-1',
+  '/assets/brand/logo-mark.png?v=20260729-logo-mark-1'
+].map(waitForImageSource));
 translate();
 actionScrambleController = setupActionScramble();
-setupAboutSlideshow();
-
-window.addEventListener('load', () => {
-  window.setTimeout(markPageReady, 240);
-});
-window.setTimeout(markPageReady, 900);
+const slideshowReady = aboutPixelDataReady.then(() => setupAboutSlideshow());
+void waitForPageResources(documentImagesReady, staticImagesReady, slideshowReady);
