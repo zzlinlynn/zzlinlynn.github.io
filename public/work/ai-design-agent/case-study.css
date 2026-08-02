@@ -479,7 +479,7 @@ img {
 
 .decision-index {
   color: #333;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 38px;
   font-weight: 600;
   line-height: 48px;
@@ -618,7 +618,7 @@ img {
 
 .stat-value {
   color: var(--ink);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 38px;
   font-weight: 600;
   line-height: 48px;
