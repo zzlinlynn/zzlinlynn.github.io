@@ -1,0 +1,332 @@
+/* JetBrains Mono is already loaded by the page font bundle. */
+
+.system-motion {
+  width: 100%;
+}
+
+.system-motion text[font-family="JetBrains Mono"] {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.system-motion__variant {
+  display: none;
+  width: 100%;
+  margin: 0 auto;
+
+  --t-extractor-title: 300ms;
+  --t-extractor-output-1: 1050ms;
+  --t-extractor-output-2: 1180ms;
+  --t-extractor-output-3: 1310ms;
+  --t-extractor-output-4: 1440ms;
+  --t-arrow-kb: 1800ms;
+  --t-kb-shell: 2250ms;
+  --t-kb-foundation: 2520ms;
+  --t-kb-connections: 3100ms;
+  --t-kb-center: 3800ms;
+  --t-arrow-review: 4300ms;
+  --t-review-card: 4680ms;
+  --t-arrow-creator: 5230ms;
+  --t-creator-shell: 5640ms;
+  --t-creator-frame: 5640ms;
+  --t-creator-detail: 6060ms;
+  --system-duration: 7200ms;
+}
+
+.system-motion__variant--mobile {
+  display: block;
+  width: 100%;
+  aspect-ratio: 342 / 965;
+
+  /* Mobile intentionally skips the Review Queue stage. */
+  --t-arrow-creator: 4300ms;
+  --t-creator-shell: 4720ms;
+  --t-creator-frame: 4720ms;
+  --t-creator-detail: 5140ms;
+  --system-duration: 6300ms;
+}
+
+.system-motion svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.system-motion .system-timeline-sentinel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/*
+ * Pending and replay states:
+ * the Extractor shell and left-side source assets are deliberately excluded,
+ * so they remain visible and still during hover replay.
+ */
+.system-motion:is(.is-pending, .is-playing) .system-animated {
+  opacity: 0;
+}
+
+.system-motion:is(.is-pending, .is-playing) .system-extractor-dashes,
+.system-motion:is(.is-pending, .is-playing) .system-arrow {
+  clip-path: inset(0 100% 0 0);
+}
+
+.system-motion:is(.is-pending, .is-playing) .system-arrow--vertical {
+  clip-path: inset(0 0 100% 0);
+}
+
+.system-motion:is(.is-pending, .is-playing) .system-kb-connections {
+  opacity: 1;
+}
+
+.system-motion:is(.is-pending, .is-playing) .system-kb-connections path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  fill-opacity: 0;
+}
+
+.system-motion:is(.is-pending, .is-playing) .system-creator-detail {
+  clip-path: inset(0 100% 0 0);
+}
+
+/* Stage 1 — Extractor title + dashed routes, then four output cards. */
+.system-motion.is-playing .system-extractor-title {
+  animation: system-reveal 360ms var(--t-extractor-title) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.system-motion.is-playing .system-extractor-dashes {
+  animation: system-draw-horizontal 680ms var(--t-extractor-title) cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.system-motion.is-playing .system-extractor-output {
+  animation: system-reveal 320ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.system-motion.is-playing .system-extractor-output--1 {
+  animation-delay: var(--t-extractor-output-1);
+}
+
+.system-motion.is-playing .system-extractor-output--2 {
+  animation-delay: var(--t-extractor-output-2);
+}
+
+.system-motion.is-playing .system-extractor-output--3 {
+  animation-delay: var(--t-extractor-output-3);
+}
+
+.system-motion.is-playing .system-extractor-output--4 {
+  animation-delay: var(--t-extractor-output-4);
+}
+
+/* Stage 2 — knowledge frame, foundation, converging links, then center + title. */
+.system-motion.is-playing .system-arrow--kb {
+  animation: system-draw-horizontal 420ms var(--t-arrow-kb) cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.system-motion.is-playing .system-arrow--kb.system-arrow--vertical {
+  animation-name: system-draw-vertical;
+}
+
+.system-motion.is-playing .system-kb-shell {
+  animation: system-reveal 340ms var(--t-kb-shell) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.system-motion.is-playing .system-kb-grid {
+  animation: system-fade 500ms var(--t-kb-foundation) ease-out both;
+}
+
+.system-motion.is-playing .system-kb-nodes {
+  animation: system-reveal 500ms var(--t-kb-foundation) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.system-motion.is-playing .system-kb-connections path {
+  animation: system-connect 720ms var(--t-kb-connections) cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.system-motion.is-playing .system-kb-center,
+.system-motion.is-playing .system-kb-title {
+  animation: system-reveal 380ms var(--t-kb-center) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+/* Stage 3 — desktop/tablet only. */
+.system-motion.is-playing .system-arrow--review {
+  animation: system-draw-vertical 380ms var(--t-arrow-review) cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.system-motion.is-playing .system-review-card {
+  animation: system-reveal 420ms var(--t-review-card) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+/* Stage 4 — browser shells first, then Prototype/Code details top-to-bottom. */
+.system-motion.is-playing .system-arrow--creator {
+  animation: system-draw-horizontal 420ms var(--t-arrow-creator) cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.system-motion.is-playing .system-arrow--creator.system-arrow--vertical {
+  animation-name: system-draw-vertical;
+}
+
+.system-motion.is-playing .system-creator-shell {
+  animation: system-reveal 360ms var(--t-creator-shell) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.system-motion.is-playing .system-creator-title {
+  animation: system-reveal 360ms var(--t-creator-detail) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.system-motion.is-playing .system-creator-frame {
+  animation: system-reveal 360ms var(--t-creator-frame) cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.system-motion.is-playing .system-creator-plus {
+  animation: system-fade 280ms var(--t-creator-frame) ease-out both;
+}
+
+.system-motion.is-playing .system-creator-detail {
+  animation: system-detail-draw 300ms cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.system-motion.is-playing .system-creator-detail.system-detail--1 {
+  animation-delay: var(--t-creator-detail);
+}
+
+.system-motion.is-playing .system-creator-detail.system-detail--2 {
+  animation-delay: calc(var(--t-creator-detail) + 120ms);
+}
+
+.system-motion.is-playing .system-creator-detail.system-detail--3 {
+  animation-delay: calc(var(--t-creator-detail) + 240ms);
+}
+
+.system-motion.is-playing .system-creator-detail.system-detail--4 {
+  animation-delay: calc(var(--t-creator-detail) + 360ms);
+}
+
+.system-motion.is-playing .system-creator-detail.system-detail--5 {
+  animation-delay: calc(var(--t-creator-detail) + 480ms);
+}
+
+.system-motion.is-playing .system-creator-detail.system-detail--6 {
+  animation-delay: calc(var(--t-creator-detail) + 600ms);
+}
+
+.system-motion.is-playing .system-timeline-sentinel {
+  animation: system-timeline var(--system-duration) linear both;
+}
+
+/* Completed state and no-JS fallback are fully visible. */
+.system-motion.is-complete .system-animated,
+.system-motion:not(.is-pending):not(.is-playing):not(.is-complete) .system-animated {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0);
+}
+
+.system-motion.is-complete .system-kb-connections path,
+.system-motion:not(.is-pending):not(.is-playing):not(.is-complete) .system-kb-connections path {
+  stroke-dashoffset: 0;
+  fill-opacity: 1;
+}
+
+@keyframes system-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes system-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes system-draw-horizontal {
+  from {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes system-draw-vertical {
+  from {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes system-connect {
+  from {
+    stroke-dashoffset: 1;
+    fill-opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}
+
+@keyframes system-detail-draw {
+  from {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes system-timeline {
+  from { opacity: 0; }
+  to { opacity: .001; }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .system-motion__variant--mobile {
+    display: none;
+  }
+
+  .system-motion__variant--tablet {
+    display: block;
+    width: 100%;
+    aspect-ratio: 704 / 409;
+  }
+}
+
+@media (min-width: 1025px) {
+  .system-motion__variant--mobile,
+  .system-motion__variant--tablet {
+    display: none;
+  }
+
+  .system-motion__variant--desktop {
+    display: block;
+    width: min(929px, 100%);
+    aspect-ratio: 929 / 431;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-motion .system-animated {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: inset(0) !important;
+    animation: none !important;
+  }
+
+  .system-motion .system-kb-connections path {
+    stroke-dashoffset: 0 !important;
+    fill-opacity: 1 !important;
+    animation: none !important;
+  }
+}
