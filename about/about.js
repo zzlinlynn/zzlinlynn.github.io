@@ -249,6 +249,72 @@ function setupActionScramble() {
   };
 }
 
+function setupAboutScrollReveal() {
+  const targets = Array.from(document.querySelectorAll('[data-about-reveal]'));
+  if (
+    !targets.length
+    || reducedMotionPreference.matches
+    || !('IntersectionObserver' in window)
+  ) return;
+
+  const initialRevealLine = window.innerHeight * 0.9;
+
+  targets.forEach((target) => {
+    Array.from(target.children).forEach((item, index) => {
+      item.classList.add('about-reveal-item');
+      item.style.setProperty('--about-reveal-order', String(Math.min(index, 4)));
+    });
+
+    const bounds = target.getBoundingClientRect();
+    target.dataset.aboutRevealState = bounds.top <= initialRevealLine
+      ? 'visible'
+      : 'pending';
+  });
+
+  root.classList.add('about-reveal-ready');
+
+  let observer;
+  function reveal(target) {
+    if (target.dataset.aboutRevealState !== 'pending') return;
+    target.dataset.aboutRevealState = 'revealed';
+    observer?.unobserve(target);
+  }
+
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) reveal(entry.target);
+    });
+  }, {
+    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.08
+  });
+
+  targets.forEach((target) => {
+    if (target.dataset.aboutRevealState === 'pending') observer.observe(target);
+  });
+
+  function revealFocusedContent(event) {
+    const target = event.target instanceof Element
+      ? event.target.closest('[data-about-reveal]')
+      : null;
+    if (target) reveal(target);
+  }
+
+  function disableReveal() {
+    observer.disconnect();
+    targets.forEach((target) => {
+      target.dataset.aboutRevealState = 'visible';
+    });
+    root.classList.remove('about-reveal-ready');
+    document.removeEventListener('focusin', revealFocusedContent);
+  }
+
+  document.addEventListener('focusin', revealFocusedContent);
+  reducedMotionPreference.addEventListener?.('change', (event) => {
+    if (event.matches) disableReveal();
+  }, { once: true });
+}
+
 function setTheme(theme) {
   root.dataset.theme = theme;
   const themeToggle = document.querySelector('[data-theme-toggle]');
@@ -1018,6 +1084,7 @@ window.portfolioLoadingBridge?.installLottie();
 const criticalImagesReady = waitForCriticalImages();
 translate();
 actionScrambleController = setupActionScramble();
+setupAboutScrollReveal();
 const slideshowReady = aboutPixelDataReady.then(() => setupAboutSlideshow());
 const pageResourcesReady = waitForPageResources(criticalImagesReady, slideshowReady);
 if (window.portfolioLoadingBridge) {
