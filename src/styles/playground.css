@@ -157,9 +157,8 @@ img {
   .playground-stage:not(.is-dragging) .project-card:hover {
     transform: translate3d(0, -4px, 0) scale(1.012);
     box-shadow:
-      inset 0 0 0 1px var(--card-line),
-      0 12px 28px rgb(10 10 10 / 10%),
-      0 3px 8px rgb(10 10 10 / 6%);
+      inset 0 0 0 1px var(--card-accent),
+      0 2px 12px var(--card-line);
   }
 
   .playground-stage.is-dragging .project-card {
