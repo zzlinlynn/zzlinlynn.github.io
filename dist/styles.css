@@ -1995,6 +1995,41 @@ body.motion-ready .work-panel:not(.is-visible) .work-stage {
   --scene-visible: 1;
 }
 
+.playground-grid-fill {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.playground-grid-fill[data-grid-aligned] {
+  opacity: 1;
+}
+
+.playground-grid-fill span {
+  position: absolute;
+  top: var(--cell-top, var(--cell-y));
+  left: var(--cell-left, var(--cell-x));
+  width: calc(var(--ambient-grid-size) - 1px);
+  aspect-ratio: 1;
+  background: color-mix(in srgb, var(--ink) 5.5%, var(--bg));
+  opacity: 1;
+  transition: opacity 180ms ease-in-out;
+}
+
+.playground-grid-fill span.is-fading {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playground-grid-fill,
+  .playground-grid-fill span {
+    transition: none;
+  }
+}
+
 body.motion-ready .lab-strip:not(.is-visible) {
   --scene-visible: 0;
 }

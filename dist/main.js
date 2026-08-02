@@ -993,6 +993,144 @@ function setupScrollReveal() {
   checkFooter();
 }
 
+function setupPlaygroundGridFill() {
+  const section = document.querySelector('.lab-strip');
+  const layer = section?.querySelector('.playground-grid-fill');
+  const cells = Array.from(layer?.querySelectorAll('span') || []);
+  if (!section || !layer || !cells.length) return;
+
+  const positions = cells.map((cell) => ({
+    x: parseFloat(cell.style.getPropertyValue('--cell-x')) / 100,
+    y: parseFloat(cell.style.getPropertyValue('--cell-y')) / 100
+  }));
+  const gridSize = parseFloat(getComputedStyle(root).getPropertyValue('--ambient-grid-size')) || 18;
+  const fadeDuration = 180;
+  const settleDuration = 90;
+  const states = cells.map(() => ({
+    currentX: null,
+    currentY: null,
+    targetX: null,
+    targetY: null,
+    phase: 'visible',
+    revision: 0,
+    timer: 0
+  }));
+  let latestSectionRect = section.getBoundingClientRect();
+  let alignmentFrame = 0;
+
+  const isSameCell = (x1, y1, x2, y2) => (
+    Number.isFinite(x1)
+    && Number.isFinite(y1)
+    && Math.abs(x1 - x2) < .01
+    && Math.abs(y1 - y2) < .01
+  );
+
+  const renderCell = (cell, state) => {
+    cell.style.setProperty('--cell-left', `${state.currentX - latestSectionRect.left}px`);
+    cell.style.setProperty('--cell-top', `${state.currentY - latestSectionRect.top}px`);
+  };
+
+  const queueMove = (cell, state, targetX, targetY) => {
+    state.targetX = targetX;
+    state.targetY = targetY;
+
+    if (!Number.isFinite(state.currentX) || !Number.isFinite(state.currentY) || reduceMotion) {
+      state.currentX = targetX;
+      state.currentY = targetY;
+      state.phase = 'visible';
+      state.revision += 1;
+      window.clearTimeout(state.timer);
+      cell.classList.remove('is-fading');
+      renderCell(cell, state);
+      return;
+    }
+
+    if (isSameCell(state.currentX, state.currentY, targetX, targetY)) {
+      if (state.phase === 'visible' || state.phase === 'fading-in' || state.phase === 'hidden') return;
+
+      const revealRevision = ++state.revision;
+      window.clearTimeout(state.timer);
+      state.phase = 'fading-in';
+      cell.classList.remove('is-fading');
+      state.timer = window.setTimeout(() => {
+        if (revealRevision !== state.revision) return;
+        state.phase = 'visible';
+      }, fadeDuration);
+      return;
+    }
+
+    state.phase = 'fading-out';
+    cell.classList.add('is-fading');
+    const moveRevision = ++state.revision;
+    window.clearTimeout(state.timer);
+    state.timer = window.setTimeout(() => {
+      if (moveRevision !== state.revision) return;
+      state.phase = 'hidden';
+      state.currentX = state.targetX;
+      state.currentY = state.targetY;
+      latestSectionRect = section.getBoundingClientRect();
+      renderCell(cell, state);
+
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (moveRevision !== state.revision) return;
+        state.phase = 'fading-in';
+        cell.classList.remove('is-fading');
+        state.timer = window.setTimeout(() => {
+          if (moveRevision !== state.revision) return;
+          state.phase = 'visible';
+          if (!isSameCell(state.currentX, state.currentY, state.targetX, state.targetY)) {
+            queueMove(cell, state, state.targetX, state.targetY);
+          }
+        }, fadeDuration);
+      }));
+    }, fadeDuration + settleDuration);
+  };
+
+  const alignCells = () => {
+    alignmentFrame = 0;
+    latestSectionRect = section.getBoundingClientRect();
+    const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+    const viewportHeight = document.documentElement.clientHeight || window.innerHeight;
+    if (latestSectionRect.bottom < -gridSize || latestSectionRect.top > viewportHeight + gridSize) return;
+    const firstCellX = viewportWidth / 2 - gridSize / 2 + 1;
+    const firstCellY = 1;
+
+    cells.forEach((cell, index) => {
+      const position = positions[index];
+      const state = states[index];
+      if (!Number.isFinite(position.x) || !Number.isFinite(position.y)) return;
+
+      const desiredX = latestSectionRect.left + latestSectionRect.width * position.x;
+      const desiredY = latestSectionRect.top + latestSectionRect.height * position.y;
+      const snappedX = firstCellX + Math.round((desiredX - firstCellX) / gridSize) * gridSize;
+      const snappedY = firstCellY + Math.round((desiredY - firstCellY) / gridSize) * gridSize;
+
+      if (Number.isFinite(state.currentX) && Number.isFinite(state.currentY)) renderCell(cell, state);
+      queueMove(cell, state, snappedX, snappedY);
+    });
+
+    layer.setAttribute('data-grid-aligned', '');
+  };
+
+  const requestAlignment = () => {
+    if (alignmentFrame) return;
+    alignmentFrame = requestAnimationFrame(alignCells);
+  };
+
+  window.addEventListener('scroll', requestAlignment, { passive: true });
+  window.addEventListener('resize', requestAlignment, { passive: true });
+  window.addEventListener('pageshow', requestAlignment);
+  window.visualViewport?.addEventListener('scroll', requestAlignment, { passive: true });
+  window.visualViewport?.addEventListener('resize', requestAlignment, { passive: true });
+
+  if ('ResizeObserver' in window) {
+    const sectionObserver = new ResizeObserver(requestAlignment);
+    sectionObserver.observe(section);
+  }
+
+  requestAlignment();
+}
+
 function setupHeroPortrait() {
   const canvas = document.getElementById('hero-portrait-canvas');
   if (!canvas) return Promise.resolve();
@@ -1703,6 +1841,7 @@ setupPointerVars();
 setupCursor();
 setupWorkShowcase();
 setupWorkColorReveal();
+setupPlaygroundGridFill();
 setupScrollReveal();
 setupParallax();
 const heroPortraitReady = setupHeroPortrait();
