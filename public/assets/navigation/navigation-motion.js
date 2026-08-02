@@ -98,7 +98,6 @@
       intensity: Number(config.logoIntensity) || 1.05
     });
     const listeners = [];
-    const generatedNodes = [];
     const typeLabels = [];
     const hoverLabels = [];
 
@@ -120,6 +119,9 @@
         const normal = document.createElement("span");
         normal.className = "lynn-nav__glyph-normal";
         normal.textContent = character;
+        const scramble = document.createElement("span");
+        scramble.className = "lynn-nav__glyph-scramble";
+        scramble.textContent = character;
         const variants = PIXEL_STAGES.map((stage, variantIndex) => {
           const variant = document.createElement("span");
           variant.className = `lynn-nav__glyph-variant lynn-nav__glyph-variant--${variantIndex + 1}`;
@@ -183,28 +185,16 @@
           return variant;
         });
 
-        slot.append(normal, ...variants);
+        slot.append(normal, ...variants, scramble);
         row.append(slot);
-        slots.push({ normal, variants });
+        slots.push({ normal, variants, scramble });
       });
 
-      const hoverRow = document.createElement("span");
-      hoverRow.className = "lynn-nav__hover-row";
-      hoverRow.setAttribute("aria-hidden", "true");
-      const hoverCharacters = Array.from(text).map((character) => {
-        const hoverCharacter = document.createElement("span");
-        hoverCharacter.className = "lynn-nav__hover-char";
-        hoverCharacter.textContent = character;
-        hoverRow.append(hoverCharacter);
-        return hoverCharacter;
-      });
-      element.append(hoverRow);
-      generatedNodes.push(hoverRow);
       typeLabels.push(slots);
       hoverLabels.push({
         element,
         text,
-        characters: hoverCharacters,
+        characters: slots.map(({ scramble }) => scramble),
         timer: 0,
         pointerInside: false,
         focused: false
@@ -248,9 +238,9 @@
     }
 
     function startScramble(record) {
-      stopScramble(record, false);
-      record.element.classList.add("is-scrambling");
+      stopScramble(record, true);
       if (reduceMotion) return;
+      record.element.classList.add("is-scrambling");
       let tick = 0;
       setScrambleFrame(record, tick);
       record.timer = global.setInterval(() => {
@@ -502,7 +492,6 @@
         global.cancelAnimationFrame(logoHoverFrame);
         hoverLabels.forEach((record) => stopScramble(record, true));
         listeners.splice(0).forEach((remove) => remove());
-        generatedNodes.forEach((node) => node.remove());
         toneObserver?.disconnect();
         toneObserver = null;
         labelElements.forEach((element) => {

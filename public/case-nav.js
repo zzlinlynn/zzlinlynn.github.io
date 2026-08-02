@@ -198,6 +198,94 @@ const setupNextProjectAutoScroll = () => {
   observer.observe(nextProject);
 };
 
+const setupNextProjectScramble = () => {
+  const links = [...document.querySelectorAll(".case-next-project__link")];
+  if (!links.length) return;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*+-?";
+  const steps = 30;
+  const interval = 22;
+  const records = links.map((link) => {
+    const label = link.querySelector(".case-next-project__label");
+    const text = label?.textContent?.trim() || "";
+    if (!(label instanceof HTMLElement) || !text) return null;
+
+    label.setAttribute("aria-hidden", "true");
+    let timer = 0;
+    let pointerInside = false;
+    let focused = false;
+
+    const setFrame = (tick) => {
+      const letters = Array.from(text);
+      const resolvedCount = Math.floor(
+        Math.min(tick, steps) / steps * letters.length,
+      );
+      label.textContent = letters.map((letter, index) => {
+        const resolved = letter.trim() === ""
+          || index < resolvedCount
+          || tick >= steps;
+        return resolved
+          ? letter
+          : characters[Math.floor(Math.random() * characters.length)];
+      }).join("");
+    };
+
+    const stop = () => {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = 0;
+      }
+      label.textContent = text;
+      label.style.removeProperty("inline-size");
+      link.classList.remove("is-scrambling");
+    };
+
+    const start = () => {
+      stop();
+      if (reducedMotion.matches) return;
+      const naturalWidth = label.getBoundingClientRect().width;
+      if (naturalWidth > 0) {
+        label.style.inlineSize = `${naturalWidth.toFixed(3)}px`;
+      }
+      link.classList.add("is-scrambling");
+      let tick = 0;
+      setFrame(tick);
+      timer = window.setInterval(() => {
+        tick += 1;
+        setFrame(tick);
+        if (tick >= steps) stop();
+      }, interval);
+    };
+
+    label.addEventListener("mouseenter", () => {
+      pointerInside = true;
+      start();
+    });
+    label.addEventListener("mouseleave", () => {
+      pointerInside = false;
+      if (!focused) stop();
+    });
+    link.addEventListener("focus", () => {
+      focused = true;
+      start();
+    });
+    link.addEventListener("blur", () => {
+      focused = false;
+      if (!pointerInside) stop();
+    });
+
+    return { stop };
+  }).filter(Boolean);
+
+  reducedMotion.addEventListener("change", (event) => {
+    if (event.matches) records.forEach((record) => record.stop());
+  });
+  window.addEventListener("pagehide", () => {
+    records.forEach((record) => record.stop());
+  });
+};
+
 const setupReadingProgress = () => {
   const caseStudy = document.querySelector(".case-study");
   const footer = document.querySelector(".site-footer--shared");
@@ -272,4 +360,5 @@ const setupReadingProgress = () => {
 setupCaseCursor();
 setupCaseReveal();
 setupNextProjectAutoScroll();
+setupNextProjectScramble();
 setupReadingProgress();

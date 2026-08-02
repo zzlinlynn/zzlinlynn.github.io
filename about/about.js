@@ -9,7 +9,7 @@ const aboutPixelDataReady = Promise.all([
 });
 
 const root = document.documentElement;
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reducedMotionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 const actionScrambleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*+-?';
 const actionScrambleSteps = 30;
 const actionScrambleInterval = 22;
@@ -118,10 +118,10 @@ function setupActionScramble() {
       element,
       label,
       text: '',
-      characters: [],
       timer: 0,
       pointerInside: false,
-      focused: false
+      focused: false,
+      hasExplicitAriaLabel: element.hasAttribute('aria-label')
     };
 
     function setFrame(tick) {
@@ -130,37 +130,43 @@ function setupActionScramble() {
         Math.min(tick, actionScrambleSteps) / actionScrambleSteps * letters.length
       );
 
-      record.characters.forEach((character, index) => {
-        const resolved = index < resolvedCount || tick >= actionScrambleSteps;
-        character.textContent = resolved
-          ? letters[index]
+      record.label.textContent = letters.map((letter, index) => {
+        const resolved = letter.trim() === ''
+          || index < resolvedCount
+          || tick >= actionScrambleSteps;
+        return resolved
+          ? letter
           : actionScrambleCharacters[
             Math.floor(Math.random() * actionScrambleCharacters.length)
           ];
-        character.classList.toggle('is-scrambled', !resolved);
-      });
+      }).join('');
     }
 
-    function stop(hide) {
+    function stop() {
       if (record.timer) {
         window.clearInterval(record.timer);
         record.timer = 0;
       }
-      setFrame(actionScrambleSteps);
-      if (hide) record.element.classList.remove('is-scrambling');
+      record.label.textContent = record.text;
+      record.label.style.removeProperty('inline-size');
+      record.element.classList.remove('is-scrambling');
     }
 
     function start() {
-      stop(false);
+      stop();
+      if (reducedMotionPreference.matches) return;
+      const naturalWidth = record.label.getBoundingClientRect().width;
+      if (naturalWidth > 0) {
+        record.label.style.inlineSize = `${naturalWidth.toFixed(3)}px`;
+      }
       record.element.classList.add('is-scrambling');
-      if (reduceMotion) return;
 
       let tick = 0;
       setFrame(tick);
       record.timer = window.setInterval(() => {
         tick += 1;
         setFrame(tick);
-        if (tick >= actionScrambleSteps) stop(false);
+        if (tick >= actionScrambleSteps) stop();
       }, actionScrambleInterval);
     }
 
@@ -172,25 +178,14 @@ function setupActionScramble() {
 
       const translationKey = record.label.dataset.aboutI18n;
       record.text = String(dictionary()[translationKey] || translationKey).trim();
-      const normal = document.createElement('span');
-      normal.className = 'about-action__label-normal';
-      normal.textContent = record.text;
-
-      const hoverRow = document.createElement('span');
-      hoverRow.className = 'about-action__hover-row';
-      hoverRow.setAttribute('aria-hidden', 'true');
-      record.characters = Array.from(record.text).map((letter) => {
-        const character = document.createElement('span');
-        character.className = 'about-action__hover-char';
-        character.classList.toggle('is-wide', letter.codePointAt(0) > 0xff);
-        character.textContent = letter;
-        hoverRow.append(character);
-        return character;
-      });
-
       record.label.classList.add('about-action__label');
-      record.label.replaceChildren(normal, hoverRow);
+      record.label.setAttribute('aria-hidden', 'true');
+      record.label.textContent = record.text;
+      record.label.style.removeProperty('inline-size');
       record.element.classList.remove('is-scrambling');
+      if (!record.hasExplicitAriaLabel) {
+        record.element.setAttribute('aria-label', record.text);
+      }
       if (record.pointerInside || record.focused) start();
     }
 
@@ -200,7 +195,7 @@ function setupActionScramble() {
     });
     element.addEventListener('mouseleave', () => {
       record.pointerInside = false;
-      if (!record.focused) stop(true);
+      if (!record.focused) stop();
     });
     element.addEventListener('focus', () => {
       record.focused = true;
@@ -208,13 +203,18 @@ function setupActionScramble() {
     });
     element.addEventListener('blur', () => {
       record.focused = false;
-      if (!record.pointerInside) stop(true);
+      if (!record.pointerInside) stop();
     });
 
     record.refresh = refresh;
+    record.stop = stop;
     refresh();
     return record;
   }).filter(Boolean);
+
+  reducedMotionPreference.addEventListener('change', (event) => {
+    if (event.matches) records.forEach((record) => record.stop());
+  });
 
   return {
     refresh() {

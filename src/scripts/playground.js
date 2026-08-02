@@ -90,24 +90,11 @@ if (surface && world && sourceTile) {
     const text = label?.textContent?.trim() || "";
     if (!(element instanceof HTMLElement) || !label || !text) return null;
 
-    const normal = document.createElement("span");
-    normal.className = "project-detail-cta__label-normal";
-    normal.textContent = text;
-
-    const hoverRow = document.createElement("span");
-    hoverRow.className = "project-detail-cta__hover-row";
-    hoverRow.setAttribute("aria-hidden", "true");
-    const characters = Array.from(text).map((letter) => {
-      const character = document.createElement("span");
-      character.className = "project-detail-cta__hover-char";
-      character.classList.toggle("is-wide", letter.codePointAt(0) > 0xff);
-      character.textContent = letter;
-      hoverRow.append(character);
-      return character;
-    });
-
+    const hadExplicitAriaLabel = element.hasAttribute("aria-label");
+    const originalAriaHidden = label.getAttribute("aria-hidden");
     label.classList.add("project-detail-cta__label");
-    label.replaceChildren(normal, hoverRow);
+    label.setAttribute("aria-hidden", "true");
+    if (!hadExplicitAriaLabel) element.setAttribute("aria-label", text);
 
     let timer = 0;
     let pointerInside = false;
@@ -122,41 +109,47 @@ if (surface && world && sourceTile) {
           letters.length
       );
 
-      characters.forEach((character, index) => {
+      label.textContent = letters.map((letter, index) => {
         const resolved =
-          index < resolvedCount || tick >= PROJECT_CTA_SCRAMBLE_STEPS;
-        character.textContent = resolved
-          ? letters[index]
+          letter.trim() === "" ||
+          index < resolvedCount ||
+          tick >= PROJECT_CTA_SCRAMBLE_STEPS;
+        return resolved
+          ? letter
           : PROJECT_CTA_SCRAMBLE_CHARACTERS[
               Math.floor(
                 Math.random() * PROJECT_CTA_SCRAMBLE_CHARACTERS.length
               )
             ];
-        character.classList.toggle("is-scrambled", !resolved);
-      });
+      }).join("");
     };
 
-    const stop = (hide) => {
+    const stop = () => {
       if (timer) {
         window.clearInterval(timer);
         timer = 0;
       }
-      setFrame(PROJECT_CTA_SCRAMBLE_STEPS);
-      if (hide) element.classList.remove("is-scrambling");
+      label.textContent = text;
+      label.style.removeProperty("inline-size");
+      element.classList.remove("is-scrambling");
     };
 
     const start = () => {
       if (destroyed) return;
-      stop(false);
-      element.classList.add("is-scrambling");
+      stop();
       if (reducedMotionPreference.matches) return;
+      const naturalWidth = label.getBoundingClientRect().width;
+      if (naturalWidth > 0) {
+        label.style.inlineSize = `${naturalWidth.toFixed(3)}px`;
+      }
+      element.classList.add("is-scrambling");
 
       let tick = 0;
       setFrame(tick);
       timer = window.setInterval(() => {
         tick += 1;
         setFrame(tick);
-        if (tick >= PROJECT_CTA_SCRAMBLE_STEPS) stop(false);
+        if (tick >= PROJECT_CTA_SCRAMBLE_STEPS) stop();
       }, PROJECT_CTA_SCRAMBLE_INTERVAL);
     };
 
@@ -166,7 +159,7 @@ if (surface && world && sourceTile) {
     };
     const handleMouseLeave = () => {
       pointerInside = false;
-      if (!focused) stop(true);
+      if (!focused) stop();
     };
     const handleFocus = () => {
       focused = true;
@@ -174,19 +167,20 @@ if (surface && world && sourceTile) {
     };
     const handleBlur = () => {
       focused = false;
-      if (!pointerInside) stop(true);
+      if (!pointerInside) stop();
     };
 
     element.addEventListener("mouseenter", handleMouseEnter);
     element.addEventListener("mouseleave", handleMouseLeave);
     element.addEventListener("focus", handleFocus);
     element.addEventListener("blur", handleBlur);
-    setFrame(PROJECT_CTA_SCRAMBLE_STEPS);
+    stop();
 
     return {
+      stop,
       destroy() {
         if (destroyed) return;
-        stop(true);
+        stop();
         destroyed = true;
         element.removeEventListener("mouseenter", handleMouseEnter);
         element.removeEventListener("mouseleave", handleMouseLeave);
@@ -194,6 +188,12 @@ if (surface && world && sourceTile) {
         element.removeEventListener("blur", handleBlur);
         label.classList.remove("project-detail-cta__label");
         label.textContent = text;
+        if (originalAriaHidden === null) {
+          label.removeAttribute("aria-hidden");
+        } else {
+          label.setAttribute("aria-hidden", originalAriaHidden);
+        }
+        if (!hadExplicitAriaLabel) element.removeAttribute("aria-label");
       }
     };
   };
@@ -1728,6 +1728,7 @@ if (surface && world && sourceTile) {
 
   reducedMotionPreference.addEventListener("change", (event) => {
     if (event.matches) {
+      activeProjectCtaScramble?.stop();
       revealActiveProjectFlip();
       returnAmbientMotionToRest(true);
     }

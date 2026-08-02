@@ -48,7 +48,9 @@
 }
 
 .case-next-project__label {
+  display: inline-block;
   font-size: 20px;
+  text-align: right;
 }
 
 .case-next-project__title {

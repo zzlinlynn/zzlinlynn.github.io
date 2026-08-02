@@ -734,6 +734,18 @@ async function testSourceIntegration() {
     ["alipay-wealth-professionalization", "/work/ai-design-agent/"],
     ["overseas-brokerage", "/work/alipay-wealth-professionalization/"]
   ];
+  const caseNavScript = await read("case-nav.js");
+  assert.match(caseNavScript, /const setupNextProjectScramble = \(\) =>/);
+  assert.match(caseNavScript, /querySelector\("\.case-next-project__label"\)/);
+  assert.match(caseNavScript, /label\.style\.inlineSize =/);
+  assert.match(caseNavScript, /label\.addEventListener\("mouseenter"/);
+  assert.doesNotMatch(caseNavScript, /link\.addEventListener\("mouseenter"/);
+  assert.match(
+    caseNavScript,
+    /label\.textContent = text;\s*label\.style\.removeProperty\("inline-size"\)/,
+    "NEXT must restore its original text and geometry in the same update"
+  );
+  assert.match(caseNavScript, /setupNextProjectScramble\(\);/);
   for (const [slug, next] of caseStudies) {
     for (const prefix of ["public/work", "work"]) {
       const path = `${prefix}/${slug}/index.html`;
@@ -743,6 +755,9 @@ async function testSourceIntegration() {
       assertMarkedHref(source, "/#work", path);
       assertMarkedHref(source, "/about/", path);
       assertMarkedHref(source, next, path);
+      assert.match(source, /case-next-project\.css\?v=20260802-next-hover-1/);
+      assert.match(source, /case-nav\.js\?v=20260802-next-hover-2/);
+      assert.match(source, /class="case-next-project__label">NEXT<\/span>/);
     }
   }
 
@@ -800,6 +815,21 @@ async function testMirrorsAndBuildOutput() {
       `${file} is missing or stale in the build`
     );
   }
+  assert.equal(
+    await read("case-nav.js"),
+    await read("public/case-nav.js"),
+    "case-nav.js public mirror drifted"
+  );
+  assert.equal(
+    await read("case-nav.js"),
+    await read("dist/case-nav.js"),
+    "case-nav.js is missing or stale in the build"
+  );
+  assert.equal(
+    await read("public/case-next-project.css"),
+    await read("dist/case-next-project.css"),
+    "case-next-project.css is missing or stale in the build"
+  );
 
   assertTransitionShell(
     await read("playground/index.html"),

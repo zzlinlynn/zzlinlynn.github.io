@@ -126,8 +126,7 @@
   visibility: hidden;
 }
 
-.lynn-nav__glyph-row,
-.lynn-nav__hover-row {
+.lynn-nav__glyph-row {
   position: absolute;
   inset: 0 6.4px;
   display: flex;
@@ -138,24 +137,16 @@
   pointer-events: none;
 }
 
-.lynn-nav__glyph-row {
-  transition: opacity 60ms linear;
+.lynn-nav__link.is-scrambling .lynn-nav__glyph-normal,
+.lynn-nav__link.is-scrambling .lynn-nav__glyph-variant {
+  visibility: hidden;
 }
 
-.lynn-nav__hover-row {
-  opacity: 0;
+.lynn-nav__link.is-scrambling .lynn-nav__glyph-scramble {
+  visibility: visible;
 }
 
-.lynn-nav__link.is-scrambling .lynn-nav__glyph-row {
-  opacity: 0;
-}
-
-.lynn-nav__link.is-scrambling .lynn-nav__hover-row {
-  opacity: 1;
-}
-
-.lynn-nav__glyph-slot,
-.lynn-nav__hover-char {
+.lynn-nav__glyph-slot {
   position: relative;
   display: inline-grid;
   place-items: center;
@@ -166,7 +157,8 @@
 }
 
 .lynn-nav__glyph-normal,
-.lynn-nav__glyph-variant {
+.lynn-nav__glyph-variant,
+.lynn-nav__glyph-scramble {
   position: absolute;
   display: grid;
   place-items: center;
@@ -194,14 +186,16 @@
   pointer-events: none;
 }
 
-.lynn-nav__hover-char {
+.lynn-nav__glyph-scramble {
+  visibility: hidden;
+  transform: translate3d(0, 0, 0) scale(1);
   transform-origin: bottom;
   transition: color 80ms linear, transform 80ms linear;
 }
 
-.lynn-nav__hover-char.is-scrambled {
+.lynn-nav__glyph-scramble.is-scrambled {
   color: rgb(var(--lynn-nav-ink-rgb) / .4);
-  transform: scale(1.06);
+  transform: translate3d(0, 0, 0) scale(1.06);
 }
 
 @media (min-width: 761px) and (max-width: 1024px) {
@@ -239,8 +233,7 @@
     padding-inline: 5.6px;
   }
 
-  .lynn-nav__glyph-row,
-  .lynn-nav__hover-row {
+  .lynn-nav__glyph-row {
     inset-inline: 4px;
   }
 }
@@ -253,7 +246,7 @@
     will-change: auto;
   }
 
-  .lynn-nav__hover-char {
+  .lynn-nav__glyph-scramble {
     transition: none;
   }
 }

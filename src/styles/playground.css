@@ -534,52 +534,13 @@ img {
 }
 
 .project-detail-cta__label {
-  position: relative;
-  display: inline-grid;
+  display: inline-block;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
-.project-detail-cta__label-normal,
-.project-detail-cta__hover-row {
-  grid-area: 1 / 1;
-}
-
-.project-detail-cta__label-normal {
-  transition: opacity 60ms linear;
-}
-
-.project-detail-cta__hover-row {
-  display: flex;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.project-detail-cta.is-scrambling .project-detail-cta__label-normal {
-  opacity: 0;
-}
-
-.project-detail-cta.is-scrambling .project-detail-cta__hover-row {
-  opacity: 1;
-}
-
-.project-detail-cta__hover-char {
-  display: inline-grid;
-  width: 1ch;
-  flex: 0 0 1ch;
-  place-items: center;
-  transform-origin: bottom;
-  transition:
-    opacity 80ms linear,
-    transform 80ms linear;
-}
-
-.project-detail-cta__hover-char.is-wide {
-  width: 1em;
-  flex-basis: 1em;
-}
-
-.project-detail-cta__hover-char.is-scrambled {
-  opacity: 0.4;
-  transform: scale(1.06);
+.project-detail-cta.is-scrambling .project-detail-cta__label {
+  overflow: clip;
 }
 
 .project-detail-cta__icon {
@@ -962,8 +923,6 @@ img {
   .project-modal__content,
   .project-modal__close,
   .project-modal__close img,
-  .project-detail-cta__label-normal,
-  .project-detail-cta__hover-char,
   .project-detail-cta__icon,
   .project-detail-gallery__track {
     transition: none;
