@@ -10,7 +10,6 @@
 
 .knowledge-motion__variant--mobile {
   display: block;
-  width: min(342px, 100%);
   aspect-ratio: 342 / 499;
 }
 
@@ -163,7 +162,6 @@
 
   .knowledge-motion__variant--tablet {
     display: block;
-    width: min(704px, 100%);
     aspect-ratio: 704 / 226;
   }
 }
