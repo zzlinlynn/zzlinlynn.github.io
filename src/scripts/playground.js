@@ -18,6 +18,10 @@ if (surface && world && sourceTile) {
   const AMBIENT_IMPULSE_DECAY = 5.8;
   const CAROUSEL_AUTOPLAY_DELAY = 3200;
   const CAROUSEL_MANUAL_DELAY = 5200;
+  const PROJECT_CTA_SCRAMBLE_CHARACTERS =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*+-?";
+  const PROJECT_CTA_SCRAMBLE_STEPS = 30;
+  const PROJECT_CTA_SCRAMBLE_INTERVAL = 22;
   const ACTIVE_PROJECT_SOURCE_CLASS = "is-active-project-source";
   const INITIAL_POSITION = { x: -151, y: -60 };
   const tileTemplate = sourceTile.cloneNode(true);
@@ -71,11 +75,133 @@ if (surface && world && sourceTile) {
   let modalTransitionVersion = 0;
   let modalHideTimer = 0;
   let activeGalleryCarousel = null;
+  let activeProjectCtaScramble = null;
   let activeProjectFlip = null;
   let activeProjectSource = null;
 
   const clamp = (value, minimum, maximum) =>
     Math.min(maximum, Math.max(minimum, value));
+
+  const initProjectCtaScramble = (root) => {
+    if (!(root instanceof Element)) return null;
+
+    const element = root.querySelector("[data-project-cta]");
+    const label = element?.querySelector("[data-project-cta-label]");
+    const text = label?.textContent?.trim() || "";
+    if (!(element instanceof HTMLElement) || !label || !text) return null;
+
+    const normal = document.createElement("span");
+    normal.className = "project-detail-cta__label-normal";
+    normal.textContent = text;
+
+    const hoverRow = document.createElement("span");
+    hoverRow.className = "project-detail-cta__hover-row";
+    hoverRow.setAttribute("aria-hidden", "true");
+    const characters = Array.from(text).map((letter) => {
+      const character = document.createElement("span");
+      character.className = "project-detail-cta__hover-char";
+      character.classList.toggle("is-wide", letter.codePointAt(0) > 0xff);
+      character.textContent = letter;
+      hoverRow.append(character);
+      return character;
+    });
+
+    label.classList.add("project-detail-cta__label");
+    label.replaceChildren(normal, hoverRow);
+
+    let timer = 0;
+    let pointerInside = false;
+    let focused = false;
+    let destroyed = false;
+
+    const setFrame = (tick) => {
+      const letters = Array.from(text);
+      const resolvedCount = Math.floor(
+        (Math.min(tick, PROJECT_CTA_SCRAMBLE_STEPS) /
+          PROJECT_CTA_SCRAMBLE_STEPS) *
+          letters.length
+      );
+
+      characters.forEach((character, index) => {
+        const resolved =
+          index < resolvedCount || tick >= PROJECT_CTA_SCRAMBLE_STEPS;
+        character.textContent = resolved
+          ? letters[index]
+          : PROJECT_CTA_SCRAMBLE_CHARACTERS[
+              Math.floor(
+                Math.random() * PROJECT_CTA_SCRAMBLE_CHARACTERS.length
+              )
+            ];
+        character.classList.toggle("is-scrambled", !resolved);
+      });
+    };
+
+    const stop = (hide) => {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = 0;
+      }
+      setFrame(PROJECT_CTA_SCRAMBLE_STEPS);
+      if (hide) element.classList.remove("is-scrambling");
+    };
+
+    const start = () => {
+      if (destroyed) return;
+      stop(false);
+      element.classList.add("is-scrambling");
+      if (reducedMotionPreference.matches) return;
+
+      let tick = 0;
+      setFrame(tick);
+      timer = window.setInterval(() => {
+        tick += 1;
+        setFrame(tick);
+        if (tick >= PROJECT_CTA_SCRAMBLE_STEPS) stop(false);
+      }, PROJECT_CTA_SCRAMBLE_INTERVAL);
+    };
+
+    const handleMouseEnter = () => {
+      pointerInside = true;
+      start();
+    };
+    const handleMouseLeave = () => {
+      pointerInside = false;
+      if (!focused) stop(true);
+    };
+    const handleFocus = () => {
+      focused = true;
+      start();
+    };
+    const handleBlur = () => {
+      focused = false;
+      if (!pointerInside) stop(true);
+    };
+
+    element.addEventListener("mouseenter", handleMouseEnter);
+    element.addEventListener("mouseleave", handleMouseLeave);
+    element.addEventListener("focus", handleFocus);
+    element.addEventListener("blur", handleBlur);
+    setFrame(PROJECT_CTA_SCRAMBLE_STEPS);
+
+    return {
+      destroy() {
+        if (destroyed) return;
+        stop(true);
+        destroyed = true;
+        element.removeEventListener("mouseenter", handleMouseEnter);
+        element.removeEventListener("mouseleave", handleMouseLeave);
+        element.removeEventListener("focus", handleFocus);
+        element.removeEventListener("blur", handleBlur);
+        label.classList.remove("project-detail-cta__label");
+        label.textContent = text;
+      }
+    };
+  };
+
+  const destroyActiveProjectCtaScramble = () => {
+    activeProjectCtaScramble?.destroy();
+    activeProjectCtaScramble = null;
+  };
 
   const updateAmbientBounds = () => {
     const bounds = surface.getBoundingClientRect();
@@ -1206,6 +1332,7 @@ if (surface && world && sourceTile) {
     freezeGalleryTransition();
     activeGalleryCarousel?.destroy();
     activeGalleryCarousel = null;
+    destroyActiveProjectCtaScramble();
     const transitionVersion = modalTransitionVersion;
     const sourceElement = resolveProjectSource(projectId);
     const sourceRect = sourceElement?.getBoundingClientRect() || null;
@@ -1260,7 +1387,9 @@ if (surface && world && sourceTile) {
     const content = template.content.cloneNode(true);
     activeGalleryCarousel?.destroy();
     activeGalleryCarousel = null;
+    destroyActiveProjectCtaScramble();
     projectModalBody.replaceChildren(content);
+    activeProjectCtaScramble = initProjectCtaScramble(projectModalBody);
 
     let title = projectModalBody.querySelector(
       "[data-project-title], h1, h2, h3, [role='heading']"

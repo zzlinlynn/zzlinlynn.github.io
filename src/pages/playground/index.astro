@@ -603,12 +603,13 @@ const projects = [
                       <p>{project.detail.description}</p>
                       <a
                         class="project-detail-cta"
+                        data-project-cta
                         href={project.detail.href}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`View ${project.detail.title} project (opens in a new tab)`}
                       >
-                        <span>View Project</span>
+                        <span data-project-cta-label>View Project</span>
                         <span
                           class="project-detail-cta__icon"
                           style="--project-arrow:url(/assets/playground/details/view-project-arrow.svg);"
