@@ -355,9 +355,11 @@ const projects = [
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/fonts.css?v=20260729-font-family-set-1" />
+    <link rel="stylesheet" href="/case-nav.css?v=20260801-scroll-reveal-1" />
     <link rel="stylesheet" href="/footer-strip.css?v=20260729-shared-footer-3" />
     <link rel="stylesheet" href="/assets/brand/logo-motion.css?v=20260801-navigation-motion-1" />
     <link rel="stylesheet" href="/assets/navigation/navigation-motion.css?v=20260802-navigation-hover-layout-2" />
+    <script is:inline src="/case-nav.js?v=20260802-next-hover-2" defer></script>
     <script is:inline src="/assets/brand/logo-motion.js?v=20260801-navigation-motion-1"></script>
     <script is:inline src="/assets/navigation/navigation-motion.js?v=20260802-navigation-hover-layout-2"></script>
     <script is:inline src="/assets/navigation/navigation-init.js?v=20260801-navigation-motion-2"></script>
@@ -441,6 +443,7 @@ const projects = [
                 projects.map((project) => (
                   <article
                     class="project-card"
+                    data-cursor-soft
                     data-node-id={project.nodeId}
                     data-project-id={project.id}
                     style={`--card-x:${project.x}px;--card-y:${project.y}px;--card-width:${project.width}px;--preview-height:${project.previewHeight}px;--copy-width:${project.copyWidth}px;--card-accent:${project.accent};--year-color:${project.accent};--image-width:${project.imageWidth};--image-height:${project.imageHeight};--image-left:${project.imageLeft};--image-top:${project.imageTop};`}

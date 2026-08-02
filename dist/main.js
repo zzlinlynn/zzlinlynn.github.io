@@ -134,7 +134,7 @@ const i18n = {
     'cursor.map': 'Open the cluster map without leaving the homepage',
     'cursor.overview': 'Open the shareable overview route',
     'cursor.openCase': 'Open the single case route',
-    'cursor.lab': 'Open short exploration',
+    'cursor.lab': 'Explore the playground',
     'cursor.resume': 'Open resume route',
   },
   zh: {
