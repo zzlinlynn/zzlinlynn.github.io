@@ -997,8 +997,9 @@ function setupHeroPortrait() {
   let sourceData = null;
   let raf = 0;
   let frameTimer = 0;
+  const portraitOpticalAnchorX = .485;
   let projectionScale = 1.2;
-  let projectionAnchorX = .5;
+  let projectionAnchorX = portraitOpticalAnchorX;
   let projectionAnchorY = .46;
   let visibleField = { left: 0, top: 0, right: 0, bottom: 0 };
   let resolveInitialPortrait;
@@ -1071,7 +1072,7 @@ function setupHeroPortrait() {
     const aspect = vw / Math.max(vh, 1);
     const compactHeight = clamp((820 - vh) / 360, 0, 1);
     const ribbonLift = clamp((aspect - 2.15) / 2.4, 0, 1);
-    projectionAnchorX = .5;
+    projectionAnchorX = portraitOpticalAnchorX;
     projectionAnchorY = clamp(.5 + compactHeight * .07 - ribbonLift * .02, .46, .58);
   }
 
