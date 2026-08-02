@@ -21,7 +21,7 @@ const projects = [
     detail: {
       title: "IWEN",
       year: "2021",
-      href: "https://lynnzhangdesign.github.io/iwen.html",
+      href: "https://lynnzhang1224.github.io/iwen.html",
       description:
         "The project redesigns an app for English learners that focuses more on English reading. The redesign includes the information architecture, user interface, and brand identity.",
       imageWidth: 262,
@@ -47,7 +47,7 @@ const projects = [
     detail: {
       title: "My Fireworks",
       year: "2021",
-      href: "https://lynnzhangdesign.github.io/fireworks.html",
+      href: "https://lynnzhang1224.github.io/fireworks.html",
       description:
         "The project is based on the concept of STEAM education, combined with AR technology to provide an innovative solution for visiting the Shanghai Science and Technology Museum.",
       imageWidth: 237.1,
@@ -73,7 +73,7 @@ const projects = [
     detail: {
       title: "HIVE",
       year: "2021",
-      href: "https://lynnzhangdesign.github.io/hive.html",
+      href: "https://lynnzhang1224.github.io/hive.html",
       description:
         "This project focuses on the elderly drifters in first-tier cities in China, called Lao Piao, helping them to improve their personal awareness and focus on their needs.",
       imageWidth: 262,
@@ -99,7 +99,7 @@ const projects = [
     detail: {
       title: "NY Transit Museum",
       year: "2022",
-      href: "https://lynnzhangdesign.github.io/NYTransitMuseum.html",
+      href: "https://lynnzhang1224.github.io/NYTransitMuseum.html",
       description:
         "This project leverages insights from user research to improve the navigation and organization of the existing New York Transit Museum (NYTM) website while keeping the web responsive across devices.",
       imageWidth: 262,
@@ -125,7 +125,7 @@ const projects = [
     detail: {
       title: "Furry Kitten",
       year: "2020",
-      href: "https://lynnzhangdesign.github.io/furry_kitten.html",
+      href: "https://lynnzhang1224.github.io/furry_kitten.html",
       description:
         "This project focuses on women of different ages who suffer from depression. It is dedicated to helping them ease the depression that comes with daily life through play therapy.",
       imageWidth: 236,
@@ -151,7 +151,7 @@ const projects = [
     detail: {
       title: "Driven Drizzle",
       year: "2021",
-      href: "https://lynnzhangdesign.github.io/driven.html",
+      href: "https://lynnzhang1224.github.io/driven.html",
       description:
         "The project aims to experiment with digital technology, combining auditory, visual, and tactile experiences to stimulate audiences to think about the entropy reduction of life.",
       imageWidth: 246,
@@ -204,7 +204,7 @@ const projects = [
     detail: {
       title: "Medscape",
       year: "2023",
-      href: "https://lynnzhangdesign.github.io/medscape.html",
+      href: "https://lynnzhang1224.github.io/medscape.html",
       description:
         "This project aims to enhance the search experience on the Medscape website—including global search, autocomplete, and content search—through in-depth interviews. It involves the user experience of responsive web pages.",
       imageWidth: 262,
@@ -230,7 +230,7 @@ const projects = [
     detail: {
       title: "MOOS",
       year: "2021",
-      href: "https://lynnzhangdesign.github.io/moos.html",
+      href: "https://lynnzhang1224.github.io/moos.html",
       description:
         "This project explores opportunities around a more sustainable and effective way of disposing of masks in Shanghai. The NFT has been created as an incentive to attract users.",
       imageWidth: 234,
@@ -330,7 +330,7 @@ const projects = [
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page-loader-page="auto">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -342,6 +342,11 @@ const projects = [
       content="Lynn's playground: selected experiments and earlier design work."
     />
     <title>Playground — Lynn</title>
+    <link rel="stylesheet" href="/page-transition.css?v=20260802-page-transition-9" />
+    <script is:inline src="/page-transition-boot.js?v=20260802-page-transition-9"></script>
+    <script is:inline src="/page-loader.js?v=20260802-page-transition-9" defer></script>
+    <script is:inline src="/assets/brand/loading-bridge.js?v=20260802-page-transition-9" defer></script>
+    <script is:inline src="/page-transition.js?v=20260802-page-transition-9" defer></script>
     <link rel="icon" type="image/png" sizes="512x512" href="/assets/brand/logo-mark.png?v=20260729-logo-mark-1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -358,6 +363,27 @@ const projects = [
     <script is:inline src="/assets/navigation/navigation-init.js?v=20260801-navigation-motion-2"></script>
   </head>
   <body>
+    <div
+      class="splash splash--lottie is-hidden"
+      id="splash"
+      data-page-loader
+      data-page-loader-mode="auto"
+      data-page-loader-state="checking"
+      data-page-loader-grace="120"
+      data-page-loader-playback-speed="2"
+      data-page-loader-color="var(--page-loader-background)"
+      aria-hidden="true"
+    >
+      <div class="splash__inner">
+        <div
+          class="splash__mark splash__mark--lottie"
+          id="splash-animation"
+          data-page-loader-animation="manual"
+        ></div>
+        <div class="splash__text">Loading</div>
+      </div>
+    </div>
+
     <nav
       class="lynn-navigation-motion"
       data-navigation-motion
@@ -367,7 +393,7 @@ const projects = [
       data-state-one-right-anchor="[data-nav-state-one-right]"
       aria-label="Primary"
     >
-      <a class="lynn-nav__island lynn-nav__brand is-name-hidden" data-nav-brand href="/#top">
+      <a class="lynn-nav__island lynn-nav__brand is-name-hidden" data-nav-brand href="/#top" data-page-transition>
         <span class="lynn-nav__mark" data-logo-motion aria-hidden="true">
           <img class="logo-motion__fallback" src="/assets/brand/logo.svg" alt="" />
         </span>
@@ -375,11 +401,11 @@ const projects = [
       </a>
 
       <div class="lynn-nav__island lynn-nav__links" data-nav-links>
-        <a class="lynn-nav__link" data-nav-label="Work" href="/#work" aria-label="Work">
+        <a class="lynn-nav__link" data-nav-label="Work" href="/#work" aria-label="Work" data-page-transition>
           <span class="lynn-nav__label-sizer">Work</span>
           <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
         </a>
-        <a class="lynn-nav__link" data-nav-label="About" href="/about/" aria-label="About">
+        <a class="lynn-nav__link" data-nav-label="About" href="/about/" aria-label="About" data-page-transition>
           <span class="lynn-nav__label-sizer">About</span>
           <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
         </a>
@@ -626,7 +652,7 @@ const projects = [
       </section>
     </main>
 
-    <footer class="site-footer site-footer--shared">
+    <footer class="site-footer site-footer--shared" data-transition-color="var(--footer-ground)">
       <div class="pixel-footer-scene">
         <canvas
           id="scene"
@@ -645,6 +671,8 @@ const projects = [
       </div>
     </footer>
 
+    <script is:inline src="/assets/brand/lottie.min.js?v=20260801-loading-animation-1" defer></script>
+    <script is:inline src="/assets/brand/loading-data.js?v=20260801-loading-animation-1" defer></script>
     <script>
       import "../../scripts/playground.js";
     </script>

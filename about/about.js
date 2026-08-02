@@ -13,39 +13,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const actionScrambleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*+-?';
 const actionScrambleSteps = 30;
 const actionScrambleInterval = 22;
-const splashPlaybackSpeed = 2;
-const splash = document.getElementById('splash');
-const splashMark = document.getElementById('splash-animation');
-let splashAnimation = null;
-let splashCycleFallback = null;
-let isPageReady = false;
-let hasSplashCycleCompleted = reduceMotion;
 let actionScrambleController = null;
-
-function tryHideSplash() {
-  if (isPageReady && hasSplashCycleCompleted) hideSplash();
-}
-
-function markSplashCycleComplete() {
-  hasSplashCycleCompleted = true;
-  if (splashCycleFallback !== null) {
-    window.clearTimeout(splashCycleFallback);
-    splashCycleFallback = null;
-  }
-  tryHideSplash();
-}
-
-function markPageReady() {
-  isPageReady = true;
-  tryHideSplash();
-}
-
-function waitForWindowLoad() {
-  if (document.readyState === 'complete') return Promise.resolve();
-  return new Promise((resolve) => {
-    window.addEventListener('load', resolve, { once: true });
-  });
-}
 
 async function waitForImage(image) {
   image.loading = 'eager';
@@ -65,15 +33,11 @@ async function waitForImage(image) {
   }
 }
 
-function waitForDocumentImages() {
-  return Promise.all(Array.from(document.images, waitForImage));
-}
-
-function waitForImageSource(source) {
-  const image = new Image();
-  image.decoding = 'async';
-  image.src = source;
-  return waitForImage(image);
+function waitForCriticalImages() {
+  return Promise.all(Array.from(
+    document.querySelectorAll('[data-page-loader-critical]'),
+    waitForImage
+  ));
 }
 
 async function waitForPageResources(...resources) {
@@ -84,75 +48,12 @@ async function waitForPageResources(...resources) {
       ])
     : Promise.resolve();
   await Promise.allSettled([
-    waitForWindowLoad(),
     fontsReady,
     ...resources
   ]);
   await new Promise((resolve) => {
     requestAnimationFrame(() => requestAnimationFrame(resolve));
   });
-  markPageReady();
-}
-
-function setupSplashAnimation() {
-  if (!splashMark || !window.LOADING_ANIMATION || typeof window.lottie?.loadAnimation !== 'function') {
-    markSplashCycleComplete();
-    return;
-  }
-
-  try {
-    splashAnimation = window.lottie.loadAnimation({
-      container: splashMark,
-      renderer: 'svg',
-      loop: !reduceMotion,
-      autoplay: !reduceMotion,
-      animationData: window.LOADING_ANIMATION,
-      rendererSettings: {
-        preserveAspectRatio: 'xMidYMid meet',
-        progressiveLoad: false
-      }
-    });
-    splashAnimation.setSpeed(splashPlaybackSpeed);
-    splashMark.classList.add('is-animated');
-
-    if (reduceMotion) {
-      const completeMarker = window.LOADING_ANIMATION.markers?.find((marker) => marker.cm === 'complete');
-      const stillFrame = completeMarker?.tm ?? Math.max(0, window.LOADING_ANIMATION.op - 1);
-      splashAnimation.addEventListener('DOMLoaded', () => splashAnimation?.goToAndStop(stillFrame, true));
-    } else {
-      const durationMs = ((window.LOADING_ANIMATION.op - window.LOADING_ANIMATION.ip) / window.LOADING_ANIMATION.fr) * 1000 / splashPlaybackSpeed;
-      splashAnimation.addEventListener('loopComplete', markSplashCycleComplete);
-      splashCycleFallback = window.setTimeout(markSplashCycleComplete, durationMs + 250);
-    }
-  } catch {
-    splashAnimation = null;
-    markSplashCycleComplete();
-  }
-}
-
-function hideSplash() {
-  if (!splash || splash.classList.contains('is-hidden')) return;
-
-  if (splashCycleFallback !== null) {
-    window.clearTimeout(splashCycleFallback);
-    splashCycleFallback = null;
-  }
-
-  if (splashAnimation) {
-    try {
-      splashAnimation.stop();
-      splashAnimation.destroy();
-    } catch {
-      // The splash is still removed if the renderer has already torn itself down.
-    }
-    splashAnimation = null;
-  }
-
-  splashMark?.replaceChildren();
-  splash.classList.add('is-hidden');
-  window.setTimeout(() => {
-    splash.hidden = true;
-  }, 320);
 }
 
 const aboutI18n = {
@@ -1087,14 +988,12 @@ document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
 });
 
 setTheme(root.dataset.theme || 'light');
-setupSplashAnimation();
-const documentImagesReady = waitForDocumentImages();
-const staticImagesReady = Promise.all([
-  '/assets/brand/logo.svg',
-  '/assets/brand/loading-logo.png?v=20260729-splash-logo-1',
-  '/assets/brand/logo-mark.png?v=20260729-logo-mark-1'
-].map(waitForImageSource));
+window.portfolioLoadingBridge?.installLottie();
+const criticalImagesReady = waitForCriticalImages();
 translate();
 actionScrambleController = setupActionScramble();
 const slideshowReady = aboutPixelDataReady.then(() => setupAboutSlideshow());
-void waitForPageResources(documentImagesReady, staticImagesReady, slideshowReady);
+const pageResourcesReady = waitForPageResources(criticalImagesReady, slideshowReady);
+if (window.portfolioLoadingBridge) {
+  void window.portfolioLoadingBridge.completeWhen(pageResourcesReady);
+}

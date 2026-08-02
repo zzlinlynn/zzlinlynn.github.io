@@ -1,0 +1,180 @@
+:root {
+  --page-transition-color: Canvas;
+  --page-transition-scrollbar-cover: var(--page-transition-color);
+  --page-transition-scrollbar-target: var(--page-transition-color);
+  --page-transition-scrollbar-reveal: 0%;
+  --page-transition-scrollbar-paint: color-mix(
+    in srgb,
+    var(--page-transition-scrollbar-cover),
+    var(--page-transition-scrollbar-target) var(--page-transition-scrollbar-reveal)
+  );
+  --page-loader-background: var(--bg, var(--page-background, #fff));
+  --page-loader-foreground: var(--ink, #0a0a0a);
+  --page-loader-muted: var(--muted, #767676);
+  --page-loader-inverse: #f5f5f3;
+  --page-loader-inverse-muted: #b8b8bd;
+  --page-loader-font: var(
+    --mono,
+    var(--font-mono, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace)
+  );
+  --page-loader-small: var(--small, .75rem);
+}
+
+.splash[data-page-loader] {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483644;
+  display: grid;
+  place-items: center;
+  gap: 1rem;
+  background: var(--page-loader-background);
+  color: var(--page-loader-foreground);
+  transition: opacity 320ms ease, visibility 320ms ease;
+}
+
+.splash[data-page-loader].is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash[data-page-loader][hidden] .splash__inner {
+  display: none;
+}
+
+.splash[data-page-loader] .splash__inner {
+  display: grid;
+  justify-items: center;
+  gap: .85rem;
+}
+
+.splash[data-page-loader] .splash__mark {
+  width: 5rem;
+  aspect-ratio: 1;
+  background: url("/assets/brand/loading-logo.png?v=20260729-splash-logo-1") center / contain no-repeat;
+}
+
+.splash[data-page-loader] .splash__mark--lottie.is-animated {
+  background: none;
+}
+
+.splash[data-page-loader] .splash__mark--lottie svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.splash[data-page-loader] .splash__text {
+  color: var(--page-loader-muted);
+  font-family: var(--page-loader-font);
+  font-size: var(--page-loader-small);
+  text-transform: uppercase;
+}
+
+.splash[data-page-loader][data-page-loader-tone="dark"] .splash__mark {
+  filter: brightness(0) invert(1);
+}
+
+.splash[data-page-loader][data-page-loader-tone="dark"] .splash__text {
+  color: var(--page-loader-inverse-muted);
+}
+
+html.page-transition-arriving::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483645;
+  background: var(--page-transition-color);
+  pointer-events: all;
+}
+
+html.page-transition-locked {
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+html.page-transition-arriving,
+html.page-transition-locked {
+  scrollbar-color: var(--page-transition-color) var(--page-transition-color);
+  scrollbar-color:
+    var(--page-transition-scrollbar-paint)
+    var(--page-transition-scrollbar-paint);
+}
+
+html:has([data-page-loader][data-page-loader-state="loading"]),
+html:has([data-page-loader][data-page-loader-state="complete"]:not([hidden])) {
+  scrollbar-color: var(--page-transition-color) var(--page-transition-color);
+  scrollbar-color:
+    var(--page-transition-scrollbar-paint)
+    var(--page-transition-scrollbar-paint);
+}
+
+html.page-transition-arriving::-webkit-scrollbar,
+html.page-transition-arriving::-webkit-scrollbar-track,
+html.page-transition-arriving::-webkit-scrollbar-thumb,
+html.page-transition-arriving::-webkit-scrollbar-corner,
+html.page-transition-locked::-webkit-scrollbar,
+html.page-transition-locked::-webkit-scrollbar-track,
+html.page-transition-locked::-webkit-scrollbar-thumb,
+html.page-transition-locked::-webkit-scrollbar-corner {
+  background-color: var(--page-transition-color);
+  background-color: var(--page-transition-scrollbar-paint);
+  border-color: var(--page-transition-color);
+  border-color: var(--page-transition-scrollbar-paint);
+  box-shadow: none;
+}
+
+html:has([data-page-loader][data-page-loader-state="loading"])::-webkit-scrollbar,
+html:has([data-page-loader][data-page-loader-state="loading"])::-webkit-scrollbar-track,
+html:has([data-page-loader][data-page-loader-state="loading"])::-webkit-scrollbar-thumb,
+html:has([data-page-loader][data-page-loader-state="loading"])::-webkit-scrollbar-corner,
+html:has([data-page-loader][data-page-loader-state="complete"]:not([hidden]))::-webkit-scrollbar,
+html:has([data-page-loader][data-page-loader-state="complete"]:not([hidden]))::-webkit-scrollbar-track,
+html:has([data-page-loader][data-page-loader-state="complete"]:not([hidden]))::-webkit-scrollbar-thumb,
+html:has([data-page-loader][data-page-loader-state="complete"]:not([hidden]))::-webkit-scrollbar-corner {
+  background-color: var(--page-transition-color);
+  background-color: var(--page-transition-scrollbar-paint);
+  border-color: var(--page-transition-color);
+  border-color: var(--page-transition-scrollbar-paint);
+  box-shadow: none;
+}
+
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: block;
+  width: 100%;
+  height: 100%;
+  contain: strict;
+  image-rendering: pixelated;
+  pointer-events: all;
+  touch-action: none;
+}
+
+[data-page-loader][data-page-loader-state="checking"],
+[data-page-loader][data-page-loader-state="complete"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-page-loader][data-page-loader-state="loading"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-page-loader]:not([data-page-loader-state="loading"]) [data-page-loader-animation] {
+  animation: none;
+}
+
+html.page-transition-loading [data-page-loader] {
+  z-index: 2147483647;
+  background: var(--page-transition-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.page-transition-arriving::before {
+    content: none;
+  }
+}

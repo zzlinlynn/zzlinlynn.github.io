@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-lang="en">
+<html lang="en" data-theme="light" data-lang="en" data-page-loader-page="external">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="About Lynn, a product and UX designer working across interaction, systems, and craft.">
   <title>About — Lynn</title>
+  <link rel="stylesheet" href="/page-transition.css?v=20260802-page-transition-9">
+  <script src="/page-transition-boot.js?v=20260802-page-transition-9"></script>
+  <script src="/page-loader.js?v=20260802-page-transition-9" defer></script>
+  <script src="/assets/brand/loading-bridge.js?v=20260802-page-transition-9" defer></script>
+  <script src="/page-transition.js?v=20260802-page-transition-9" defer></script>
   <link rel="icon" type="image/png" sizes="512x512" href="/assets/brand/logo-mark.png?v=20260729-logo-mark-1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +27,23 @@
   <script src="/assets/navigation/navigation-init.js?v=20260801-navigation-motion-1" defer></script>
 </head>
 <body class="about-body geist-pixel">
-  <div class="splash splash--lottie" id="splash" aria-hidden="true">
+  <div
+    class="splash splash--lottie is-hidden"
+    id="splash"
+    data-page-loader
+    data-page-loader-mode="external"
+    data-page-loader-state="checking"
+    data-page-loader-grace="120"
+    data-page-loader-playback-speed="2"
+    data-page-loader-color="var(--bg)"
+    aria-hidden="true"
+  >
     <div class="splash__inner">
-      <div class="splash__mark splash__mark--lottie" id="splash-animation"></div>
+      <div
+        class="splash__mark splash__mark--lottie"
+        id="splash-animation"
+        data-page-loader-animation="manual"
+      ></div>
       <div class="splash__text">Loading</div>
     </div>
   </div>
@@ -37,15 +56,15 @@
     data-state-one-right-anchor="[data-nav-state-one-right]"
     aria-label="Primary"
   >
-    <a class="lynn-nav__island lynn-nav__brand" data-nav-brand href="/#top">
+    <a class="lynn-nav__island lynn-nav__brand" data-nav-brand href="/#top" data-page-transition>
       <span class="lynn-nav__mark" data-logo-motion aria-hidden="true">
-        <img class="logo-motion__fallback" src="/assets/brand/logo.svg" alt="">
+        <img class="logo-motion__fallback" src="/assets/brand/logo.svg" alt="" data-page-loader-critical>
       </span>
       <span class="lynn-nav__name">Lynn</span>
     </a>
 
     <div class="lynn-nav__island lynn-nav__links" data-nav-links>
-      <a class="lynn-nav__link" data-nav-label="Work" href="/#work" aria-label="Work">
+      <a class="lynn-nav__link" data-nav-label="Work" href="/#work" aria-label="Work" data-page-transition>
         <span class="lynn-nav__label-sizer">Work</span>
         <span class="lynn-nav__glyph-row" data-nav-glyph-row aria-hidden="true"></span>
       </a>
@@ -107,15 +126,15 @@
 
           <nav class="about-actions" aria-label="About links">
             <a class="about-action" href="https://drive.google.com/file/d/17tNkmWqKqzTy6F9PuOXCp9ccdh_Jjqea/view?usp=drive_link" target="_blank" rel="noreferrer">
-              <img src="../assets/about/resume-icon.png" alt="" width="100" height="100">
+              <img src="../assets/about/resume-icon.png" alt="" width="100" height="100" data-page-loader-critical>
               <span data-about-i18n="about.resume"></span>
             </a>
             <a class="about-action" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=zhenglin.zhang.lynn%40gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Compose an email to Lynn at zhenglin.zhang.lynn@gmail.com">
-              <img src="../assets/about/email-icon.png" alt="" width="100" height="100">
+              <img src="../assets/about/email-icon.png" alt="" width="100" height="100" data-page-loader-critical>
               <span data-about-i18n="about.email"></span>
             </a>
             <a class="about-action" href="https://www.linkedin.com/in/zhenglinzhang" target="_blank" rel="noreferrer">
-              <img src="../assets/about/linkedin-icon.png" alt="" width="100" height="100">
+              <img src="../assets/about/linkedin-icon.png" alt="" width="100" height="100" data-page-loader-critical>
               <span data-about-i18n="about.linkedin"></span>
             </a>
           </nav>
@@ -123,7 +142,7 @@
       </div>
     </section>
 
-    <footer class="site-footer">
+    <footer class="site-footer" data-transition-color="var(--footer-ground)">
       <div class="pixel-footer-scene" aria-label="Monochrome pixel-art panorama">
         <canvas
           id="scene"
@@ -140,9 +159,9 @@
     </footer>
   </main>
 
-  <script src="/assets/brand/lottie.min.js?v=20260801-loading-animation-1"></script>
-  <script src="/assets/brand/loading-data.js?v=20260801-loading-animation-1"></script>
-  <script type="module" src="about.js?v=20260802-resource-ready-2"></script>
+  <script src="/assets/brand/lottie.min.js?v=20260801-loading-animation-1" defer></script>
+  <script src="/assets/brand/loading-data.js?v=20260801-loading-animation-1" defer></script>
+  <script type="module" src="about.js?v=20260802-page-transition-9"></script>
   <script src="/footer-canvas.js?v=20260801-footer-bg-match-1" defer></script>
   <script src="../case-nav.js?v=20260728-3" defer></script>
 </body>

@@ -1,9 +1,6 @@
 const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const splashPlaybackSpeed = 2;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-const splash = document.getElementById('splash');
-const splashMark = document.getElementById('splash-animation');
 const cursor = document.getElementById('cursor');
 const cursorLabel = document.getElementById('cursor-label');
 const layer = document.querySelector('.layer');
@@ -14,35 +11,6 @@ const panelContext = document.getElementById('panel-context');
 const panelFacts = document.getElementById('panel-facts');
 const panelPaths = document.getElementById('panel-paths');
 const closeButton = document.querySelector('[data-close-layer]');
-let splashAnimation = null;
-let splashCycleFallback = null;
-let isPageReady = false;
-let hasSplashCycleCompleted = reduceMotion;
-
-function tryHideSplash() {
-  if (isPageReady && hasSplashCycleCompleted) hideSplash();
-}
-
-function markSplashCycleComplete() {
-  hasSplashCycleCompleted = true;
-  if (splashCycleFallback !== null) {
-    window.clearTimeout(splashCycleFallback);
-    splashCycleFallback = null;
-  }
-  tryHideSplash();
-}
-
-function markPageReady() {
-  isPageReady = true;
-  tryHideSplash();
-}
-
-function waitForWindowLoad() {
-  if (document.readyState === 'complete') return Promise.resolve();
-  return new Promise((resolve) => {
-    window.addEventListener('load', resolve, { once: true });
-  });
-}
 
 async function waitForImage(image) {
   image.loading = 'eager';
@@ -62,82 +30,22 @@ async function waitForImage(image) {
   }
 }
 
-function waitForDocumentImages() {
-  return Promise.all(Array.from(document.images, waitForImage));
+function waitForCriticalImages() {
+  return Promise.all(Array.from(
+    document.querySelectorAll('[data-page-loader-critical]'),
+    waitForImage
+  ));
 }
 
 async function waitForPageResources(...resources) {
   const fontsReady = document.fonts?.ready || Promise.resolve();
   await Promise.allSettled([
-    waitForWindowLoad(),
     fontsReady,
     ...resources
   ]);
   await new Promise((resolve) => {
     requestAnimationFrame(() => requestAnimationFrame(resolve));
   });
-  markPageReady();
-}
-
-function setupSplashAnimation() {
-  if (!splashMark || !window.LOADING_ANIMATION || typeof window.lottie?.loadAnimation !== 'function') {
-    markSplashCycleComplete();
-    return;
-  }
-
-  try {
-    splashAnimation = window.lottie.loadAnimation({
-      container: splashMark,
-      renderer: 'svg',
-      loop: !reduceMotion,
-      autoplay: !reduceMotion,
-      animationData: window.LOADING_ANIMATION,
-      rendererSettings: {
-        preserveAspectRatio: 'xMidYMid meet',
-        progressiveLoad: false
-      }
-    });
-    splashAnimation.setSpeed(splashPlaybackSpeed);
-    splashMark.classList.add('is-animated');
-
-    if (reduceMotion) {
-      const completeMarker = window.LOADING_ANIMATION.markers?.find((marker) => marker.cm === 'complete');
-      const stillFrame = completeMarker?.tm ?? Math.max(0, window.LOADING_ANIMATION.op - 1);
-      splashAnimation.addEventListener('DOMLoaded', () => splashAnimation?.goToAndStop(stillFrame, true));
-    } else {
-      const durationMs = ((window.LOADING_ANIMATION.op - window.LOADING_ANIMATION.ip) / window.LOADING_ANIMATION.fr) * 1000 / splashPlaybackSpeed;
-      splashAnimation.addEventListener('loopComplete', markSplashCycleComplete);
-      splashCycleFallback = window.setTimeout(markSplashCycleComplete, durationMs + 250);
-    }
-  } catch {
-    splashAnimation = null;
-    markSplashCycleComplete();
-  }
-}
-
-function hideSplash() {
-  if (!splash || splash.classList.contains('is-hidden')) return;
-
-  if (splashCycleFallback !== null) {
-    window.clearTimeout(splashCycleFallback);
-    splashCycleFallback = null;
-  }
-
-  if (splashAnimation) {
-    try {
-      splashAnimation.stop();
-      splashAnimation.destroy();
-    } catch {
-      // The splash is still removed if the renderer has already torn itself down.
-    }
-    splashAnimation = null;
-  }
-
-  splashMark?.replaceChildren();
-  splash.classList.add('is-hidden');
-  window.setTimeout(() => {
-    splash.hidden = true;
-  }, 320);
 }
 
 const i18n = {
@@ -437,6 +345,7 @@ function setupCaseLinks() {
 
     panel.addEventListener('click', (event) => {
       if (event.target.closest('a, button')) return;
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       window.location.href = href;
     });
 
@@ -1925,15 +1834,18 @@ window.addEventListener('keydown', (event) => {
 });
 
 setTheme(root.dataset.theme || 'light');
-setupSplashAnimation();
-const documentImagesReady = waitForDocumentImages();
+window.portfolioLoadingBridge?.installLottie();
+const criticalImagesReady = waitForCriticalImages();
 translate();
 setupPointerVars();
 setupCursor();
 setupWorkShowcase();
-const workColorReady = setupWorkColorReveal();
+setupWorkColorReveal();
 setupScrollReveal();
 setupParallax();
 const heroPortraitReady = setupHeroPortrait();
 setupInkField();
-void waitForPageResources(documentImagesReady, workColorReady, heroPortraitReady);
+const pageResourcesReady = waitForPageResources(criticalImagesReady, heroPortraitReady);
+if (window.portfolioLoadingBridge) {
+  void window.portfolioLoadingBridge.completeWhen(pageResourcesReady);
+}

@@ -193,7 +193,7 @@ p {
   pointer-events: none;
 }
 
-.splash.is-hidden .splash__inner {
+.splash[hidden] .splash__inner {
   display: none;
 }
 
