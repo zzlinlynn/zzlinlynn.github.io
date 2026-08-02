@@ -1,0 +1,202 @@
+.knowledge-motion {
+  width: 100%;
+}
+
+.knowledge-motion__variant {
+  display: none;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.knowledge-motion__variant--mobile {
+  display: block;
+  width: min(342px, 100%);
+  aspect-ratio: 342 / 499;
+}
+
+.knowledge-motion svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.knowledge-motion .knowledge-source-card,
+.knowledge-motion .knowledge-extractor-label,
+.knowledge-motion .knowledge-target-frame,
+.knowledge-motion .knowledge-target-heading,
+.knowledge-motion .knowledge-field {
+  opacity: 0;
+}
+
+.knowledge-motion .knowledge-source-card,
+.knowledge-motion .knowledge-extractor-label,
+.knowledge-motion .knowledge-target-heading,
+.knowledge-motion .knowledge-field {
+  transform: translate3d(0, 4px, 0);
+}
+
+.knowledge-motion .knowledge-arrow-line,
+.knowledge-motion .knowledge-arrow-head {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.knowledge-motion .knowledge-confidence-fill {
+  transform: scaleX(0);
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+
+.knowledge-motion .knowledge-timeline-sentinel {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.knowledge-motion.is-playing .knowledge-source-card {
+  animation: knowledge-reveal 360ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing.is-hover-replay .knowledge-source-card {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+.knowledge-motion.is-playing .knowledge-arrow-line {
+  animation: knowledge-draw 420ms 620ms cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-arrow-head {
+  animation: knowledge-draw 180ms 1000ms cubic-bezier(.65, 0, .35, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-extractor-label {
+  animation: knowledge-reveal 240ms 1160ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-target-frame {
+  animation: knowledge-frame 360ms 1500ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-target-heading {
+  animation: knowledge-reveal 280ms 1780ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-field--type {
+  animation: knowledge-reveal 280ms 2080ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-field--source {
+  animation: knowledge-reveal 280ms 2360ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-field--confidence {
+  animation: knowledge-reveal 280ms 2640ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-confidence-fill {
+  animation: knowledge-fill 360ms 2760ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-field--review {
+  animation: knowledge-reveal 280ms 3020ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.knowledge-motion.is-playing .knowledge-timeline-sentinel {
+  animation: knowledge-timeline 3340ms linear both;
+}
+
+.knowledge-motion.is-complete .knowledge-source-card,
+.knowledge-motion.is-complete .knowledge-extractor-label,
+.knowledge-motion.is-complete .knowledge-target-frame,
+.knowledge-motion.is-complete .knowledge-target-heading,
+.knowledge-motion.is-complete .knowledge-field {
+  opacity: 1;
+  transform: none;
+}
+
+.knowledge-motion.is-complete .knowledge-arrow-line,
+.knowledge-motion.is-complete .knowledge-arrow-head {
+  stroke-dashoffset: 0;
+}
+
+.knowledge-motion.is-complete .knowledge-confidence-fill {
+  transform: scaleX(1);
+}
+
+@keyframes knowledge-reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes knowledge-frame {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes knowledge-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes knowledge-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes knowledge-timeline {
+  from { opacity: 0; }
+  to { opacity: .001; }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .knowledge-motion__variant--mobile {
+    display: none;
+  }
+
+  .knowledge-motion__variant--tablet {
+    display: block;
+    width: min(704px, 100%);
+    aspect-ratio: 704 / 226;
+  }
+}
+
+@media (min-width: 1025px) {
+  .knowledge-motion__variant--mobile,
+  .knowledge-motion__variant--tablet {
+    display: none;
+  }
+
+  .knowledge-motion__variant--desktop {
+    display: block;
+    width: min(625px, 100%);
+    aspect-ratio: 625 / 226;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knowledge-motion .knowledge-source-card,
+  .knowledge-motion .knowledge-extractor-label,
+  .knowledge-motion .knowledge-target-frame,
+  .knowledge-motion .knowledge-target-heading,
+  .knowledge-motion .knowledge-field {
+    opacity: 1;
+    transform: none;
+  }
+
+  .knowledge-motion .knowledge-arrow-line,
+  .knowledge-motion .knowledge-arrow-head {
+    stroke-dashoffset: 0;
+  }
+
+  .knowledge-motion .knowledge-confidence-fill {
+    transform: scaleX(1);
+  }
+}
