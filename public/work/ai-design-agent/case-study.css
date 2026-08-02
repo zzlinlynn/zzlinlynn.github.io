@@ -302,7 +302,7 @@ img {
 }
 
 .diagram-row {
-  margin-top: 0;
+  margin-top: 16px;
 }
 
 .diagram-row > [aria-hidden="true"],
@@ -735,7 +735,7 @@ img {
   }
 
   .diagram-row {
-    margin-top: 0;
+    margin-top: 32px;
   }
 
   .creator-section {
@@ -743,7 +743,7 @@ img {
   }
 
   .creator-workflow-row {
-    margin-top: 0;
+    margin-top: 32px;
   }
 
   .creator-stages {
