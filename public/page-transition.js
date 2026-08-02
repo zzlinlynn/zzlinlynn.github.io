@@ -20,6 +20,7 @@
   let overlay = null;
   let frame = 0;
   let transitioning = false;
+  let preserveOutgoingCover = false;
   let scrollbarRevealPercent = -1;
 
   const blockedScrollKeys = new Set([
@@ -356,11 +357,23 @@
     overlay?.canvas.remove();
     overlay = null;
     transitioning = false;
+    preserveOutgoingCover = false;
     clearScrollbarPaint();
     clearLoaderTone();
     unlockPageScroll();
     document.documentElement.classList.remove("page-transition-arriving");
     document.documentElement.classList.remove("page-transition-loading");
+  };
+
+  const commitNavigation = (href, preserveCover = false) => {
+    preserveOutgoingCover = preserveCover;
+    try {
+      window.location.assign(href);
+    } catch (error) {
+      clearStoredState();
+      cleanup();
+      throw error;
+    }
   };
 
   const getStoredState = () => {
@@ -570,7 +583,7 @@
   const startNavigation = async (trigger, target) => {
     if (transitioning) return;
     if (reducedMotion.matches) {
-      window.location.assign(target.href);
+      commitNavigation(target.href);
       return;
     }
 
@@ -597,7 +610,7 @@
       coveredAt: Date.now()
     };
     saveStoredState(state);
-    window.location.assign(target.href);
+    commitNavigation(target.href, true);
   };
 
   const getTransitionTarget = (eventTarget) => {
@@ -653,7 +666,11 @@
     startNavigation(trigger, target);
   }, true);
 
-  window.addEventListener("pagehide", cleanup);
+  window.addEventListener("pagehide", () => {
+    cancelAnimationFrame(frame);
+    if (preserveOutgoingCover && overlay?.canvas.isConnected) return;
+    cleanup();
+  });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) cleanup();
   });

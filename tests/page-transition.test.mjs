@@ -651,6 +651,36 @@ async function testSourceIntegration() {
   assert.match(transitionScript, /removeEventListener\("wheel", blockScrollEvent, scrollBlockOptions\)/);
   assert.match(transitionScript, /const beginScrollbarReveal = \(targetColor\) =>/);
   assert.match(transitionScript, /const syncScrollbarReveal = \(edgeCoverage\) =>/);
+  assert.match(
+    transitionScript,
+    /let preserveOutgoingCover = false;/,
+    "the transition must track whether an outgoing navigation owns the current cover"
+  );
+  assert.match(
+    transitionScript,
+    /const commitNavigation = \(href, preserveCover = false\) => \{\s*preserveOutgoingCover = preserveCover;\s*try \{\s*window\.location\.assign\(href\);\s*\} catch \(error\) \{\s*clearStoredState\(\);\s*cleanup\(\);\s*throw error;\s*\}\s*\};/,
+    "navigation assignment failures must restore the current page"
+  );
+  assert.match(
+    transitionScript,
+    /saveStoredState\(state\);\s*commitNavigation\(target\.href, true\);/,
+    "animated navigation must preserve its completed cover before pagehide"
+  );
+  assert.match(
+    transitionScript,
+    /window\.addEventListener\("pagehide", \(\) => \{\s*cancelAnimationFrame\(frame\);\s*if \(preserveOutgoingCover && overlay\?\.canvas\.isConnected\) return;\s*cleanup\(\);\s*\}\);/,
+    "a committed navigation must retain its opaque cover through pagehide"
+  );
+  assert.match(
+    transitionScript,
+    /transitioning = false;\s*preserveOutgoingCover = false;/,
+    "normal and BFCache cleanup must reset the committed-navigation guard"
+  );
+  assert.match(
+    transitionScript,
+    /window\.addEventListener\("pageshow", \(event\) => \{\s*if \(event\.persisted\) cleanup\(\);\s*\}\);/,
+    "a BFCache restore must remove the retained outgoing cover"
+  );
   assert.match(transitionScript, /const transitionTone = \(color\) =>/);
   assert.match(transitionScript, /luminance < 0\.179 \? "dark" : "light"/);
   assert.match(
