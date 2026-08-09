@@ -477,7 +477,14 @@ img {
   background: var(--surface-subtle);
 }
 
+.decision-preview picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .decision-preview__image {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
